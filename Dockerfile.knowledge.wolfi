@@ -1,0 +1,22 @@
+# Wolfi knowledge worker with the same unprivileged identity as the Debian image.
+ARG WOLFI_BASE_IMAGE=cgr.dev/chainguard/wolfi-base@sha256:0feab531471d2edfcca55f18883441cb7df598e724fa2dedf9985273f532eed7
+FROM ${WOLFI_BASE_IMAGE}
+ENV VIRTUAL_ENV=/usr/local/venv PATH="/usr/local/venv/bin:/usr/local/bin:/usr/bin:/bin" \
+    PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 HF_HOME=/models/huggingface
+RUN apk upgrade --no-cache && apk add --no-cache \
+    python-3.12 py3.12-pip libstdc++ mesa-gl glib tesseract tesseract-eng \
+    && python3.12 -m venv /usr/local/venv
+COPY requirements-knowledge.txt /opt/bob-a2a/requirements-knowledge.txt
+RUN pip install --no-cache-dir -r /opt/bob-a2a/requirements-knowledge.txt \
+    --extra-index-url https://download.pytorch.org/whl/cpu
+# Docling detects page orientation in addition to recognizing English text.
+RUN apk add --no-cache tesseract-osd tzdata \
+    && python -c 'from zoneinfo import ZoneInfo; [ZoneInfo(z) for z in ("UTC", "Europe/London", "Europe/Paris")]'
+RUN addgroup -g 10001 buddy && adduser -D -u 10001 -G buddy -h /home/buddy buddy \
+    && mkdir -p /models/huggingface /models/cache \
+    && chown 10001:10001 /models /models/huggingface /models/cache
+ENV XDG_CACHE_HOME=/models/cache
+COPY app /opt/bob-a2a/app
+WORKDIR /opt/bob-a2a
+USER 10001:10001
+CMD ["python", "-m", "app.rag_worker"]

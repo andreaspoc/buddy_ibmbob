@@ -1,0 +1,50 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+@use '@carbon/layout/scss/generated/size';
+
+:root[data-design-system='carbon']:root body .agent-catalog .agent-user-picker {
+  display: grid;
+  gap: spacing.$spacing-04;
+  min-width: 0;
+  padding: spacing.$spacing-05;
+  border-color: var(--cds-border-subtle);
+  border-radius: var(--buddy-panel-radius);
+  background: var(--cds-layer);
+  color: var(--cds-text-primary);
+  legend { @include type.type-style('heading-compact-01'); }
+  p { @include type.type-style('body-01'); color: var(--cds-text-secondary); margin: 0; }
+  .cds--search-input { border: 0; border-radius: 0; padding: 0 spacing.$spacing-09; background: var(--cds-field); }
+  .agent-user-selection {
+    display: flex; align-items: center; flex-wrap: wrap; gap: spacing.$spacing-03;
+    @include type.type-style('label-01'); color: var(--cds-text-secondary);
+  }
+  .agent-user-list {
+    display: grid; gap: spacing.$spacing-02;
+    max-height: size.$size-xl * 4;
+    overflow-y: auto; overscroll-behavior: contain;
+  }
+  .agent-user-row {
+    display: flex; align-items: center; gap: spacing.$spacing-04;
+    min-height: size.$size-lg;
+    padding: spacing.$spacing-03;
+    border: 1px solid transparent;
+    border-radius: var(--buddy-control-radius);
+    cursor: pointer;
+    &:hover { background: var(--cds-layer-hover); }
+    &:has(input:checked) { background: var(--cds-layer-selected); border-color: var(--cds-border-interactive); }
+    &:focus-within { outline: 2px solid var(--cds-focus); outline-offset: -2px; }
+    input { accent-color: var(--cds-interactive); flex: none; }
+  }
+  .agent-user-avatar {
+    display: grid; place-items: center; flex: none;
+    width: size.$size-sm; height: size.$size-sm;
+    border-radius: var(--buddy-pill-radius);
+    background: var(--brand-soft); color: var(--cds-interactive);
+  }
+  .agent-user-identity {
+    display: grid; min-width: 0;
+    strong { @include type.type-style('heading-compact-01'); color: var(--cds-text-primary); overflow-wrap: anywhere; }
+    > span { @include type.type-style('label-01'); color: var(--cds-text-secondary); overflow-wrap: anywhere; }
+  }
+  &:disabled .agent-user-row { cursor: not-allowed; }
+}

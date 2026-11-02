@@ -1,0 +1,31 @@
+.learning-classes { width:100%; max-width:1120px; margin:0 auto; padding-bottom:80px; }
+.learning-classes header,.learning-class-section-header,.learning-class-actions { display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
+.learning-classes header h2,.learning-classes header h3 { margin:8px 0; }
+.learning-class-header { align-items:flex-start!important; margin-bottom:24px; }
+.learning-class-header>div { max-width:780px; }
+.learning-class-eyebrow { font-size:11px; letter-spacing:.08em; font-weight:650; color:var(--learning-brand-strong,#491d8b); margin:0 0 8px; }
+.learning-class-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:18px; margin-top:24px; }
+.learning-class-card { padding:24px; margin:16px 0; border:1px solid var(--learning-brand-border,#d4bbff); border-top:4px solid var(--learning-brand,#6929c4); border-radius:10px; background:var(--cds-layer-01,#fff); overflow-wrap:anywhere; }
+.learning-class-grid .learning-class-card { margin:0; }
+.learning-class-card h3 { font-size:20px; margin:0 0 12px; }
+.learning-class-card p { line-height:1.65; }
+.learning-class-tabs { display:flex; gap:4px; overflow-x:auto; border-bottom:1px solid var(--learning-brand-border,#d4bbff); margin-bottom:26px; }
+.learning-class-tabs button { flex-shrink:0; padding:12px 16px; border:0; border-bottom:3px solid transparent; background:transparent; color:var(--cds-text-secondary,#525252); border-radius:0; }
+.learning-class-tabs button.active { border-bottom-color:var(--learning-brand,#6929c4); color:var(--learning-brand-strong,#491d8b); font-weight:600; }
+.learning-classes label { display:grid; gap:7px; margin:16px 0; font-size:13px; font-weight:500; }
+.learning-classes input:not([type=checkbox]),.learning-classes textarea,.learning-classes select { width:100%; box-sizing:border-box; padding:10px 12px; color:var(--cds-text-primary,#161616); background:var(--cds-field-01,#fff); border:1px solid var(--cds-border-strong-01,#8d8d8d); border-radius:5px; font:inherit; }
+.learning-classes textarea { resize:vertical; line-height:1.6; }
+.learning-classes fieldset { border:0; padding:0; margin:0; min-width:0; }
+.learning-classes .learning-class-check { display:flex; align-items:center; gap:10px; font-weight:400; }
+.learning-class-check input { accent-color:var(--learning-brand,#6929c4); width:18px; height:18px; }
+.learning-class-columns { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.learning-class-editor { max-width:850px; margin:auto; padding:24px; border:1px solid var(--learning-brand-border,#d4bbff); border-radius:10px; background:var(--cds-layer-01,#fff); }
+.learning-class-editor footer { margin-top:24px; border-top:1px solid var(--learning-brand-border,#d4bbff); padding-top:20px; }
+.learning-class-work { white-space:pre-wrap; overflow-wrap:anywhere; line-height:1.7; padding:16px; background:var(--learning-brand-subtle,#fcfaff); border-radius:6px; }
+.learning-class-feedback { border-inline-start:4px solid var(--learning-brand,#6929c4); padding:12px 20px; margin-top:20px; background:var(--learning-brand-soft,#f6f2ff); }
+.learning-class-feedback .learning-class-work { padding:0; background:transparent; }
+.learning-class-actions { margin-top:20px; justify-content:flex-start; }
+.learning-class-empty { margin:28px 0; padding:32px; border:1px dashed var(--learning-brand-border,#d4bbff); border-radius:10px; background:var(--learning-brand-soft,#f6f2ff); }
+.learning-classes button { min-height:36px; }
+.learning-classes small { font-weight:400; line-height:1.6; color:var(--cds-text-secondary,#525252); }
+@media(max-width:650px) { .learning-class-columns { grid-template-columns:1fr; gap:0; } .learning-class-card,.learning-class-editor { padding:18px; } .learning-class-tabs button { padding:12px 10px; } }

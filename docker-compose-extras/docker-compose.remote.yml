@@ -1,0 +1,357 @@
+# Standalone configuration: use -f docker-compose.remote.yml, without the local file.
+# Persistent application data lives in DATABASE_URL; model downloads remain local.
+services:
+  bob-agent:
+    image: "${BUDDY_CORE_IMAGE:-bob-acp-core:1.1.0}"
+    build:
+      context: .
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    ports:
+      - "${BOB_BIND_IP:-0.0.0.0}:${BOB_PORT:-3000}:8080"
+      - "${BOB_HTTP_BIND_IP:-127.0.0.1}:${BOB_ALT_PORT:-8080}:8080"
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+      - ./deploy/apps:/opt/bob-a2a/app-manifests:ro
+    environment: &bob-env
+      # Runtime settings are supplied by the project .env file.
+      OFFICE_JWT_SECRET: "${OFFICE_JWT_SECRET:-}"
+      OFFICE_INTERNAL_URL: "${OFFICE_INTERNAL_URL:-http://onlyoffice}"
+      OFFICE_PUBLIC_URL: "/office-editor"
+      OFFICE_CALLBACK_BASE_URL: "http://bob-agent:8080"
+      BUDDY_LEARNING_ENABLED: "${BUDDY_LEARNING_ENABLED:-0}"
+      BUDDY_LEARNING_PLUGIN_URL: "${BUDDY_LEARNING_PLUGIN_URL:-}"
+      BUDDY_OFFICE_PLUGIN_URL: "${BUDDY_OFFICE_PLUGIN_URL:-}"
+      BUDDY_PEOPLE_PLUGIN_URL: "${BUDDY_PEOPLE_PLUGIN_URL:-}"
+      BUDDY_DECISIONS_ENABLED: "${BUDDY_DECISIONS_ENABLED:-0}"
+      BUDDY_DECISIONS_PLUGIN_URL: "${BUDDY_DECISIONS_PLUGIN_URL:-}"
+      BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS: "${BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS:-3600}"
+      BUDDY_CP4D_ENCRYPTION_KEY: "${BUDDY_CP4D_ENCRYPTION_KEY:-}"
+      BUDDY_PROJECTS_PLUGIN_URL: "${BUDDY_PROJECTS_PLUGIN_URL:-}"
+      BUDDY_OFFICE_ENABLED: "${BUDDY_OFFICE_ENABLED:-0}"
+      BUDDY_PEOPLE_ENABLED: "${BUDDY_PEOPLE_ENABLED:-0}"
+      BUDDY_PROJECTS_ENABLED: "${BUDDY_PROJECTS_ENABLED:-0}"
+      BOB_API_KEY: "${BOB_API_KEY:-}"
+      BOBSHELL_API_KEY: "${BOB_API_KEY:-}"
+      BOB_TEAM_ID: "${BOB_TEAM_ID:-}"
+      BOB_WORKSPACE: "/workspace"
+      BOB_MCP_SETTINGS_FILE: "/root/.bob/mcp_settings.json"
+      BOB_A2A_ALLOWED_ORIGINS: "${BOB_A2A_ALLOWED_ORIGINS:-}"
+      BOB_MCP_ALLOWED_ORIGINS: "${BOB_MCP_ALLOWED_ORIGINS:-}"
+      PYTHONPATH: "/opt/bob-a2a"
+      PUBLIC_BASE_URL: "${PUBLIC_BASE_URL:?Set PUBLIC_BASE_URL to the public app URL}"
+      DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL to your remote PostgreSQL connection URI}"
+      KEYCLOAK_HOST_IP: "${KEYCLOAK_HOST_IP:-}"
+      KEYCLOAK_ISSUER: "${KEYCLOAK_ISSUER:-}"
+      KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID:-}"
+      KEYCLOAK_CLIENT_SECRET: "${KEYCLOAK_CLIENT_SECRET:-}"
+      KEYCLOAK_REDIRECT_URI: "${KEYCLOAK_REDIRECT_URI:-}"
+      KEYCLOAK_ADMIN_SUBJECTS: "${KEYCLOAK_ADMIN_SUBJECTS:-}"
+      BOB_LOCAL_LOGIN_ENABLED: "${BOB_LOCAL_LOGIN_ENABLED:-0}"
+      AZURE_CLIENT_ID: "${AZURE_CLIENT_ID:-}"
+      AZURE_CLIENT_SECRET: "${AZURE_CLIENT_SECRET:-}"
+      AZURE_TENANT_ID: "${AZURE_TENANT_ID:-common}"
+      AZURE_REDIRECT_URI: "${AZURE_REDIRECT_URI:-}"
+      GRAPH_SCOPES: "${GRAPH_SCOPES:-}"
+      GRAPH_API_BASE: "${GRAPH_API_BASE:-https://graph.microsoft.com/v1.0}"
+      BOB_REQUEST_TIMEOUT: "${BOB_REQUEST_TIMEOUT:-900}"
+      BUDDY_MEMORY_SIGNING_KEY: "${BUDDY_MEMORY_SIGNING_KEY:-}"
+      BUDDY_AGENT_MAX_TOOL_CALLS: "${BUDDY_AGENT_MAX_TOOL_CALLS:-100}"
+      BUDDY_AGENT_MAX_INFERENCE_CALLS: "${BUDDY_AGENT_MAX_INFERENCE_CALLS:-16}"
+      BUDDY_AGENT_MAX_REMOTE_CALLS: "${BUDDY_AGENT_MAX_REMOTE_CALLS:-6}"
+      BUDDY_AGENT_MAX_SPECIALIST_CALLS: "${BUDDY_AGENT_MAX_SPECIALIST_CALLS:-6}"
+      BUDDY_AGENT_MAX_DAILY_ACTIONS: "${BUDDY_AGENT_MAX_DAILY_ACTIONS:-1000}"
+      BUDDY_AGENT_MAX_RUN_SECONDS: "${BUDDY_AGENT_MAX_RUN_SECONDS:-3600}"
+      BOB_AGENT_PREWARM: "${BOB_AGENT_PREWARM:-1}"
+      BOB_A2A_ALLOW_PUBLIC_PORTS: "${BOB_A2A_ALLOW_PUBLIC_PORTS:-0}"
+      BOB_A2A_RELAXED_ORIGINS: "${BOB_A2A_RELAXED_ORIGINS:-0}"
+      BOB_OLLAMA_URL: "${BOB_OLLAMA_URL:-http://host.docker.internal:11434}"
+      BOB_EMBEDDING_MODEL: "${BOB_EMBEDDING_MODEL:-granite-embedding:278m}"
+      BOB_PRESENTATION_TIMEOUT: "${BOB_PRESENTATION_TIMEOUT:-1800}"
+      DEFAULT_TIMEZONE: "${DEFAULT_TIMEZONE:-UTC}"
+      BOB_FILE_STORAGE: "${BOB_FILE_STORAGE:-postgres}"
+      BOB_S3_BUCKET: "${BOB_S3_BUCKET:-}"
+      BOB_S3_ENDPOINT: "${BOB_S3_ENDPOINT:-}"
+      BOB_S3_REGION: "${BOB_S3_REGION:-}"
+      BOB_S3_ACCESS_KEY_ID: "${BOB_S3_ACCESS_KEY_ID:-}"
+      BOB_S3_SECRET_ACCESS_KEY: "${BOB_S3_SECRET_ACCESS_KEY:-}"
+      BOB_API_UPSTREAM: "${BOB_API_UPSTREAM:-https://api.us-east.bob.ibm.com}"
+      BOB_INTERNAL_A2A_URL: "${BOB_INTERNAL_A2A_URL:-http://bob-agent:8080/a2a}"
+      BRAVE_SEARCH_API: "${BRAVE_SEARCH_API:-https://api.search.brave.com/res/v1/web/search}"
+      BRAVE_API_KEY: "${BRAVE_API_KEY:-}"
+    deploy:
+      resources:
+        limits:
+          cpus: "${BOB_CPU_LIMIT:-2.0}"
+          memory: "${BOB_MEMORY_LIMIT:-2048M}"
+        reservations:
+          cpus: "${BOB_CPU_RESERVATION:-0.5}"
+          memory: "${BOB_MEMORY_RESERVATION:-512M}"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+      start_period: 15s
+    restart: unless-stopped
+  bob-gateway:
+    image: "${BUDDY_CORE_IMAGE:-bob-acp-core:1.1.0}"
+    build:
+      context: .
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    command: ["python3", "-m", "uvicorn", "app.gateway:app", "--app-dir", "/opt/bob-a2a", "--host", "0.0.0.0", "--port", "8090"]
+    ports:
+      # HTTPS reaches this service on the Compose network. Direct host access
+      # remains loopback-only unless the operator explicitly changes the bind.
+      - "${BOB_GATEWAY_BIND_IP:-127.0.0.1}:${BOB_GATEWAY_PORT:-8090}:8090"
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+      - ./deploy/apps:/opt/bob-a2a/app-manifests:ro
+    environment: *bob-env
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: "512M"
+        reservations:
+          cpus: "0.2"
+          memory: "128M"
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8090/ready', timeout=5)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 10s
+    restart: unless-stopped
+  bob-worker:
+    image: "${BUDDY_CORE_IMAGE:-bob-acp-core:1.1.0}"
+    build:
+      context: .
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    command: ["python3", "-m", "app.worker"]
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+    environment:
+      BUDDY_PEOPLE_PLUGIN_URL: "${BUDDY_PEOPLE_PLUGIN_URL:-}"
+      BUDDY_DECISIONS_ENABLED: "${BUDDY_DECISIONS_ENABLED:-0}"
+      BUDDY_DECISIONS_PLUGIN_URL: "${BUDDY_DECISIONS_PLUGIN_URL:-}"
+      BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS: "${BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS:-3600}"
+      BUDDY_CP4D_ENCRYPTION_KEY: "${BUDDY_CP4D_ENCRYPTION_KEY:-}"
+      BUDDY_PROJECTS_PLUGIN_URL: "${BUDDY_PROJECTS_PLUGIN_URL:-}"
+      BOB_API_KEY: "${BOB_API_KEY:-}"
+      BOBSHELL_API_KEY: "${BOB_API_KEY:-}"
+      BOB_TEAM_ID: "${BOB_TEAM_ID:-}"
+      BOB_WORKSPACE: "/workspace"
+      BOB_MCP_SETTINGS_FILE: "/root/.bob/mcp_settings.json"
+      BOB_A2A_ALLOWED_ORIGINS: "${BOB_A2A_ALLOWED_ORIGINS:-}"
+      BOB_MCP_ALLOWED_ORIGINS: "${BOB_MCP_ALLOWED_ORIGINS:-}"
+      PYTHONPATH: "/opt/bob-a2a"
+      DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL to your remote PostgreSQL connection URI}"
+      PUBLIC_BASE_URL: "${PUBLIC_BASE_URL:?Set PUBLIC_BASE_URL to the public app URL}"
+      KEYCLOAK_HOST_IP: "${KEYCLOAK_HOST_IP:-}"
+      KEYCLOAK_ISSUER: "${KEYCLOAK_ISSUER:-}"
+      KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID:-}"
+      KEYCLOAK_CLIENT_SECRET: "${KEYCLOAK_CLIENT_SECRET:-}"
+      KEYCLOAK_REDIRECT_URI: "${KEYCLOAK_REDIRECT_URI:-}"
+      KEYCLOAK_ADMIN_SUBJECTS: "${KEYCLOAK_ADMIN_SUBJECTS:-}"
+      BOB_LOCAL_LOGIN_ENABLED: "${BOB_LOCAL_LOGIN_ENABLED:-0}"
+      AZURE_CLIENT_ID: "${AZURE_CLIENT_ID:-}"
+      AZURE_CLIENT_SECRET: "${AZURE_CLIENT_SECRET:-}"
+      AZURE_TENANT_ID: "${AZURE_TENANT_ID:-common}"
+      AZURE_REDIRECT_URI: "${AZURE_REDIRECT_URI:-}"
+      GRAPH_SCOPES: "${GRAPH_SCOPES:-}"
+      GRAPH_API_BASE: "${GRAPH_API_BASE:-https://graph.microsoft.com/v1.0}"
+      BOB_REQUEST_TIMEOUT: "${BOB_REQUEST_TIMEOUT:-900}"
+      BUDDY_MEMORY_SIGNING_KEY: "${BUDDY_MEMORY_SIGNING_KEY:-}"
+      BUDDY_AGENT_MAX_TOOL_CALLS: "${BUDDY_AGENT_MAX_TOOL_CALLS:-100}"
+      BUDDY_AGENT_MAX_INFERENCE_CALLS: "${BUDDY_AGENT_MAX_INFERENCE_CALLS:-16}"
+      BUDDY_AGENT_MAX_REMOTE_CALLS: "${BUDDY_AGENT_MAX_REMOTE_CALLS:-6}"
+      BUDDY_AGENT_MAX_SPECIALIST_CALLS: "${BUDDY_AGENT_MAX_SPECIALIST_CALLS:-6}"
+      BUDDY_AGENT_MAX_DAILY_ACTIONS: "${BUDDY_AGENT_MAX_DAILY_ACTIONS:-1000}"
+      BUDDY_AGENT_MAX_RUN_SECONDS: "${BUDDY_AGENT_MAX_RUN_SECONDS:-3600}"
+      BOB_AGENT_PREWARM: "${BOB_AGENT_PREWARM:-1}"
+      BOB_A2A_ALLOW_PUBLIC_PORTS: "${BOB_A2A_ALLOW_PUBLIC_PORTS:-0}"
+      BOB_A2A_RELAXED_ORIGINS: "${BOB_A2A_RELAXED_ORIGINS:-0}"
+      BOB_OLLAMA_URL: "${BOB_OLLAMA_URL:-http://host.docker.internal:11434}"
+      BOB_EMBEDDING_MODEL: "${BOB_EMBEDDING_MODEL:-granite-embedding:278m}"
+      BOB_PRESENTATION_TIMEOUT: "${BOB_PRESENTATION_TIMEOUT:-1800}"
+      DEFAULT_TIMEZONE: "${DEFAULT_TIMEZONE:-UTC}"
+      BOB_FILE_STORAGE: "${BOB_FILE_STORAGE:-postgres}"
+      BOB_S3_BUCKET: "${BOB_S3_BUCKET:-}"
+      BOB_S3_ENDPOINT: "${BOB_S3_ENDPOINT:-}"
+      BOB_S3_REGION: "${BOB_S3_REGION:-}"
+      BOB_S3_ACCESS_KEY_ID: "${BOB_S3_ACCESS_KEY_ID:-}"
+      BOB_S3_SECRET_ACCESS_KEY: "${BOB_S3_SECRET_ACCESS_KEY:-}"
+      BOB_API_UPSTREAM: "${BOB_API_UPSTREAM:-https://api.us-east.bob.ibm.com}"
+      BOB_INTERNAL_A2A_URL: "${BOB_INTERNAL_A2A_URL:-http://bob-agent:8080/a2a}"
+      BRAVE_SEARCH_API: "${BRAVE_SEARCH_API:-https://api.search.brave.com/res/v1/web/search}"
+      BRAVE_API_KEY: "${BRAVE_API_KEY:-}"
+    deploy:
+      resources:
+        limits:
+          cpus: "${BOB_CPU_LIMIT:-2.0}"
+          memory: "${BOB_MEMORY_LIMIT:-2048M}"
+        reservations:
+          cpus: "${BOB_CPU_RESERVATION:-0.5}"
+          memory: "${BOB_MEMORY_RESERVATION:-512M}"
+    restart: unless-stopped
+  knowledge-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.knowledge
+    volumes:
+      - bob-docling-models:/models
+    environment:
+      DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL to your remote PostgreSQL connection URI}"
+      BOB_OLLAMA_URL: "${BOB_OLLAMA_URL:-http://host.docker.internal:11434}"
+      BOB_EMBEDDING_MODEL: "${BOB_EMBEDDING_MODEL:-granite-embedding:278m}"
+      BOB_FILE_STORAGE: "${BOB_FILE_STORAGE:-postgres}"
+      BOB_S3_BUCKET: "${BOB_S3_BUCKET:-}"
+      BOB_S3_ENDPOINT: "${BOB_S3_ENDPOINT:-}"
+      BOB_S3_REGION: "${BOB_S3_REGION:-}"
+      BOB_S3_ACCESS_KEY_ID: "${BOB_S3_ACCESS_KEY_ID:-}"
+      BOB_S3_SECRET_ACCESS_KEY: "${BOB_S3_SECRET_ACCESS_KEY:-}"
+      HF_HOME: "/models/huggingface"
+      XDG_CACHE_HOME: "/models/cache"
+    deploy:
+      resources:
+        limits:
+          cpus: "${KNOWLEDGE_CPU_LIMIT:-2.0}"
+          memory: "${KNOWLEDGE_MEMORY_LIMIT:-4G}"
+    restart: unless-stopped
+  office-plugin:
+    image: "${BUDDY_OFFICE_IMAGE:-bob-acp-office:1.1.0}"
+    build:
+      context: .
+      dockerfile: plugins/office/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    profiles: ["office", "plugins"]
+    command: ["uvicorn", "buddy_office.service:create_app", "--factory", "--host", "0.0.0.0", "--port", "8080"]
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+    environment:
+      <<: *bob-env
+      BUDDY_OFFICE_ENABLED: "1"
+      BUDDY_PEOPLE_ENABLED: "0"
+      BUDDY_PLUGIN_SERVICE: "office"
+      BUDDY_OFFICE_PLUGIN_URL: ""
+      BUDDY_PEOPLE_PLUGIN_URL: ""
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+
+  people-plugin:
+    image: "${BUDDY_PEOPLE_IMAGE:-bob-acp-people:1.1.0}"
+    build:
+      context: .
+      dockerfile: plugins/people/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    profiles: ["people", "plugins"]
+    command: ["uvicorn", "buddy_people.service:create_app", "--factory", "--host", "0.0.0.0", "--port", "8080"]
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+    environment:
+      <<: *bob-env
+      BUDDY_OFFICE_ENABLED: "0"
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_PLUGIN_SERVICE: "people"
+      BUDDY_OFFICE_PLUGIN_URL: ""
+      BUDDY_PEOPLE_PLUGIN_URL: ""
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+
+  projects-plugin:
+    image: "${BUDDY_PROJECTS_IMAGE:-bob-acp-projects:1.1.0}"
+    build:
+      context: .
+      dockerfile: plugins/projects/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    profiles: ["projects"]
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+    environment:
+      <<: *bob-env
+      BUDDY_PLUGIN_SERVICE: "projects"
+      BUDDY_PROJECTS_ENABLED: "1"
+      BUDDY_DECISIONS_ENABLED: "${BUDDY_DECISIONS_ENABLED:-0}"
+      BUDDY_DECISIONS_PLUGIN_URL: "${BUDDY_DECISIONS_PLUGIN_URL:-}"
+      BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS: "${BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS:-3600}"
+      BUDDY_CP4D_ENCRYPTION_KEY: "${BUDDY_CP4D_ENCRYPTION_KEY:-}"
+      BUDDY_PROJECTS_PLUGIN_URL: ""
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+
+  people-worker:
+    depends_on:
+      people-plugin:
+        condition: service_healthy
+    image: "${BUDDY_PEOPLE_IMAGE:-bob-acp-people:1.1.0}"
+    build:
+      context: .
+      dockerfile: plugins/people/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    profiles: ["people", "plugins"]
+    command: ["python3", "-m", "buddy_people.worker"]
+    volumes:
+      - ./workspace:/workspace
+      - ./.bob-private:/root/.bob
+    environment:
+      <<: *bob-env
+      BUDDY_OFFICE_ENABLED: "0"
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_PLUGIN_SERVICE: "people"
+      BUDDY_OFFICE_PLUGIN_URL: ""
+      BUDDY_PEOPLE_PLUGIN_URL: ""
+    restart: unless-stopped
+
+
+  learning-plugin:
+    image: "${BUDDY_LEARNING_IMAGE:-bob-acp-learning:1.0.0}"
+    build:
+      context: .
+      dockerfile: plugins/learning/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    profiles: ["learning"]
+    security_opt:
+      - apparmor=buddy-sandbox
+      - seccomp=./deploy/security/buddy-sandbox-seccomp.json
+      - systempaths=unconfined
+    environment:
+      <<: *bob-env
+      BUDDY_PLUGIN_SERVICE: "learning"
+      BUDDY_LEARNING_ENABLED: "1"
+      BUDDY_LEARNING_PLUGIN_URL: ""
+      BUDDY_LEARNING_TEACHER_GROUP: "${BUDDY_LEARNING_TEACHER_GROUP:-/teacher}"
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready', timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+
+volumes:
+  bob-docling-models:

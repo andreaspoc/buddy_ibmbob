@@ -1,0 +1,117 @@
+/* Chat surfaces use a soft lilac input palette with purple action accents.
+ * Keep navigation/toolbars elsewhere on the shared Data Grid design. */
+:root[data-design-system='carbon']:root {
+  --buddy-chat-field: #fcf9ff;
+  --buddy-chat-field-border: #bca4d2;
+  --buddy-chat-field-text: #161616;
+}
+:root[data-design-system='carbon']:root body .shell .composer {
+  background: var(--buddy-chat-field);
+  border: 1px solid var(--buddy-chat-field-border);
+}
+:root[data-design-system='carbon']:root body .shell .composer textarea {
+  color: var(--buddy-chat-field-text);
+}
+:root[data-design-system='carbon']:root body .office-suite .office-assistant textarea {
+  background: var(--buddy-chat-field);
+  color: var(--buddy-chat-field-text);
+  border-color: var(--buddy-chat-field-border);
+  border-radius: var(--buddy-control-radius) !important;
+}
+/* Chat input controls share Carbon geometry and visible interaction states. */
+:root[data-design-system='carbon']:root body .shell .composer :is(button,select),
+:root[data-design-system='carbon']:root body .office-suite .office-assistant-composer :is(button,select) {
+  border-radius: var(--buddy-control-radius) !important;
+}
+:root[data-design-system='carbon']:root body .shell .composer .send-button {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+  border-radius: 50% !important;
+}
+:root[data-design-system='carbon']:root body .shell .composer :is(.send-button,.stop-button,.guidance-send-button,.composer-clip-btn):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+/* The old neutral widget header selectors outweighed the generic toolbar
+ * foreground on the first word of the nested Buddy brand. */
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.buddy-section-brand,.buddy-section-brand > span,.buddy-section-brand > span > span) {
+  color: var(--toolbar-text);
+}
+
+/* All conversation inputs share a readable field and visible keyboard focus. */
+:root[data-design-system='carbon']:root body :is(.member-chat-panel,.office-assistant) {
+  --chat-line: var(--brand-line);
+  --chat-muted: var(--brand-ink-muted);
+  --chat-surface: #fff;
+  --chat-purple: var(--brand-accent);
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body :is(.member-chat-composer,.office-assistant-composer) textarea {
+  background: var(--buddy-chat-field);
+  border: 1px solid var(--buddy-chat-field-border);
+  color: var(--buddy-chat-field-text);
+  font-size: 14px;
+  line-height: 20px;
+  padding: 12px;
+  border-radius: var(--buddy-control-radius) !important;
+}
+:root[data-design-system='carbon']:root body :is(.member-chat-composer,.office-assistant-composer) textarea:focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+:root[data-design-system='carbon']:root body .member-chat-messages { background: var(--workspace-canvas); }
+:root[data-design-system='carbon']:root body .member-chat-message {
+  border-color: var(--brand-line);
+  border-radius: var(--buddy-control-radius) !important;
+}
+:root[data-design-system='carbon']:root body .member-chat-message.is-own {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .member-chat-message.is-own :is(.member-chat-message-meta,time) { color: var(--brand-ink-muted); }
+:root[data-design-system='carbon']:root body .member-chat-panel { box-shadow: 0 8px 32px #1616161a; }
+
+/* Sent questions: a distinct purple surface with comfortable reading space.
+ * Scope to conversation messages so document content keeps its own styling. */
+:root[data-design-system='carbon']:root body .shell .messages > .message.user > .bubble {
+  min-width: 0;
+  white-space: normal;
+}
+:root[data-design-system='carbon']:root body .shell .messages > .message.user > .bubble > p {
+  margin: 0;
+  color: #fff;
+  font-size: 17px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+:root[data-design-system='carbon']:root body .shell .messages > .message.user > .bubble:has(> .question-delete-icon) {
+  padding-inline-end: 48px;
+}
+:root[data-design-system='carbon']:root body .shell .messages > .message.user > .bubble > .question-delete-icon {
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
+  color: #fff;
+  border-radius: var(--buddy-control-radius) !important;
+}
+:root[data-design-system='carbon']:root body .shell .messages > .message.user .message-attachment {
+  padding: 12px;
+  border-color: #ffffff40;
+  background: #ffffff12;
+  border-radius: 10px;
+}
+:root[data-design-system='carbon']:root body .shell .messages > .message.user .message-attachment-details :is(strong,small) {
+  color: #fff;
+}
+@media (max-width: 700px) {
+  :root[data-design-system='carbon']:root body .shell .messages > .message.user > .bubble {
+    max-inline-size: 94%;
+    padding-block: 14px;
+    padding-inline-start: 16px;
+  }
+  :root[data-design-system='carbon']:root body .shell .messages > .message.user > .bubble > p { font-size: 16px; }
+}

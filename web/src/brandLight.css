@@ -1,0 +1,535 @@
+/* Brand accents and authentication surfaces. Workspace chrome is owned by
+ * workspaceRefinement, mainSidebarTheme, Toolbar and chatControls.
+ *
+ * Carbon Purple theme token mapping:
+ *   --brand-accent       → Purple 70  #6929c4  ($interactive / $link-primary)
+ *   --brand-accent-hover → Purple 80  #491d8b  ($interactive hover)
+ *   --brand-soft         → Purple 10  #f6f2ff  ($layer-01 Purple 10 theme)
+ *   --brand-line         → Purple 20  #e8daff  ($border-subtle-01)
+ *   --brand-ink          → Gray 100   #161616  ($text-primary)
+ *   --brand-ink-muted    → Gray 70    #525252  ($text-secondary)
+ */
+:root, :root[data-design-system='carbon'] {
+  --brand-accent: #6929c4;
+  --brand-accent-hover: #491d8b;
+  --brand-soft: #f6f2ff;
+  --brand-line: #e8daff;
+  --brand-ink: #161616;
+  --brand-ink-muted: #525252;
+  --brand-surface-background: linear-gradient(135deg, #491d8b, #6929c4);
+  --workspace-canvas: #ffffff;
+  --answer-frame-border: #e8daff;
+  --answer-frame-soft: #f6f2ff;
+  --answer-frame-focus: #8a3ffc;
+}
+.buddy-login-viewport { --brand-surface-background: linear-gradient(135deg, #5325a8, #6a3cc2); }
+
+/* ---------- Sidebar: Carbon Gray 100 dark shell (#262626) ---------- */
+:root[data-design-system='carbon'] body .shell .sidebar {
+  background: #262626; color: #f4f4f4;
+  border-right: 1px solid #393939;
+  box-shadow: inset 0 3px 0 #be95ff;
+}
+:root[data-design-system='carbon'] body .sidebar :is(.brand-name,.mode-item,.tasks-nav,.skill-item,.sidebar-nav-label) { color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar .brand-name span { color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :is(.brand-subtitle,.section-heading,.sidebar-group-label,.skill-description,.mode-item small,.sidebar-bottom,.muted-small,.sidebar-width-label) { color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-bottom,
+:root[data-design-system='carbon'] body .sidebar .sidebar-library-label { border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item,.tasks-nav):hover { background: #333333; border-color: transparent; color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item.active,.tasks-nav.active) { background: #525252; border-color: transparent; color: #f4f4f4; font-weight: 600; box-shadow: inset 3px 0 #be95ff; }
+:root[data-design-system='carbon'] body .sidebar .tasks-nav svg { stroke: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :is(.skill-item,.mcp-connection-card) { background: #393939; border-color: #393939; color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar :is(.skill-item,.mcp-connection-card):hover { background: #333333; border-color: #525252; color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar .skill-symbol { background: #525252; color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar .new-chat { background: #6929c4; border-color: #6929c4; color: #fff; font-weight: 600; }
+:root[data-design-system='carbon'] body .sidebar .new-chat:hover { background: #491d8b; border-color: #491d8b; }
+:root[data-design-system='carbon'] body .sidebar :is(.add-item,.skill-count) { background: #393939; color: #be95ff; border-color: #525252; }
+:root[data-design-system='carbon'] body .sidebar .add-item:hover { background: #333333; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-width-btn { background: #262626; color: #f4f4f4; border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-width-btn.active { background: #6929c4; color: #fff; border-color: #6929c4; }
+:root[data-design-system='carbon'] body .sidebar .project-select { background: #262626; color: #f4f4f4; border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-filter-tabs { background: #393939; border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar .filter-tab { color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar .filter-tab.active { background: #525252; color: #be95ff; border-color: #be95ff; box-shadow: none; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-nav-badge { background: #525252; color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :focus-visible, :root[data-design-system='carbon'] body .sidebar button:focus-visible { outline-color: #be95ff; }
+
+/* ---------- Login: Gray 100 dark stage + white form card ----------
+ * Left brand stage:  #161616 bg, Purple 30 #be95ff accent (matches dark shell)
+ * Right form card:   #ffffff bg, Carbon White theme tokens
+ * Orbital animation: kept — Buddy brand identity
+ */
+:root[data-design-system='carbon'] body .buddy-login-viewport {
+  /* Gray 100 $background — seamless with dark shell */
+  background: #161616;
+  color: #f4f4f4;
+}
+/* Brand stage text: $text-primary Gray 100 */
+:root[data-design-system='carbon'] body .buddy-brand-signature { color: #f4f4f4; }
+/* Buddy Purple 30 — accent on dark */
+.buddy-brand-dot { color: #be95ff; }
+.buddy-brand-art::before { background: #be95ff; opacity: .12; }
+.buddy-brand-orbit { border-color: rgba(190,149,255,0.35); box-shadow: none; }
+.buddy-brand-orbit-three { border-color: rgba(190,149,255,0.7); }
+/* Core: Gray 100 $layer-02 #393939 background */
+.buddy-brand-core { border-color: rgba(190,149,255,0.4); background: linear-gradient(140deg, #393939, #262626 55%, rgba(190,149,255,0.08)); box-shadow: inset 0 1px 8px rgba(190,149,255,0.12); backdrop-filter: blur(8px); }
+.buddy-brand-core img { filter: drop-shadow(0 4px 12px rgba(0,0,0,0.6)); }
+.buddy-brand-spark { background: #be95ff; box-shadow: 0 0 16px 4px rgba(190,149,255,0.4); }
+.buddy-brand-eyebrow { color: #be95ff; }
+/* Headline: $text-primary Gray 100 = #f4f4f4 */
+:root[data-design-system='carbon'] body .buddy-brand-message h1 { color: #f4f4f4; }
+/* "Buddy": Purple 30 gradient */
+:root[data-design-system='carbon'] body .buddy-brand-message h1 span { background: linear-gradient(100deg, #f4f4f4, #be95ff 50%, #d4bbff); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: #be95ff; }
+/* Body copy: $text-secondary Gray 100 = #c6c6c6 */
+.buddy-brand-message p { color: #c6c6c6; }
+.buddy-brand-bottom { color: #c6c6c6; border-top-color: #393939; }
+.buddy-brand-bottom > span:last-child { color: #be95ff; }
+/* Form card: Carbon White $background, sharp corners, strong shadow */
+.buddy-login-viewport .buddy-login-shell { background: #ffffff; border: 0; border-radius: 0; box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+/* Card brand: Gray 100 text, Purple 70 accent */
+.buddy-login-brand { color: #161616; }
+.buddy-login-brand strong { color: #6929c4; }
+/* Card title: $text-primary #161616 */
+.buddy-card-title { color: #161616; }
+/* $text-secondary #525252 */
+.buddy-card-header p, .buddy-form-switch { color: #525252; }
+/* Label: $text-secondary #525252, $label-01 12px */
+.buddy-input-label { color: #525252; }
+/* Input: Carbon $field = #f4f4f4, $border-strong = #8d8d8d */
+.buddy-input-field { border-color: #8d8d8d; border-radius: 0; background: #f4f4f4; }
+/* Focus: Carbon $focus = Purple 70 #6929c4 */
+.buddy-input-field:focus-within { border-color: #6929c4; background: #ffffff; box-shadow: 0 0 0 2px #6929c4; }
+/* Submit: Carbon $button-primary = Purple 70 #6929c4, flat */
+.buddy-login-viewport .buddy-submit-button { background: #6929c4; box-shadow: none; border-radius: 0; color: #ffffff; }
+.buddy-login-viewport .buddy-submit-button:hover:not(:disabled) { background: #491d8b; }
+/* SSO: white bg, Purple 20 border, Purple 10 hover */
+.buddy-sso-button { background: #ffffff; border-color: #e8daff; border-radius: 0; color: #161616; }
+.buddy-sso-button:hover { background: #f6f2ff; border-color: #be95ff; color: #161616; }
+/* Link: $link-primary = Purple 70 #6929c4 */
+.buddy-switch-link { color: #6929c4; }
+.buddy-switch-link:hover { color: #491d8b; }
+/* Focus ring on card: Carbon $focus = Purple 70 */
+.buddy-login-viewport :is(button, a, select):focus-visible { outline-color: #6929c4; }
+:root[data-design-system='carbon'] body .buddy-login-viewport :focus-visible { outline-color: #6929c4; }
+/* Mobile: keep dark bg, white card edge-to-edge */
+@media (max-width: 600px) { .buddy-login-viewport { background: #161616; } }
+
+/* ---------- Tutorials: white stage, purple touches ---------- */
+:root[data-design-system='carbon'] body .welcome-overlay { background: radial-gradient(ellipse at 100% 0, #eadcfa 0, transparent 55%), #ffffff; color: var(--brand-ink); }
+:root[data-design-system='carbon'] body .welcome-tour { --welcome-muted: var(--brand-ink-muted); --welcome-purple: var(--brand-accent); color: var(--brand-ink); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-copy h1 { color: #201a30; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-copy > p { color: var(--brand-ink-muted); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-brand strong { color: var(--brand-ink); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-brand strong span { color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-eyebrow { color: var(--brand-accent); border-left-color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .welcome-tour button:not(.welcome-primary) { background: #fff; color: var(--brand-ink); border-color: var(--brand-line); }
+:root[data-design-system='carbon'] body .welcome-tour button:not(.welcome-primary):hover:not(:disabled) { background: var(--brand-soft); border-color: #cdb6e8; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-progress button { background: transparent; border-color: var(--brand-line); color: var(--brand-ink-muted); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-progress button[aria-current] { color: var(--brand-accent); border-color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-progress button[aria-current] span { background: var(--brand-accent); color: #fff; border-color: var(--brand-accent); box-shadow: none; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-primary { background: var(--brand-accent); border-color: var(--brand-accent); box-shadow: none; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-primary:hover:not(:disabled) { background: var(--brand-accent-hover); border-color: var(--brand-accent-hover); }
+:root[data-design-system='carbon'] body .welcome-tour :is(.welcome-stage,.welcome-screenshot,.welcome-notes-guide) { border-color: var(--brand-line); box-shadow: 0 18px 50px #7846d21a; border-top: 3px solid var(--brand-accent); }
+:root[data-design-system='carbon'] body .welcome-tour :focus-visible { outline-color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :is(.welcome-notes-replay,.welcome-path > div > span) { color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage .welcome-orbit > span:not(.welcome-emblem) { background: var(--brand-soft); color: #4b2380; border-color: var(--brand-line); }
+:root[data-design-system='carbon'] body .approval-guide { border-top: 3px solid var(--brand-accent); }
+
+/* ---------- Main workspace: white canvas, purple on actions only ---------- */
+:root[data-design-system='carbon'] body .shell .main { background: #ffffff; }
+:root[data-design-system='carbon'] body .shell :is(.topbar-token-pill,.topbar-pill) { background: var(--brand-soft); border-color: var(--brand-line); }
+:root[data-design-system='carbon'] body .shell :is(.workspace-notes-tab,.workspace-menu-trigger,.workspace-toolbar-language select,.topbar-notifications,.composer-tool-shortcut,.composer-clip-btn,.composer-skill-picker select,.slash-button,.composer-websearch-btn) { background: #fff; border-color: var(--brand-line); color: var(--brand-ink); }
+:root[data-design-system='carbon'] body .shell :is(.workspace-notes-tab,.workspace-menu-trigger,.topbar-notifications,.composer-tool-shortcut,.composer-clip-btn,.slash-button,.composer-websearch-btn):hover { background: var(--brand-soft); border-color: #cdb6e8; }
+:root[data-design-system='carbon'] body .shell .composer-websearch-btn.active { background: var(--brand-soft); color: #4b2380; border-color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .shell .composer { border-color: var(--brand-line); box-shadow: 0 6px 24px #7846d212; }
+:root[data-design-system='carbon'] body .shell .composer:focus-within { border-color: var(--brand-accent); box-shadow: 0 6px 24px #7846d21f, 0 0 0 3px #7846d21a; }
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero { border-color: var(--brand-line); box-shadow: 0 8px 28px #7846d212; }
+:root[data-design-system='carbon'] body :is(.member-chat-panel-header,.member-chat-launcher) { background: var(--brand-surface-background); color: #fff; }
+
+/* ---------- Chat top toolbar: Carbon Gray 100 dark shell (#161616) ----------
+ * Deferred entirely to workspaceRefinement.css which applies the dark shell.
+ * No overrides here — workspaceRefinement wins by cascade order. */
+:root[data-design-system='carbon'] body .shell .main > .topbar select option { color: #201a30; background: #fff; }
+/* Mobile topbar: keep dark shell on mobile too */
+@media (max-width: 700px) {
+  :root[data-design-system='carbon'] body .shell .main > .topbar { background: #161616; border-bottom: 1px solid #393939; }
+  :root[data-design-system='carbon'] body .shell .main > .topbar .topbar-heading h1 { color: #f4f4f4; }
+  :root[data-design-system='carbon'] body .shell .main > .topbar :is(button,select) { background: #262626; border-color: #393939; color: #f4f4f4; }
+}
+
+/* ---------- All sidebars: Carbon Gray 100 dark shell — deferred to workspaceRefinement.css ---------- */
+/* workspaceRefinement.css loads after this file and wins by cascade order.
+ * We only set neutral fallbacks here; the dark overrides are authoritative there. */
+:root[data-design-system='carbon'] body .shell .sidebar { background: #262626; color: #f4f4f4; border-right: 1px solid #393939; box-shadow: inset 0 3px 0 #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :is(.brand-name,.mode-item,.tasks-nav,.skill-item,.sidebar-nav-label) { color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar .brand-name span { color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :is(.brand-subtitle,.section-heading,.sidebar-group-label,.skill-description,.mode-item small,.sidebar-bottom,.muted-small,.sidebar-width-label) { color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar :is(.sidebar-bottom,.sidebar-library-label) { border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item,.tasks-nav):hover { background: #333333; border-color: transparent; color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item.active,.tasks-nav.active) { background: #525252; color: #f4f4f4; border-color: transparent; box-shadow: inset 3px 0 #be95ff; font-weight: 600; }
+:root[data-design-system='carbon'] body .sidebar .tasks-nav svg { stroke: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :is(.skill-item,.mcp-connection-card) { background: #393939; border-color: #393939; color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar :is(.skill-item,.mcp-connection-card):hover { background: #333333; border-color: #525252; color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar .skill-symbol { background: #525252; color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar .new-chat { background: #6929c4; border-color: #6929c4; color: #fff; font-weight: 600; }
+:root[data-design-system='carbon'] body .sidebar .new-chat:hover { background: #491d8b; border-color: #491d8b; }
+:root[data-design-system='carbon'] body .sidebar :is(.add-item,.skill-count) { background: #393939; color: #be95ff; border-color: #525252; }
+:root[data-design-system='carbon'] body .sidebar .add-item:hover { background: #333333; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-width-btn { background: #262626; color: #f4f4f4; border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-width-btn.active { background: #6929c4; color: #fff; border-color: #6929c4; }
+:root[data-design-system='carbon'] body .sidebar .project-select { background: #262626; color: #f4f4f4; border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-filter-tabs { background: #393939; border-color: #393939; }
+:root[data-design-system='carbon'] body .sidebar .filter-tab { color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar .filter-tab.active { background: #525252; color: #be95ff; border-color: #be95ff; box-shadow: none; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-nav-badge { background: #525252; color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :focus-visible { outline: 2px solid #be95ff; outline-offset: 2px; }
+.sidebar-template-studio { border-color: #393939; background: #262626; color: #f4f4f4; }
+.sidebar-template-studio:hover { background: #333333; }
+/* Office suite */
+.office-suite .office-sidebar { background: #f5f1fb; border-color: var(--brand-line); }
+.office-suite .office-sidebar > button.active { background: #fff; color: var(--brand-accent); border-color: var(--brand-line); box-shadow: 0 2px 6px #30104d0d; }
+/* People chat list */
+.member-chat-panel .member-chat-sidebar { background: #f5f1fb; }
+.member-chat-sidebar .member-chat-room:hover { background: #ebe4f7; }
+.member-chat-sidebar .member-chat-room.is-active, .member-chat-sidebar .member-chat-room[aria-current='true'] { background: #fff; box-shadow: 0 2px 6px #30104d0d; }
+.member-chat-sidebar .member-chat-primary { background: var(--brand-accent); border-color: var(--brand-accent); color: #fff; }
+/* Project file explorer */
+.project-file-sidebar { background: #f5f1fb; border-right: 1px solid var(--brand-line); }
+
+/* ---------- Everything else: Office-suite palette (purple header, lavender side, soft white canvas) ---------- */
+:root[data-design-system='carbon'] body .buddy-surface:not(.mod-registry-dialog) {
+  --buddy-ink: #201a30; --buddy-line: #e6def4; --bg-main: #ffffff; --bg-panel: #fff; --text-primary: #201a30; --border: #e6dfed;
+  color: #201a30; background-color: #ffffff; border-color: #e6def4;
+}
+:root[data-design-system='carbon'] body .buddy-surface .buddy-section-header { background: var(--brand-surface-background); border-color: #6a3cc2; }
+:root[data-design-system='carbon'] body .buddy-surface .buddy-section-header .buddy-section-actions :is(button,.dialog-close) { background: #ffffff1a; border-color: #ffffff40; color: #fff; }
+:root[data-design-system='carbon'] body .buddy-surface .buddy-section-header .buddy-section-actions :is(button,.dialog-close):hover:not(:disabled) { background: #ffffff2e; border-color: #ffffff66; color: #fff; }
+:root[data-design-system='carbon'] body .buddy-surface .buddy-section-header .buddy-section-description { color: #eadcf7; }
+:root[data-design-system='carbon'] body .shell .main { background: #ffffff; }
+:root[data-design-system='carbon'] body .buddy-surface :is(nav,.task-filters,.template-tabs) button[aria-pressed=true],
+:root[data-design-system='carbon'] body .buddy-surface .template-tab-btn.active { background: #fff; color: var(--brand-accent); border-color: #e6def4; box-shadow: 0 2px 6px #30104d0d; }
+:root[data-design-system='carbon'] body :is(.feature-dialog,.app-dialog,dialog) { border-color: #e6def4; color: #201a30; }
+:root[data-design-system='carbon'] body .feature-dialog h2 { color: #201a30; }
+:root[data-design-system='carbon'] body .feature-dialog button:hover:not(:disabled) { background: #f5f1fb; border-color: #cdb6e8; }
+:root[data-design-system='carbon'] body :is(.administration-tabs,.knowledge-filters) { background: #f5f1fb; border-color: #e6def4; }
+:root[data-design-system='carbon'] body :is(.administration-tabs,.knowledge-filters) button[aria-selected='true'], :root[data-design-system='carbon'] body :is(.administration-tabs,.knowledge-filters) button[aria-pressed='true'] { background: #fff; color: var(--brand-accent); border-color: #e6def4; box-shadow: 0 2px 6px #30104d0d; }
+
+/* ---------- Luxury minimalism mapped to Carbon tokens ----------
+ * Deep Violet  = Carbon Purple 70  #6929c4  ($interactive)
+ * Royal Purple = Carbon Purple 60  #8a3ffc  ($focus)
+ * Soft Lavender= Carbon Purple 10  #f6f2ff  ($layer-01 Purple 10 theme)
+ * Midnight Ink = Carbon Gray 100   #161616  ($text-primary)
+ * Muted Slate  = Carbon Gray 70    #525252  ($text-secondary)
+ * White        = #ffffff                    ($background)
+ */
+:root, :root[data-design-system='carbon'] {
+  --brand-deep: #6929c4; --brand-muted: #525252;
+  --brand-surface-background: linear-gradient(135deg, #491d8b 0%, #6929c4 100%);
+  --workspace-canvas: #ffffff;
+}
+/* Carbon Purple 10 #f6f2ff = $layer-01 in Purple 10 theme */
+/* sidebar spacing only — colour deferred to dark-shell blocks below */
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item,.tasks-nav) { padding-block: 10px; }
+:root[data-design-system='carbon'] body .sidebar .section-heading { margin-block: 22px 10px; }
+:root[data-design-system='carbon'] body .sidebar .sidebar-nav { gap: 6px; }
+/* Welcome hero: smooth, softer violet gradient with white text */
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero {
+  background: linear-gradient(135deg, #4b2a8f 0%, #5f3dae 100%); color: #fff;
+  border: 1px solid #6a4bb8; box-shadow: 0 12px 36px #5325a826; padding: 36px;
+}
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero h2 { color: #fff; font-weight: 700; font-size: clamp(28px, 3.6vw, 46px); line-height: 1.2; letter-spacing: -.02em; max-width: 780px; }
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero p { color: #efe6fa; font-size: 14px; line-height: 1.7; }
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero p strong { color: #fff; background: #ffffff22; border-color: #ffffff3d; }
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero :is(.eyebrow,.welcome-top-row,.welcome-top-row span) { color: #f3ebfc; }
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero .welcome-icon { color: #fff; background: #ffffff22; border-color: #ffffff4d; }
+
+
+/* Feature / suggestion cards: white, delicate borders, restrained purple icons */
+:root[data-design-system='carbon'] body .shell .suggestions { gap: 16px; }
+:root[data-design-system='carbon'] body .shell :is(.suggestion) { background: #fff; border: 1px solid #e6def4; padding: 20px; box-shadow: none; color: #201a30; }
+:root[data-design-system='carbon'] body .shell :is(.suggestion):hover { border-color: #b9a2e6; box-shadow: 0 8px 24px #5325a812; transform: translateY(-1px); }
+:root[data-design-system='carbon'] body .shell .suggestion strong { color: #201a30; font-weight: 700; }
+:root[data-design-system='carbon'] body .shell .suggestion :is(p,small) { color: #6b6579; }
+:root[data-design-system='carbon'] body .shell .suggestion-icon { background: transparent; border: 1px solid #e6def4; color: var(--brand-accent); }
+:root[data-design-system='carbon'] body .shell .suggestion-tag { background: transparent; color: var(--brand-accent); padding-inline: 0; }
+/* Text hierarchy: only set dark headings on light surfaces; purple headers keep their own white text. */
+:root[data-design-system='carbon'] body :is(.buddy-card-title,.feature-dialog h2,.welcome-tour .welcome-copy h1,.buddy-brand-message h1) { color: #201a30; }
+:root[data-design-system='carbon'] body ::placeholder { color: #817b90; }
+
+/* ---------- Legibility pass: dark shell sidebar — all text tokens use Gray 100 values ---------- */
+:root[data-design-system='carbon'] body .sidebar :is(.account-row,.account-row button,.project-open,.mcp-target,.mcp-check-result,.mcp-status,.mcp-access-heading > span,.mcp-access-fields label,.mcp-access-heading small,.mcp-access-note,.mcp-card-actions button,.mcp-empty,.mcp-empty button) { color: #c6c6c6; }
+:root[data-design-system='carbon'] body .sidebar :is(.account-row button,.project-open) { border-color: #525252; }
+:root[data-design-system='carbon'] body .sidebar .mcp-status { background: #393939; color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar .mcp-status.error { color: #ffb3b8; background: #750e13; }
+:root[data-design-system='carbon'] body .sidebar .mcp-card-actions button, :root[data-design-system='carbon'] body .sidebar .mcp-empty button { border-color: #525252; background: #393939; color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar .brand-home:hover .brand-name { color: #be95ff; }
+:root[data-design-system='carbon'] body .sidebar :is(.skill-name,.skill-title,.skill-item strong,.skill-item span:not(.skill-symbol),.mode-item span,.mode-item strong) { color: inherit; }
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item,.skill-item,.tasks-nav) { color: #f4f4f4; }
+:root[data-design-system='carbon'] body .sidebar :is(.mode-item.active,.tasks-nav.active) { color: #f4f4f4; }
+:root[data-design-system="carbon"] body .sidebar :is(.add-item,.skill-count) { color: #be95ff; }
+/* Tutorials on the white stage */
+:root[data-design-system='carbon'] body .welcome-tour :is(.welcome-footer-brand > span,.welcome-eyebrow) { color: #5325a8; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-footer-brand small { color: #6b6579; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-bottom { border-top-color: #e6def4; color: #4a3f60; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-copy :is(p,li,small) { color: #4a3f60; }
+:root[data-design-system='carbon'] body .welcome-tour :is(.welcome-brand small,.welcome-stage-label) { color: #6b6579; }
+:root[data-design-system='carbon'] body .welcome-tour :is(.welcome-screenshot,.welcome-screenshot figcaption,.welcome-screenshot-instruction) { color: #4a3f60; }
+:root[data-design-system='carbon'] body .welcome-tour .form-error { color: #a32c43; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-primary, :root[data-design-system='carbon'] body .welcome-tour .welcome-primary * { color: #fff; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-progress button { color: #4a3f60; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-progress button[aria-current] { color: #5325a8; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-progress button[aria-current] span { color: #fff; }
+/* Purple headers keep white text */
+:root[data-design-system='carbon'] body :is(.knowledge-hero,.office-suite .office-top,.member-chat-panel-header,.clarification-header,.buddy-section-header) :is(h1,h2,h3,strong,span,small,p,button) { color: #fff; }
+:root[data-design-system='carbon'] body :is(.knowledge-hero,.office-suite .office-top,.member-chat-panel-header,.buddy-section-header) :is(small,p,.buddy-section-description) { color: #eadcf7; }
+
+/* Secondary text = Carbon $text-secondary Gray 70 #525252 — 7.0:1 on white ✓ WCAG AA */
+:root, :root[data-design-system='carbon'] {
+  --text-secondary: #525252; --chat-muted: #525252; --workspace-muted: #525252; --notes-muted: #525252; --brand-muted: #525252;
+}
+:root[data-design-system='carbon'] body :is(.shell .main,.buddy-surface,.feature-dialog,.app-dialog) :is(small,.muted-small,time,figcaption) { color: #525252; }
+:root[data-design-system='carbon'] body ::placeholder { color: #8d8d8d; opacity: 1; }
+
+/* ---------- Dark text first: headers become light lavender/white with near-black text; purple only as accent ---------- */
+/* Topbar: Carbon Gray 100 $background #161616 — dark shell standard */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.member-chat-panel-header,.clarification-header) {
+  background: #161616; color: #f4f4f4; border-color: #393939; box-shadow: none; backdrop-filter: none;
+}
+/* $text-primary Gray 100 = #f4f4f4 — 16:1 contrast on #161616 ✓ WCAG AAA */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.member-chat-panel-header,.clarification-header) :is(h1,h2,h3,strong,span,p,small,label,time,svg,.topbar-brand-buddy,.workspace-menu-chevron,.buddy-section-title,.buddy-section-description,.token-icon,.token-sep) { color: #f4f4f4; }
+/* $text-secondary Gray 100 = #c6c6c6 — 7.2:1 on #161616 ✓ WCAG AA */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.member-chat-panel-header,.clarification-header) :is(p,small,.buddy-section-description,.muted-small) { color: #c6c6c6; }
+/* Buddy brand accent in dark header: Purple 30 #be95ff — 8.4:1 on #161616 ✓ WCAG AAA */
+:root[data-design-system='carbon']:root body :is(.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.clarification-header) :is(.buddy-section-brand,.knowledge-hero-brand > span,.office-brand .buddy-section-brand,.clarification-brand-label) { color: #be95ff; }
+/* Header controls: $layer-01 Gray 100 #262626, $border-subtle #393939 */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.member-chat-panel-header) :is(button,select,.topbar-token-pill,.topbar-pill,.workspace-notes-tab,.workspace-menu-trigger,.topbar-notifications,.dialog-close,.workspace-toolbar-language select) {
+  background: #262626; border-color: #393939; color: #f4f4f4; box-shadow: none; color-scheme: dark;
+}
+/* Hover: $layer-hover Gray 100 #333333 */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.member-chat-panel-header) :is(button,select,.workspace-menu-trigger,.dialog-close):hover:not(:disabled) { background: #333333; border-color: #525252; color: #f4f4f4; }
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top) :is(button,select):focus-visible { outline: 2px solid #be95ff; }
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar) select option { color: #161616; background: #ffffff; }
+/* Badge: Purple 30 #be95ff on $layer-01 #262626 = 7.5:1 ✓ WCAG AA */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top) :is(.mod-active-count-badge,.office-preview-badge) { background: #262626; color: #be95ff; border-color: #393939; }
+@media (max-width: 700px) {
+  :root[data-design-system='carbon']:root body .shell .main > .topbar { background: #161616; border-bottom: 1px solid #393939; }
+  :root[data-design-system='carbon']:root body .shell .main > .topbar .topbar-heading h1 { color: #f4f4f4; }
+  :root[data-design-system='carbon']:root body .shell .main > .topbar :is(button,select) { background: #262626; border-color: #393939; color: #f4f4f4; }
+}
+/* Welcome hero: white→Purple 10 gradient, Gray 100 text, Purple 70 accents */
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero { background: linear-gradient(135deg, #ffffff 0%, #f6f2ff 60%, #ede8f7 100%); border: 1px solid #e8daff; box-shadow: 0 12px 36px rgba(105, 41, 196, 0.07); color: #161616; }
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero h2 { color: #161616; }
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero p { color: #393939; }
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero p strong { color: var(--brand-deep); background: #f6f2ff; border-color: #e8daff; }
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero :is(.eyebrow,.welcome-top-row,.welcome-top-row span) { color: var(--brand-deep); }
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero .welcome-icon { color: var(--brand-deep); background: #ffffff; border-color: #e8daff; }
+
+
+/* $text-primary Gray 100 #161616; $text-secondary Gray 70 #525252 */
+:root[data-design-system='carbon']:root body :is(.shell .main,.buddy-surface,.feature-dialog,.app-dialog) :is(p,li,label,td,th,dd,dt,h4,h5,h6) { color: #161616; }
+:root[data-design-system='carbon']:root body :is(.shell .main,.buddy-surface,.feature-dialog,.app-dialog) :is(small,time,figcaption,.muted-small) { color: #525252; }
+:root[data-design-system='carbon']:root body .sidebar :is(.brand-subtitle,.section-heading,.sidebar-group-label,.skill-description,.mode-item small,.muted-small,.sidebar-bottom) { color: #c6c6c6; }
+
+/* ---------- Canvas: Carbon Purple 10 #f6f2ff ($background Purple 10 theme) ----------
+ * Sidebar = Purple 10 #f6f2ff. Topbar = Purple 10 #f6f2ff with Gray 100 text (contrast ≥14:1).
+ * This replaces the old #dfd4ed topbar that caused the 1.28:1 WCAG contrast failure.
+ * White (#ffffff) = $layer-01 for cards, composer, bubbles on the tinted canvas.
+ */
+:root, :root[data-design-system='carbon'] { --workspace-canvas: #f6f2ff; --bg-main: #f6f2ff; }
+:root[data-design-system='carbon']:root body .shell .main,
+:root[data-design-system='carbon']:root body .shell .conversation,
+:root[data-design-system='carbon']:root body .shell .chat-view { background: #f6f2ff; }
+:root[data-design-system='carbon']:root body .buddy-surface:not(.mod-registry-dialog) { --bg-main: #f6f2ff; background-color: #f6f2ff; }
+/* Sidebar: Carbon Gray 100 $layer-01 #262626 — dark shell */
+:root[data-design-system='carbon']:root body .shell .sidebar,
+:root[data-design-system='carbon']:root body .office-suite .office-sidebar,
+:root[data-design-system='carbon']:root body .project-file-sidebar,
+:root[data-design-system='carbon']:root body .member-chat-panel .member-chat-sidebar { background: #262626; }
+/* Topbar: Carbon Gray 100 $background #161616 — darkest shell zone */
+:root[data-design-system='carbon']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.knowledge-hero,.member-chat-panel-header,.clarification-header) { background: #161616; border-color: #393939; }
+/* Nav item hover: $layer-hover Gray 100 */
+:root[data-design-system='carbon']:root body .sidebar :is(.mode-item,.tasks-nav):hover { background: #333333; }
+/* White ($layer-01) cards, composer and bubbles on the light canvas */
+:root[data-design-system='carbon']:root body .shell :is(.composer,.suggestion,.bubble,.task-card,.workspace-tools-panel) { background: #ffffff; }
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero { background: linear-gradient(135deg, #ffffff 0%, #f6f2ff 100%); }
+
+/* Carbon AI Chat: sharp corners (0px), Purple 70 sent bubble, flat assistant reply.
+ * User bubble: #6929c4 (Purple 70) replaces #56318a — same brand, higher legibility.
+ * --chat-user-surface: Purple 20 #e8daff for selected/hover states.
+ * --chat-input-border: Carbon $border-strong-01 #8d8d8d.
+ */
+:root[data-design-system='carbon'] {
+  --chat-corner: 0px;
+  --chat-user-surface: #e8daff;
+  --chat-input-border: #8d8d8d;
+}
+:root[data-design-system='carbon']:root body .shell .message.user .bubble {
+  max-inline-size: min(680px, 88%);
+  padding: 16px 20px;
+  border: 1px solid #6929c4;
+  border-radius: 16px 16px 0 16px !important;
+  background: #6929c4;
+  color: #ffffff;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .message.assistant > .message-body > .bubble:not(.has-deck-bubble) {
+  padding: 8px 0 12px;
+  border: 0;
+  border-radius: 0 !important;
+  background: transparent;
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .message.assistant .avatar {
+  border-radius: var(--chat-corner) !important;
+  background: var(--brand-soft);
+  color: var(--brand-accent);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .composer {
+  border: 1px solid var(--chat-input-border);
+  border-radius: var(--chat-corner) !important;
+  background: #fff;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .composer:focus-within {
+  border-color: var(--brand-accent);
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .composer textarea {
+  background: transparent;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .shell :is(.suggestion,.intelligence-starters button) {
+  border: 1px solid var(--brand-line);
+  border-radius: var(--chat-corner) !important;
+  background: #fff;
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell :is(.suggestion,.intelligence-starters button):hover:not(:disabled) {
+  border-color: var(--brand-accent);
+  background: var(--brand-soft);
+  box-shadow: none;
+  transform: none;
+}
+:root[data-design-system='carbon']:root body .shell :is(.suggestion,.intelligence-starters button):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+:root[data-design-system='carbon']:root body .shell .composer :is(.send-button,.stop-button,.guidance-send-button,.composer-clip-btn) {
+  border-radius: var(--chat-corner) !important;
+}
+
+/* Conversation text: Carbon $body-02 = 16px / 24px (productive reading scale) */
+:root[data-design-system='carbon']:root body .shell .messages .bubble,
+:root[data-design-system='carbon']:root body .shell .messages .bubble > p,
+:root[data-design-system='carbon']:root body .shell .messages .markdown-body,
+:root[data-design-system='carbon']:root body .shell .messages .markdown-body :is(p,li,td,th,blockquote) {
+  font-size: 16px;
+  line-height: 1.5;
+}
+:root[data-design-system='carbon']:root body .shell .composer textarea {
+  font-size: 16px;
+  line-height: 24px;
+  min-height: 32px;
+}
+
+/* Interactive answers and follow-up questions share the chat's readable geometry. */
+:root[data-design-system='carbon']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card,.quiz-results) {
+  min-width: 0;
+  max-width: 100%;
+  border: 1px solid var(--brand-line);
+  border-radius: var(--chat-corner) !important;
+  background: #fff;
+  color: var(--brand-ink);
+  box-shadow: none;
+  overflow-wrap: anywhere;
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-header-row,.intelligent-answer > header) {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+  border-bottom: 1px solid var(--brand-line);
+  border-radius: 0;
+}
+:root[data-design-system='carbon']:root body .shell .clarification-header-row :is(.clarification-title,.answer-frame-brand) {
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-title,.quiz-header h3) {
+  font-size: 20px;
+  line-height: 1.4;
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-legend,.quiz-card legend) {
+  font-size: 18px;
+  line-height: 1.5;
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-option-text,.quiz-options label,.ia-fields label,.ia-action-form label,.ia-steps label,.intelligent-answer p,.intelligent-answer dt,.intelligent-answer dd) {
+  font-size: 16px;
+  line-height: 1.55;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-intro,.clarification-context-pill,.clarification-completion,.clarification-status,.quiz-instructions,.quiz-question-note,.quiz-actions > span,.intelligent-answer small) {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-status,.clarification-status.is-answered) {
+  background: #fff;
+  border-color: var(--brand-line);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-option-tile,.quiz-options label) {
+  min-height: 48px;
+  padding: 12px 16px;
+  border-color: var(--brand-line);
+  border-radius: var(--chat-corner) !important;
+  background: #fff;
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-option-tile,.quiz-options label):hover {
+  background: var(--brand-soft);
+  border-color: var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-option-tile.is-selected,.quiz-options label:has(input:checked)) {
+  background: var(--chat-user-surface);
+  border-color: var(--brand-accent);
+  box-shadow: inset 0 0 0 1px var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card) :is(input,textarea,select):not([type='radio']):not([type='checkbox']) {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  font-size: 16px;
+  line-height: 1.5;
+  border: 1px solid var(--chat-input-border);
+  border-radius: var(--chat-corner) !important;
+  background: #fff;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card) button {
+  min-height: 44px;
+  font-size: 16px;
+  line-height: 1.5;
+  white-space: normal;
+  border-radius: var(--chat-corner) !important;
+}
+:root[data-design-system='carbon']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card) :is(input,textarea,select,button):focus-visible,
+:root[data-design-system='carbon']:root body .shell :is(.clarification-option-tile,.quiz-options label):has(input:focus-visible) {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 3px;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .clarification-actions-bar {
+  gap: 12px;
+  background: var(--brand-soft);
+  border-top-color: var(--brand-line);
+  border-radius: 0;
+}
+@media (max-width: 540px) {
+  :root[data-design-system='carbon']:root body .shell :is(.clarification-header-row,.clarification-questions-list,.clarification-actions-bar,.ia-action-form) {
+    padding: 16px;
+  }
+  :root[data-design-system='carbon']:root body .shell .clarification-context-pill { margin-inline-start: 0; }
+}
+

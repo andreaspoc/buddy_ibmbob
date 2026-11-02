@@ -1,0 +1,20 @@
+{
+  "name": "@gorules/zen-engine",
+  "version": "0.33.0",
+  "description": "GoRules Zen-Engine Compatible Language Binding for Node.js and TypeScript",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "rules-engine",
+    "business-rules",
+    "jdm",
+    "zen-engine",
+    "gorules",
+    "decisions"
+  ],
+  "author": "DecisionsBuddy Team",
+  "license": "MIT"
+}

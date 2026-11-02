@@ -1,0 +1,191 @@
+/* Shared stone-gray toolbar: controls support the content instead of framing it.
+ * Imported last so old per-screen themes cannot change toolbar chrome.
+ * Extra root specificity matches the existing final workspace theme layer.
+ */
+:root[data-design-system='carbon']:root {
+  --toolbar-background: #e8e5e1;
+  --toolbar-text: #302e2b;
+  --toolbar-border: #ccc7c0;
+  --toolbar-control: #f4f2ef;
+  --toolbar-hover: #ddd8d1;
+  --toolbar-selected: #d4cec5;
+  --toolbar-height: 48px;
+  --toolbar-control-height: 32px;
+  --toolbar-gap: 8px;
+}
+/* Keep visibility rules (for example Office's hidden library header while
+ * editing) at their original specificity. Only paint/sizing needs precedence. */
+.buddy-toolbar { display: flex; }
+.buddy-toolbar[hidden] { display: none; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--toolbar-gap);
+  min-width: 0;
+  min-height: var(--toolbar-height);
+  height: auto;
+  padding: 8px 16px;
+  margin-block: 0;
+  border: 0;
+  border-bottom: 1px solid var(--toolbar-border);
+  border-radius: 0;
+  background: var(--toolbar-background);
+  color: var(--toolbar-text);
+  font: 14px/20px var(--cds-font-family);
+  letter-spacing: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar-embedded {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+/* Shared foreground for horizontal bars and their menu variant. */
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(h1,h2,h3,h4,strong,b,label,small,p,span,a,svg,kbd) {
+  color: var(--toolbar-text);
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(h1,h2,h3) {
+  margin-block: 0;
+  letter-spacing: 0;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),select,input:not(:where([type='checkbox'],[type='radio'],[type='range'],[type='color'],[type='file'])),a:where([href]):not(.cds--btn)) {
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: var(--toolbar-control-height);
+  height: auto;
+  max-width: 100%;
+  padding: 5px 12px;
+  margin: 0;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 0;
+  background: var(--toolbar-control);
+  color: var(--toolbar-text);
+  font: 14px/20px var(--cds-font-family);
+  letter-spacing: 0;
+  box-shadow: none;
+  text-shadow: none;
+  transform: none;
+  color-scheme: light;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),select,a:where([href]):not(.cds--btn)):hover:not(:disabled) {
+  background: var(--toolbar-hover);
+  border-color: #8d8d8d;
+  color: var(--toolbar-text);
+  box-shadow: none;
+  transform: none;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),a:not(.cds--btn)):is(.active,.is-active,[aria-selected='true'],[aria-pressed='true'],[aria-expanded='true']) {
+  background: var(--toolbar-selected);
+  color: var(--toolbar-text);
+  border-color: var(--brand-accent);
+  box-shadow: inset 0 -2px var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),select,input,a):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: -3px;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),select,input):disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar input::placeholder { color: var(--brand-ink-muted); opacity: 1; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar select option { color: #161616; background: #fff; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar svg { width: 16px; height: 16px; flex-shrink: 0; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar button svg { vertical-align: middle; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.it-right-controls,.it-left-info,.it-view-group,.it-action-group,.workspace-navigation,.buddy-section-actions,.office-brand,.office-library-tools > div,.topbar-actions) {
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--toolbar-gap);
+  min-width: 0;
+  background: transparent;
+  padding: 0;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.it-title-pill,.it-count-badge,.topbar-token-pill,.topbar-pill,.office-preview-badge) {
+  color: var(--toolbar-text);
+  font-size: 12px;
+  line-height: 16px;
+  background: transparent;
+  border-color: var(--toolbar-border);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .it-search-input { width: 160px; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .it-search-input:focus { width: 160px; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .chat-context-chip { background: transparent; border: 0; gap: 8px; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .buddy-section-copy { flex: 1 1 240px; min-width: 0; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .buddy-section-brand { margin-bottom: 8px; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .buddy-section-description { margin: 8px 0 0; }
+@media (max-width: 700px) {
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar { padding: 8px 12px; }
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar-embedded { padding: 0; }
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),select,input:not(:where([type='checkbox'],[type='radio']))) { min-height: 40px; }
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .it-right-controls { flex: 1 1 100%; }
+}
+@media print {
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar { background: #fff; color: #161616; }
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(h1,h2,h3,h4,strong,span,p,small) { color: #161616; }
+}
+
+/* Menus reuse the same toolbar chrome in a vertical layout. No extra DOM
+ * wrappers are inserted, so native popover and existing focus logic survive. */
+.buddy-toolbar[popover]:not(:popover-open) { display: none; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar-menu {
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  min-height: 0;
+  gap: 8px;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu > section { width: 100%; border-color: var(--toolbar-border); }
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu :is(button,[role='menuitem']) { text-align: left; justify-content: flex-start; }
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu :is(.slash-menu-heading,.note-options-title) { color: var(--toolbar-text); }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar-menu button.danger { color: #b81921; }
+
+/* Shared metadata and search alignment must not retain old light-theme fills. */
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.mod-active-count-badge,.mod-tab-badge,.mod-tab-badge-accent,.knowledge-shared-badge,.knowledge-count,.notes-count,.office-access-badge,.template-personal-badge,.diagram-stream-status) {
+  background: var(--toolbar-control);
+  color: var(--toolbar-text);
+  border-color: var(--toolbar-border);
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.mod-search-wrap,.hook-search-wrap,.notes-search) {
+  display: flex;
+  align-items: center;
+  flex: 1 1 240px;
+  gap: 8px;
+  min-width: 0;
+  background: transparent;
+  border: 0;
+  padding: 0;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.mod-search-icon,.hook-search-wrap > span) { position: static; flex: none; width: 16px; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.mod-search-clear,.hook-clear-btn) { position: static; flex: none; }
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.mod-search-input,.hook-search-input,.notes-search input) { flex: 1; min-width: 0; }
+/* Paper swatches convey the user's chosen note color and retain that meaning. */
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .notes-color-dot.notes-color-dot,
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .notes-color-dot.notes-color-dot:hover,
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .notes-color-dot[aria-pressed='true'] {
+  background: var(--paper);
+  color: #161616;
+  border-color: #8d8d8d;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .notes-color-dot svg { color: #161616; }
+
+/* Office's legacy dark header must inherit the shared toolbar's text palette. */
+:root[data-design-system='carbon']:root:root body .office-suite.buddy-surface :is(.office-top,.office-editor-title).buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(h1,h2,h3,strong,span,small,p,label,svg) {
+  color: var(--toolbar-text);
+}
+:root[data-design-system='carbon']:root:root body .office-suite.buddy-surface :is(.office-top,.office-editor-title).buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button,select,.office-preview-badge) {
+  background: var(--toolbar-control);
+  border-color: var(--toolbar-border);
+  color: var(--toolbar-text);
+  color-scheme: light;
+}
+:root[data-design-system='carbon']:root:root body .office-suite.buddy-surface :is(.office-top,.office-editor-title).buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button,select):hover:not(:disabled) {
+  background: var(--toolbar-hover);
+  color: var(--toolbar-text);
+}
+:root[data-design-system='carbon']:root:root body .office-suite.buddy-surface :is(.office-top,.office-editor-title).buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button,select):focus-visible {
+  outline-color: var(--cds-focus);
+}

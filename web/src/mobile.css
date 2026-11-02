@@ -1,0 +1,176 @@
+/* Touch behavior for phones and tablets, including iPad landscape. */
+.mobile-template-toggle { display: none; }
+.mobile-brand-mark { display: none; }
+@media (any-pointer: coarse) {
+  body { min-width: 0; }
+  .shell {
+    height: calc(var(--visible-height, 100dvh) / var(--ui-scale));
+    position: relative;
+    top: calc(var(--visible-top, 0px) / var(--ui-scale));
+    padding-top: calc(env(safe-area-inset-top, 0px) / var(--ui-scale));
+    padding-left: calc(env(safe-area-inset-left, 0px) / var(--ui-scale));
+    padding-right: calc(env(safe-area-inset-right, 0px) / var(--ui-scale));
+  }
+  .sidebar {
+    height: calc(var(--visible-height, 100dvh) / var(--ui-scale));
+    max-height: calc(var(--visible-height, 100dvh) / var(--ui-scale));
+    padding-bottom: max(14px, calc(env(safe-area-inset-bottom, 0px) / var(--ui-scale)));
+  }
+  .shell > .main {
+    height: 100%;
+    max-height: 100%;
+  }
+  .feature-overlay, .wh-backdrop {
+    top: calc(var(--visible-top, 0px) / var(--ui-scale));
+    bottom: auto;
+    height: calc(var(--visible-height, 100dvh) / var(--ui-scale));
+    padding: 12px;
+  }
+  .feature-overlay > .feature-dialog, .wh-palette {
+    max-height: calc((var(--visible-height, 100dvh) - 24px) / var(--ui-scale));
+  }
+  .composer-wrap {
+    min-height: 0;
+    flex-shrink: 1;
+    padding-bottom: max(12px, calc(env(safe-area-inset-bottom, 0px) / var(--ui-scale)));
+  }
+  .composer-header-actions { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; }
+  .composer-header-actions > * { flex-shrink: 0; }
+  .chat-layout-split.has-artifact .chat-layout-main { min-height: 0; }
+  /* Compensate for UI density so Safari sees at least 16px on focus. */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="range"]):not([type="file"]), textarea, select {
+    font-size: max(1em, calc(16px / var(--ui-scale))) !important;
+  }
+  button, a, input, select, textarea { touch-action: manipulation; }
+  .shell .main > .topbar .mobile-menu,
+  .workspace-menu-trigger, .workspace-tools-panel button,
+  .workspace-tools-panel select, .composer button,
+  .member-chat-panel-actions button {
+    min-width: calc(44px / var(--ui-scale));
+    min-height: calc(44px / var(--ui-scale));
+  }
+  .member-chat-panel, .member-chat-panel.is-expanded {
+    max-width: calc((100vw - 24px) / var(--ui-scale));
+    max-height: calc((var(--visible-height, 100dvh) - 110px) / var(--ui-scale));
+    bottom: calc((100dvh - var(--visible-height, 100dvh) - var(--visible-top, 0px) + 94px + env(safe-area-inset-bottom, 0px)) / var(--ui-scale));
+  }
+  .member-chat-launcher {
+    bottom: calc((100dvh - var(--visible-height, 100dvh) - var(--visible-top, 0px) + 22px + env(safe-area-inset-bottom, 0px)) / var(--ui-scale));
+  }
+}
+
+/* A flatter, smaller workspace for phones; desktop keeps its full presentation. */
+@media (max-width: 700px) {
+  :root {
+    --mobile-brand: var(--brand-accent, #735e83);
+    --mobile-brand-dark: #30104d;
+    --mobile-brand-line: #e4d4f1;
+    --mobile-brand-soft: #f5edfc;
+  }
+  .shell .main, .shell .conversation { background: var(--workspace-canvas,#fcfaff); }
+  .shell .sidebar { background: var(--brand-surface-background); }
+  .shell .main > .topbar { background: var(--mobile-brand-dark); border-bottom: 2px solid var(--mobile-brand); }
+  .shell .main > .topbar .topbar-heading h1 { display: flex; align-items: center; color: #fff; }
+  .mobile-brand-mark { display: inline-block; flex: none; color: #cf93ff; margin-right: 8px; }
+  .shell .main > .topbar .topbar-brand-buddy { color: #d8a8ff; white-space: pre; }
+  .shell .main > .topbar :is(.mobile-menu, .workspace-menu-trigger, .workspace-notes-tab, .topbar-notifications) {
+    color: #f5eaff; background: #ffffff0c; border-color: #ffffff24;
+  }
+  .shell .main > .topbar :is(.workspace-menu-trigger:hover, .workspace-menu-trigger[aria-expanded="true"], .workspace-notes-tab[aria-current="page"]) {
+    color: #fff; background: #ffffff20; border-color: #d5a0ff70;
+  }
+  .shell .main > .topbar .workspace-menu-chevron { color: #d8bce8; }
+  .shell .main > .topbar .workspace-toolbar-language select {
+    color: #f5eaff; background: #54316f; border-color: #ffffff2b; color-scheme: dark;
+  }
+  .shell .main > .topbar :is(button, select):focus-visible { outline-color: #e3baff; }
+  .shell :is(.topbar, .workspace-tools-panel, .sidebar-backdrop),
+  .feature-overlay, .wh-backdrop, .buddy-login-shell {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .shell .main > .topbar { -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .shell :is(.composer, .bubble, .suggestion, .welcome-buddy-hero, .welcome-icon),
+  .workspace-tools-panel, .feature-dialog, .member-chat-panel, .member-chat-launcher {
+    box-shadow: none;
+  }
+  .shell :is(.welcome-buddy-hero, .welcome-icon, .suggestion, .bubble),
+  .member-chat-launcher, .member-chat-panel { animation: none; }
+  .shell .conversation { padding: 12px; }
+  .conversation-new .welcome.welcome-buddy { margin: 8px auto 16px; max-width: 520px; }
+  .welcome-buddy .welcome-buddy-hero {
+    padding: 10px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #39234a;
+  }
+  .welcome-buddy-hero::after { display: none; }
+  .welcome-buddy .welcome-icon, .welcome-buddy .eyebrow { display: none; }
+  .welcome-buddy .welcome-top-row { justify-content: flex-end; margin-bottom: 12px; min-height: 0; }
+
+  .welcome-buddy .welcome-buddy-hero h2 { color: var(--mobile-brand-dark); font-size: 24px; line-height: 1.3; margin-bottom: 0; }
+  .welcome-buddy .welcome-buddy-hero > p { display: none; }
+  .welcome-buddy .intelligence-starters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; margin: 16px 0; }
+  .welcome-buddy .intelligence-starters button {
+    min-height: 44px; justify-content: space-between; padding: 10px;
+    border-radius: 10px; border-color: var(--mobile-brand-line); background: #fff; color: #60278a; box-shadow: none;
+  }
+  .welcome-buddy .intelligence-starters button > span { color: var(--mobile-brand); }
+  .welcome-buddy .intelligence-starters button:hover { background: var(--mobile-brand-soft); border-color: #caa4e6; }
+  .mobile-template-toggle {
+    display: flex; align-items: center; justify-content: space-between;
+    width: 100%; min-height: 44px; padding: 10px 0;
+    border: 0; border-top: 1px solid var(--mobile-brand-line); background: transparent;
+    color: #703991; font: inherit; font-size: 13px; text-align: left;
+  }
+  .welcome-buddy .suggestions:not(.mobile-expanded) { display: none; }
+  .welcome-buddy .suggestion { padding: 12px; border-radius: 10px; background: #fff; }
+  .welcome-buddy .suggestion-icon { width: 32px; height: 32px; border-radius: 8px; }
+  .shell .chat-context-bar { flex-wrap: nowrap; gap: 8px; padding: 7px 12px; overflow-x: auto; scrollbar-width: thin; background: var(--mobile-brand-soft); border-color: var(--mobile-brand-line); }
+  .shell .chat-context-bar > * { flex-shrink: 0; }
+  .shell .chat-context-chip { min-height: 36px; padding: 4px 8px; border-radius: 8px; background: #fff; border-color: var(--mobile-brand-line); }
+  .shell .composer-wrap { padding-inline: 10px; }
+  .shell .composer { border-radius: 14px; background: #fff; border-color: #d5b7eb; }
+  .shell .composer:focus-within { border-color: var(--mobile-brand); }
+  .shell :is(.send-button, .guidance-send-button) { background: var(--mobile-brand); }
+  .shell :is(.send-button, .guidance-send-button):hover { background: var(--brand-accent-hover, #624e72); }
+  .shell .composer :is(.composer-clip-btn, .composer-websearch-btn, .composer-skill-picker select) { border-color: var(--mobile-brand-line); background: var(--mobile-brand-soft); color: #713098; }
+  .shell .message.assistant .bubble { background: #fff; border-radius: 12px; }
+  .shell .message.user .bubble { background: #f0e2fc; border-radius: 12px; color: var(--mobile-brand-dark); }
+  .member-chat-launcher {
+    padding-inline: 12px; min-height: 44px; background: var(--mobile-brand);
+    bottom: calc((100dvh - var(--visible-height, 100dvh) - var(--visible-top, 0px) + 180px + 12px) / var(--ui-scale));
+  }
+  .member-chat-launcher > span:not(.member-chat-unread) { display: none; }
+}
+@media (any-pointer: coarse) and (max-width: 1100px) {
+  .chat-layout-split.has-artifact {
+    grid-template-rows: minmax(0, min(var(--artifact-height, 35%), calc(100% - min(220px / var(--ui-scale), 70%)))) minmax(0, 1fr);
+  }
+}
+
+/* Phones and touch tablets retain input-focus and touch protections at the selected scale. */
+@media (any-pointer: coarse) and (max-width: 1100px) {
+  .member-chat-launcher {
+    bottom: calc(var(--mobile-chat-bottom, 200px) / var(--ui-scale));
+    max-width: calc(100vw - 24px);
+  }
+  .member-chat-toast-stack {
+    top: calc((var(--visible-top, 0px) + 12px) / var(--ui-scale));
+    bottom: auto;
+    max-height: min(180px, calc(var(--visible-height, 100dvh) / 3));
+  }
+  /* Keep floating notifications out of the way while composing a message. */
+  body:has(.composer textarea:focus) .member-chat-launcher,
+  body:has(.composer textarea:focus) .member-chat-toast-stack {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .member-chat-panel, .member-chat-panel.is-expanded {
+    top: calc((var(--visible-top, 0px) + 8px) / var(--ui-scale));
+    bottom: auto;
+    height: calc((var(--visible-height, 100dvh) - 16px) / var(--ui-scale));
+    max-height: calc((var(--visible-height, 100dvh) - 16px) / var(--ui-scale));
+  }
+}

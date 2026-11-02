@@ -1,0 +1,568 @@
+/* Saved neutral workspace palette. Carbon owns component sizing, typography,
+ * keyboard focus, and square control geometry through carbonFoundation.scss.
+ * Identity markers and message shapes retain their own semantics.
+ */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root {
+  /* Buddy violet: solid accent only */
+  --ck-accent: #6838bc;
+  --ck-accent-hover: #55299e;
+  --ck-accent-pressed: #47228a;
+  --ck-accent-ring: rgba(104, 56, 188, .22);
+  /* CopilotKit neutrals (zinc) */
+  --ck-ink: #18181b;
+  --ck-ink-muted: #52525b;
+  --ck-ink-subtle: #71717a;
+  --ck-canvas: #ffffff;
+  --ck-surface: #fafafa;
+  --ck-muted: #f4f4f5;
+  --ck-hover: #f4f4f5;
+  --ck-selected: #ececee;
+  --ck-line: #e4e4e7;
+  --ck-line-strong: #d4d4d8;
+  /* Geometry and elevation */
+  --ck-radius-sm: var(--buddy-control-radius);
+  --ck-radius: var(--buddy-panel-radius);
+  --ck-radius-lg: var(--buddy-panel-radius);
+  --ck-radius-xl: var(--buddy-panel-radius);
+  --ck-pill: 9999px;
+  --ck-shadow-sm: 0 1px 2px rgba(24, 24, 27, .06);
+  --ck-shadow: 0 1px 3px rgba(24, 24, 27, .08), 0 1px 2px rgba(24, 24, 27, .04);
+  --ck-shadow-md: 0 4px 12px -2px rgba(24, 24, 27, .08), 0 2px 4px -2px rgba(24, 24, 27, .05);
+  --ck-shadow-lg: 0 16px 40px -8px rgba(24, 24, 27, .18), 0 4px 12px -4px rgba(24, 24, 27, .08);
+  --ck-focus: 0 0 0 3px var(--ck-accent-ring);
+
+  /* Re-point shared tokens so existing component sheets pick up the palette. */
+  --brand-accent: var(--ck-accent);
+  --brand-accent-hover: var(--ck-accent-hover);
+  --brand-soft: var(--ck-muted);
+  --brand-line: var(--ck-line);
+  --brand-ink: var(--ck-ink);
+  --brand-ink-muted: var(--ck-ink-muted);
+  --workspace-canvas: var(--ck-canvas);
+  --workspace-ink: var(--ck-ink);
+  --workspace-muted: var(--ck-ink-muted);
+  --workspace-line: var(--ck-line);
+  --workspace-accent: var(--ck-accent);
+  --workspace-accent-hover: var(--ck-accent-hover);
+  --workspace-radius: var(--ck-radius);
+  --cds-text-primary: var(--ck-ink);
+  --cds-text-secondary: var(--ck-ink-muted);
+  --cds-border-subtle: var(--ck-line);
+  --cds-border-strong: var(--ck-line-strong);
+  --cds-field: var(--ck-surface);
+  --cds-interactive: var(--ck-accent);
+  --cds-interactive-hover: var(--ck-accent-hover);
+  --cds-focus: var(--ck-accent);
+  --cds-button-radius: var(--ck-radius-sm);
+  --buddy-chrome-background: var(--ck-canvas);
+  --buddy-sidebar-background: var(--ck-surface);
+  --buddy-input-background: var(--ck-canvas);
+  --buddy-chat-field: var(--ck-canvas);
+  --buddy-chat-field-border: var(--ck-line);
+  --buddy-chat-field-text: var(--ck-ink);
+  --chat-corner: var(--ck-radius);
+  --chat-user-surface: var(--ck-accent);
+  --chat-input-border: var(--ck-line);
+  --answer-frame-border: var(--ck-line);
+  --toolbar-background: rgba(255, 255, 255, .86);
+  --toolbar-text: var(--ck-ink);
+  --toolbar-border: var(--ck-line);
+  --toolbar-control: transparent;
+  --toolbar-hover: var(--ck-hover);
+  --toolbar-selected: var(--ck-selected);
+}
+
+/* Legacy geometry aliases resolve to the shared Carbon geometry. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(button,select,input,textarea):not(:where(
+  .cds--btn,[type='checkbox'],[type='radio'],[type='range'],[type='color'],[role='switch'],.mod-switch-input,.html-deck-stage *,.generated-code-preview *,[contenteditable],[contenteditable] *
+)) { border-radius: var(--ck-radius-sm) !important; }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(
+  .suggestion,.chat-context-chip,.workspace-tools-panel,.sidebar-template-studio,
+  .feature-section,.task-card,.task-detail,.artifact-editor,.answer-context,.ai-task-state,.feedback-notice,.error-boundary-card,
+  .knowledge-hero,.knowledge-card,.knowledge-description-field,.knowledge-dropzone,.knowledge-filters,
+  .knowledge-document,.knowledge-library-card,.knowledge-upload-card,
+  .notes-workspace-hero,.notes-view-tools,.notes-delete-confirm,.notes-links-panel,.notes-revision,.sticky-note,.welcome-note-demo,
+  .office-create>button,.office-storage,.office-folder-browser,.office-notice,.office-file-popup,.office-assistant-panel,
+  .member-chat-toast,.member-chat-search,.member-chat-message,.member-chat-compose,
+  .buddy-auth-card,.buddy-error-banner,.buddy-loading-status,
+  .welcome-stage,.welcome-screenshot,.welcome-notes-guide,.welcome-request,
+  .research-sources,.research-list,.research-detail,.research-report-item,
+  .workflow-item,.format-picker,.template-picker-card,.template-studio-preview,
+  .directory-summary>button,.directory-section,.administration-table,.directory-table-wrap,.directory-empty,.access-details,
+  .clarification-card,.clarification-option-tile,.clarification-custom-tile,.clarification-custom-answer,
+  .quiz-card,.quiz-results,.quiz-options label,.quiz-review-question,
+  .intelligent-answer,.ia-comparison>article,.ia-steps>li,.ia-calculator,.ia-action-form,.answer-quality,
+  .message-attachment
+):not(:where(.html-deck-stage *,.generated-code-preview *,[contenteditable],[contenteditable] *)) {
+  border-radius: var(--ck-radius) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(dialog,[role='dialog'],.feature-dialog,.office-suite,.member-chat-panel,.buddy-login-shell,.artifact-workspace-panel):not(:where(.html-deck-stage *,[contenteditable] *)) {
+  border-radius: var(--ck-radius-lg) !important;
+}
+/* Segmented groups and tab strips read as single rounded containers. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.sidebar-filter-tabs,.artifact-view-tabs,.template-modal-tabs,.member-chat-tabs,.notes-editor-tabs,[role='tablist']) {
+  border-radius: var(--ck-radius-sm) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.buddy-surface>nav,.administration-page.buddy-surface>section,.workflow-manager.buddy-surface>section,.workflow-manager.buddy-surface>form) {
+  border-radius: var(--ck-radius) !important;
+}
+/* Identity markers stay circular, tags become pills. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.directory-badge,.suggestion-tag,.template-row-tag,.template-brand-tag,.format-feature-tag,.attached-chip-badge,.notes-card-tags button,.member-chat-selected button,.topbar-token-pill,.topbar-pill,.it-title-pill,.it-count-badge) {
+  border-radius: var(--ck-pill) !important;
+}
+
+/* ---------- Focus: CopilotKit halo instead of Carbon's hard 2px outline ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(button,a,input,textarea,select,[role='button'],[tabindex]):focus-visible {
+  outline: 2px solid var(--ck-accent);
+  outline-offset: 2px;
+}
+
+/* ---------- App shell ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.shell,.office-suite),
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.main,.chat-layout-main,.conversation,.chat-view) {
+  background: var(--ck-canvas);
+  color: var(--ck-ink);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-surface:not(.mod-registry-dialog) {
+  --bg-main: var(--ck-canvas);
+  background-color: var(--ck-canvas);
+}
+
+/* ---------- Sidebar: light zinc rail with violet active marker ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar {
+  --sidebar-text: var(--ck-ink);
+  --sidebar-secondary: var(--ck-ink-subtle);
+  --sidebar-card-background: var(--ck-canvas);
+  --sidebar-border: var(--ck-line);
+  background: var(--ck-surface);
+  color: var(--ck-ink);
+  border-right: 1px solid var(--ck-line);
+  box-shadow: none;
+  color-scheme: light;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.brand-name,.mode-item,.tasks-nav,.skill-item,.sidebar-nav-label,.template-studio-trigger,.brand-home,.project-select,.account-row button,.sidebar-template-studio strong,.sidebar-template-studio span) { color: var(--ck-ink); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.brand-subtitle,.section-heading,.sidebar-group-label,.skill-description,.mode-item small,.sidebar-bottom,.muted-small,.sidebar-width-label,.account-row,.sidebar-empty,.sidebar-hint,.sidebar-template-studio small,.filter-tab) { color: var(--ck-ink-subtle); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar .brand-name span { color: var(--ck-accent); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar .tasks-nav svg { stroke: currentColor; }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.sidebar-bottom,.sidebar-library-label,.sidebar-width-controls) { border-color: var(--ck-line); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.mode-item,.tasks-nav,.skill-item,.section-heading,.filter-tab) {
+  border-color: transparent;
+  border-radius: var(--ck-radius-sm) !important;
+  background: transparent;
+  box-shadow: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.mcp-connection-card,.sidebar-filter-tabs,.sidebar-template-studio,.project-select,.sidebar-width-btn) {
+  background: var(--ck-canvas);
+  border: 1px solid var(--ck-line);
+  color: var(--ck-ink);
+  box-shadow: var(--ck-shadow-sm);
+  color-scheme: light;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.mode-item,.tasks-nav,.skill-item,.mcp-connection-card,.section-heading,.sidebar-width-btn,.filter-tab):hover {
+  background: var(--ck-selected);
+  border-color: transparent;
+  color: var(--ck-ink);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.mode-item.active,.tasks-nav.active) {
+  background: var(--ck-canvas);
+  border-color: var(--ck-line);
+  color: var(--ck-ink);
+  box-shadow: var(--ck-shadow), inset 3px 0 var(--ck-accent);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.filter-tab.active,.sidebar-width-btn.active) {
+  background: var(--ck-ink);
+  border-color: var(--ck-ink);
+  color: #fff;
+  box-shadow: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(.add-item,.skill-count,.skill-symbol,.tab-badge,.sidebar-nav-badge) {
+  background: var(--ck-selected);
+  border-color: transparent;
+  color: var(--ck-ink-muted);
+  border-radius: var(--ck-pill) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar .new-chat {
+  background: var(--ck-accent);
+  border: 0;
+  color: #fff;
+  border-radius: var(--ck-radius-sm) !important;
+  box-shadow: var(--ck-shadow);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar .new-chat:hover:not(:disabled) { background: var(--ck-accent-hover); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar :is(button,a,select):focus-visible { outline: 2px solid var(--ck-accent); outline-offset: -2px; }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .sidebar select option { background: #fff; color: var(--ck-ink); }
+
+/* Secondary navigation panes (Office, Notes, project files, People) follow the rail. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) {
+  --chat-muted: var(--ck-ink-subtle);
+  --chat-line: var(--ck-line);
+  background: var(--ck-surface);
+  color: var(--ck-ink);
+  border-color: var(--ck-line);
+  color-scheme: light;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) :is(button,a,h2,h3,strong,label) { color: var(--ck-ink); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) :is(p,small,.office-caption,.notes-collections-heading,.member-chat-muted) { color: var(--ck-ink-subtle); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) button:hover:not(:disabled) {
+  background: var(--ck-selected);
+  color: var(--ck-ink);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) button:is(.active,.is-active,[aria-pressed='true'],[aria-selected='true']) {
+  background: var(--ck-canvas);
+  color: var(--ck-ink);
+  border-color: var(--ck-line);
+  box-shadow: var(--ck-shadow), inset 3px 0 var(--ck-accent);
+}
+
+/* ---------- Top bar and shared toolbars: white, hairline, ghost controls ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.shell .main > .topbar,.buddy-surface .buddy-section-header,.office-suite .office-top,.member-chat-panel-header,.clarification-header) {
+  background: rgba(255, 255, 255, .86);
+  border-color: var(--ck-line);
+  color: var(--ck-ink);
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .main > .topbar :is(h1,.topbar-heading h1,.topbar-brand-buddy,.workspace-menu-chevron,.token-icon,.token-sep,svg) { color: var(--ck-ink); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .main > .topbar :is(button,select,.workspace-toolbar-language select) {
+  background: transparent;
+  border-color: transparent;
+  color: var(--ck-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .main > .topbar :is(.topbar-token-pill,.topbar-pill) {
+  background: var(--ck-muted);
+  border-color: transparent;
+  color: var(--ck-ink-muted);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .main > .topbar :is(button,select):hover:not(:disabled) {
+  background: var(--ck-hover);
+  border-color: transparent;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .workspace-menu-trigger[aria-expanded='true'] {
+  background: var(--ck-selected);
+  box-shadow: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  backdrop-filter: saturate(180%) blur(8px);
+  -webkit-backdrop-filter: saturate(180%) blur(8px);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button,select,input:not(:where(.cds--btn,[type='checkbox'],[type='radio'],[type='range'],[type='color'],[type='file'])),a:where([href])) {
+  border-color: transparent;
+  border-radius: var(--ck-radius-sm) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(select,input:not(:where(.cds--btn,[type='checkbox'],[type='radio'],[type='range'],[type='color'],[type='file']))) {
+  border-color: var(--ck-line);
+  background: var(--ck-canvas);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button,select,a:where([href])):hover:not(:disabled) {
+  background: var(--ck-hover);
+  border-color: transparent;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button,a):is(.active,.is-active,[aria-selected='true'],[aria-pressed='true'],[aria-expanded='true']) {
+  background: var(--ck-selected);
+  border-color: transparent;
+  color: var(--ck-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.it-title-pill,.it-count-badge,.topbar-token-pill,.topbar-pill,.office-preview-badge) {
+  background: var(--ck-muted);
+  border-color: transparent;
+}
+
+/* ---------- Conversation ---------- */
+/* Sent messages: solid Buddy violet, CopilotKit's rounded bubble with a small tail. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.user .bubble {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 20px 20px 6px 20px !important;
+  background: var(--ck-accent);
+  color: #fff;
+  box-shadow: var(--ck-shadow-sm);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .messages > .message.user > .bubble > .question-delete-icon:hover { background: rgba(255, 255, 255, .16); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .messages > .message.user .message-attachment {
+  border-color: rgba(255, 255, 255, .22);
+  background: rgba(255, 255, 255, .1);
+}
+/* Guidance uses the same purple and white treatment as user messages. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.user.chat-guidance .bubble {
+  background: var(--ck-accent);
+  color: var(--cds-text-on-color);
+  border-radius: var(--ck-radius) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.user.chat-guidance .bubble :is(p,small) { color: var(--cds-text-on-color); }
+/* Replies: flat, no bubble (CopilotKit assistant style). */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.assistant > .message-body > .bubble:not(.has-deck-bubble) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: var(--ck-ink);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.assistant .avatar {
+  border-radius: 50% !important;
+  background: var(--ck-ink);
+  color: #fff;
+  box-shadow: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.assistant .avatar.is-generating {
+  background: var(--ck-accent);
+  box-shadow: 0 0 0 4px var(--ck-accent-ring);
+}
+/* Answer action row: borderless ghost icons with a neutral hover. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.assistant .msg-actions :is(.answer-icon-action,.answer-details-compact > summary) {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ck-ink-subtle);
+  border-radius: var(--ck-radius-sm) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .message.assistant .msg-actions :is(.answer-icon-action,.answer-details-compact > summary):hover:not(:disabled) {
+  background: var(--ck-hover);
+  color: var(--ck-ink);
+}
+
+/* ---------- Composer: floating rounded card, circular violet send ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer {
+  background: var(--ck-canvas);
+  border: 1px solid var(--ck-line);
+  border-radius: var(--ck-radius-xl) !important;
+  box-shadow: var(--ck-shadow-md);
+  outline: none;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer:focus-within {
+  border-color: var(--ck-line-strong);
+  outline: none;
+  box-shadow: var(--ck-shadow-md), var(--ck-focus);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer textarea { background: transparent; color: var(--ck-ink); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer textarea::placeholder { color: var(--ck-ink-subtle); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer-header {
+  background: transparent;
+  border-color: var(--ck-line);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(button,select) {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ck-ink-muted);
+  border-radius: var(--ck-pill) !important;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(.composer-websearch-btn,.composer-skill-picker select) {
+  border: 1px solid var(--ck-line);
+  background: var(--ck-canvas);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(button,select):hover:not(:disabled) {
+  background: var(--ck-hover);
+  color: var(--ck-ink);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(button,select):is(.active,.is-active,[aria-pressed='true']) {
+  background: var(--ck-ink);
+  border-color: var(--ck-ink);
+  color: #fff;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(.send-button,.guidance-send-button) {
+  border: 0;
+  border-radius: 50% !important;
+  background: var(--ck-accent);
+  color: #fff;
+  box-shadow: var(--ck-shadow);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(.send-button,.guidance-send-button):hover:not(:disabled) {
+  background: var(--ck-accent-hover);
+  color: #fff;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer :is(.send-button,.guidance-send-button):disabled {
+  background: var(--ck-selected);
+  color: var(--ck-ink-subtle);
+  box-shadow: none;
+  opacity: 1;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .composer .stop-button {
+  border: 0;
+  border-radius: 50% !important;
+  background: var(--ck-ink);
+  color: #fff;
+}
+/* Tools above the composer: pill chips. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.composer-tool-row,.composer-tool-utilities) .composer-tool-shortcut {
+  border: 1px solid var(--ck-line);
+  border-radius: var(--ck-pill) !important;
+  background: var(--ck-canvas);
+  color: var(--ck-ink-muted);
+  box-shadow: var(--ck-shadow-sm);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.composer-tool-row,.composer-tool-utilities) .composer-tool-shortcut:hover:not(:disabled) {
+  background: var(--ck-hover);
+  color: var(--ck-ink);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.composer-tool-row,.composer-tool-utilities) .composer-tool-shortcut:is(.is-active,[aria-pressed='true']) {
+  background: var(--ck-ink);
+  border-color: var(--ck-ink);
+  color: #fff;
+}
+
+/* ---------- Empty state, suggestions and starters ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .welcome-buddy .welcome-buddy-hero {
+  border-bottom: 0;
+  background: transparent;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .welcome-buddy .welcome-icon { color: var(--ck-accent); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .welcome-buddy .welcome-buddy-hero p strong {
+  background: var(--ck-muted);
+  border-color: transparent;
+  border-radius: 6px;
+}
+
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .suggestion {
+  border: 1px solid var(--ck-line);
+  background: var(--ck-canvas);
+  color: var(--ck-ink);
+  box-shadow: var(--ck-shadow-sm);
+  transition: border-color var(--motion-standard) var(--motion-ease), box-shadow var(--motion-standard) var(--motion-ease);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .suggestion:hover:not(:disabled) {
+  border-color: var(--ck-line-strong);
+  background: var(--ck-canvas);
+  box-shadow: var(--ck-shadow-md);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .welcome-buddy :is(.suggestion-icon,.suggestion-tag) {
+  background: var(--ck-muted);
+  color: var(--ck-ink-muted);
+}
+/* CopilotKit's signature suggestion pills. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .intelligence-starters button {
+  border: 1px solid var(--ck-line);
+  border-radius: var(--ck-pill) !important;
+  background: var(--ck-canvas);
+  color: var(--ck-ink);
+  box-shadow: var(--ck-shadow-sm);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .intelligence-starters button:hover:not(:disabled) {
+  background: var(--ck-hover);
+  border-color: var(--ck-line-strong);
+}
+
+/* ---------- Interactive answers (clarifications, quizzes, calculators) ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card,.quiz-results) {
+  border-color: var(--ck-line);
+  background: var(--ck-canvas);
+  box-shadow: var(--ck-shadow);
+  overflow: hidden;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-header-row,.intelligent-answer > header) {
+  background: var(--ck-surface);
+  border-bottom-color: var(--ck-line);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell .clarification-actions-bar {
+  background: var(--ck-surface);
+  border-top-color: var(--ck-line);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-option-tile,.quiz-options label) {
+  border-color: var(--ck-line);
+  background: var(--ck-canvas);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-option-tile,.quiz-options label):hover {
+  background: var(--ck-hover);
+  border-color: var(--ck-line-strong);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-option-tile.is-selected,.quiz-options label:has(input:checked)) {
+  background: var(--ck-canvas);
+  border-color: var(--ck-accent);
+  box-shadow: inset 0 0 0 1px var(--ck-accent);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card) :is(input,textarea,select):not([type='radio']):not([type='checkbox']) {
+  border-color: var(--ck-line);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .shell :is(.clarification-card,.intelligent-answer,.quiz-card) :is(input,textarea,select):not([type='radio']):not([type='checkbox']):focus-visible {
+  border-color: var(--ck-accent);
+  outline: none;
+  box-shadow: var(--ck-focus);
+}
+
+/* ---------- Dialogs, panels and fields ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(dialog,.feature-dialog,.workspace-tools-panel,.create-dialog,.my-access-dialog,.answer-feedback-dialog) {
+  border: 1px solid var(--ck-line);
+  box-shadow: var(--ck-shadow-lg);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.dialog-top,.feature-dialog-header,.workspace-panel-heading) { border-bottom-color: var(--ck-line); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(dialog,[role='dialog'],.feature-dialog,.workspace-tools-panel,.office-suite,.administration-page,.notes-workspace,.tasks-view,.shared-knowledge) :is(input,textarea,select):not(:where(.cds--btn,[type='checkbox'],[type='radio'],[type='range'],[type='color'],.html-deck-stage *,[contenteditable] *)) {
+  border: 1px solid var(--ck-line);
+  background: var(--ck-canvas);
+  color: var(--ck-ink);
+  box-shadow: var(--ck-shadow-sm);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(dialog,[role='dialog'],.feature-dialog,.workspace-tools-panel,.office-suite,.administration-page,.notes-workspace,.tasks-view,.shared-knowledge) :is(input,textarea,select):not(:where(.cds--btn,[type='checkbox'],[type='radio'],[type='range'],[type='color'],.html-deck-stage *,[contenteditable] *)):focus-visible {
+  border-color: var(--ck-accent);
+  outline: none;
+  box-shadow: var(--ck-focus);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.feature-primary,.office-primary,.save-button,.create-submit,.welcome-tour .welcome-primary) {
+  background: var(--ck-accent);
+  border-color: var(--ck-accent);
+  color: #fff;
+  box-shadow: var(--ck-shadow);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.feature-primary,.office-primary,.save-button,.create-submit,.welcome-tour .welcome-primary):hover:not(:disabled) {
+  background: var(--ck-accent-hover);
+  border-color: var(--ck-accent-hover);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.task-card,.knowledge-card,.note-card,.office-create > button,.office-storage) {
+  border-color: var(--ck-line);
+  background: var(--ck-canvas);
+  box-shadow: var(--ck-shadow-sm);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.task-card,.knowledge-card,.note-card,.office-create > button):hover {
+  border-color: var(--ck-line-strong);
+  box-shadow: var(--ck-shadow-md);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.modal-backdrop,.feature-overlay:not(.artifact-live-overlay),.office-modal-backdrop) {
+  background: rgba(24, 24, 27, .32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body dialog::backdrop {
+  background: rgba(24, 24, 27, .32);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* ---------- People chat and Office assistant ---------- */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.member-chat-panel,.office-assistant) {
+  --chat-line: var(--ck-line);
+  --chat-muted: var(--ck-ink-subtle);
+  --chat-surface: var(--ck-canvas);
+  --chat-purple: var(--ck-accent);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .member-chat-panel {
+  border: 1px solid var(--ck-line);
+  box-shadow: var(--ck-shadow-lg);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .member-chat-message { border-color: var(--ck-line); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .member-chat-message.is-own {
+  background: var(--ck-accent);
+  border-color: var(--ck-accent);
+  color: #fff;
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .member-chat-message.is-own :is(.member-chat-message-meta,time) { color: rgba(255, 255, 255, .78); }
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.member-chat-composer,.office-assistant-composer) textarea,
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .office-suite .office-assistant textarea {
+  border: 1px solid var(--ck-line);
+  border-radius: var(--ck-radius-lg) !important;
+  background: var(--ck-canvas);
+  box-shadow: var(--ck-shadow-sm);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body :is(.member-chat-composer,.office-assistant-composer) textarea:focus-visible {
+  border-color: var(--ck-accent);
+  outline: none;
+  box-shadow: var(--ck-focus);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .member-chat-widget .member-chat-launcher {
+  background: var(--ck-accent);
+  border-color: var(--ck-accent);
+  color: #fff;
+  box-shadow: var(--ck-shadow-lg);
+}
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .member-chat-launcher .member-chat-unread {
+  border-color: #fff;
+  background: var(--ck-ink);
+  color: #fff;
+}
+

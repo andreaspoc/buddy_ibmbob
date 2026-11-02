@@ -1,0 +1,53 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+
+:root[data-design-system='carbon']:root:root:root body .skill-picker {
+  padding: spacing.$spacing-06;
+  min-width: 0;
+  background: var(--cds-background);
+  color: var(--cds-text-primary);
+  border: 1px solid var(--cds-border-subtle-01);
+  border-radius: var(--buddy-panel-radius);
+  .skill-picker-heading { display: flex; align-items: start; justify-content: space-between; flex-wrap: wrap; gap: spacing.$spacing-05; }
+  h3 { margin: 0; @include type.type-style('heading-03'); }
+  p { margin: spacing.$spacing-03 0 spacing.$spacing-05; @include type.type-style('body-02'); color: var(--cds-text-secondary); }
+  .skill-picker-search { display: grid; gap: spacing.$spacing-02; margin-bottom: spacing.$spacing-05; @include type.type-style('body-01'); }
+  input { width: 100%; min-width: 0; min-height: 2.75rem; padding: spacing.$spacing-04; background: var(--cds-field-01); color: var(--cds-text-primary); border: 0; border-bottom: 1px solid var(--cds-border-strong-01); @include type.type-style('body-02'); }
+  .skill-picker-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(min(100%,240px),1fr)); gap: spacing.$spacing-04; }
+  button { font-family: inherit; cursor: pointer; }
+  .skill-picker-card { display: flex; flex-direction: column; gap: spacing.$spacing-03; padding: spacing.$spacing-05; min-width: 0; text-align: start; background: var(--cds-background); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); border-radius: var(--buddy-control-radius); overflow-wrap: anywhere; }
+  .skill-picker-card:hover:not(:disabled) { background: var(--cds-layer-hover-01); }
+  .skill-picker-card[aria-pressed='true'], .skill-picker-card.is-selected { border-color: var(--cds-interactive); box-shadow: inset 0 0 0 1px var(--cds-interactive); background: var(--cds-layer-selected-01); }
+  .skill-picker-card-title { display: flex; align-items: baseline; gap: spacing.$spacing-03; justify-content: space-between; width: 100%; @include type.type-style('body-02'); font-weight: 600; }
+  .skill-picker-selected { color: var(--cds-interactive); }
+  .skill-picker-card-description { @include type.type-style('body-01'); color: var(--cds-text-secondary); }
+  :is(.skill-picker-automatic,.skill-picker-more) { min-height: 2.75rem; padding: spacing.$spacing-03 spacing.$spacing-05; background: transparent; border: 1px solid var(--cds-border-subtle-01); border-radius: var(--buddy-control-radius); color: var(--cds-text-primary); @include type.type-style('body-01'); }
+  .skill-picker-more { margin-top: spacing.$spacing-05; }
+  :is(button,input):focus-visible { outline: 2px solid var(--cds-focus); outline-offset: 2px; }
+  button:disabled { cursor: default; color: var(--cds-text-disabled); }
+  @media (max-width: 480px) { padding: spacing.$spacing-05; }
+}
+
+:root[data-design-system='carbon']:root:root:root body .composer-skill-summary {
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+  gap: spacing.$spacing-03; padding: spacing.$spacing-03 spacing.$spacing-05;
+  color: var(--cds-text-primary); background: var(--cds-background);
+  border-bottom: 1px solid var(--cds-border-subtle-01); @include type.type-style('body-01');
+  button { min-height: 2.5rem; padding-inline: spacing.$spacing-04; background: transparent; color: var(--cds-link-primary); border: 0; font: inherit; }
+}
+.composer-skill-catalog { max-height: min(50dvh,32rem); overflow: auto; }
+
+:root[data-design-system='carbon']:root:root:root body .skill-picker {
+  .skill-picker-card-name { display: flex; align-items: center; gap: spacing.$spacing-03; min-width: 0; }
+  .skill-picker-card-name > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+  .skill-picker-icon { display: inline-grid; place-items: center; flex: 0 0 2.25rem; width: 2.25rem; height: 2.25rem; border-radius: var(--buddy-control-radius); }
+  .skill-picker-icon-purple { color: #6929c4; background: #f6f2ff; }
+  .skill-picker-icon-blue { color: #0043ce; background: #edf5ff; }
+  .skill-picker-icon-teal { color: #005d5d; background: #d9fbfb; }
+  .skill-picker-icon-magenta { color: #9f1853; background: #fff0f7; }
+  .skill-picker-card:disabled .skill-picker-icon { color: var(--cds-text-disabled); background: var(--cds-layer-01); }
+}
+
+.skill-picker-management { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.composer-agent-chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 0; }
+.skill-picker-card-description { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }

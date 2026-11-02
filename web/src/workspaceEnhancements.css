@@ -1,0 +1,29 @@
+/* Focus is reversible and preserves the open editor and its unsaved work. */
+.workspace-focus-mode > .sidebar,
+.workspace-focus-mode .sidebar-backdrop,
+.workspace-focus-mode .mobile-menu,
+.workspace-focus-mode .workspace-navigation,
+.workspace-focus-mode:not(.workspace-focus-editor) .chat-layout-panel,
+.workspace-focus-mode:not(.workspace-focus-editor) .artifact-workspace-panel { display: none !important; }
+.workspace-focus-mode .chat-layout-split.has-panel,
+.workspace-focus-mode .chat-layout-split.has-artifact { display: flex; }
+.workspace-focus-mode .chat-layout-main { display: flex !important; flex: 1; width: 100%; }
+.workspace-focus-mode .chat-layout-split.has-artifact .chat-layout-main { height: 100%; }
+
+.workspace-focus-editor .chat-layout-main { display: none !important; }
+.workspace-focus-editor .chat-layout-panel,
+.workspace-focus-editor .artifact-workspace-panel { width: 100%; max-width: none; flex: 1; border-left: 0; }
+.workspace-focus-editor .chat-layout-split.has-artifact { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 1fr); }
+
+/* Zen Decision Engine: Hide outer Buddy sidebar so only the Decision Engine sidebar is shown */
+.workspace-decisions-mode > .sidebar,
+.workspace-decisions-mode .sidebar-backdrop,
+.workspace-decisions-mode .mobile-menu {
+  display: none !important;
+}
+
+.workspace-decisions-mode .main {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 1 100% !important;
+}

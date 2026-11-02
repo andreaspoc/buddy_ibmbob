@@ -1,0 +1,731 @@
+{
+  "version": 1,
+  "title": "Forest Gold Starter",
+  "metadata": {
+    "brand": "Forest Gold",
+    "themeId": "forest"
+  },
+  "theme": {
+    "fonts": {
+      "heading": "IBM Plex Sans",
+      "body": "IBM Plex Sans"
+    },
+    "colors": {
+      "background": "FFFFFF",
+      "text": "14210F",
+      "accent": "1F7A3D",
+      "primary": "1F7A3D",
+      "primaryDark": "0F2E1C",
+      "secondary": "14532D",
+      "lavender": "F0B429",
+      "lightLavender": "FDECC8",
+      "softLavender": "FBF7ED",
+      "chartPalette": [
+        "1F7A3D",
+        "14532D",
+        "0F2E1C",
+        "F0B429"
+      ]
+    },
+    "chartPalette": [
+      "1F7A3D",
+      "14532D",
+      "0F2E1C",
+      "F0B429"
+    ]
+  },
+  "slides": [
+    {
+      "id": "slide-1-hero",
+      "layout": "hero",
+      "background": {
+        "color": "0F2E1C"
+      },
+      "elements": [
+        {
+          "id": "hero-panel",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 9.75,
+          "y": 1.15,
+          "width": 2.45,
+          "height": 4.9,
+          "fill": "14532D",
+          "border": {
+            "color": "14532D",
+            "width": 0
+          }
+        },
+        {
+          "id": "hero-circle",
+          "type": "shape",
+          "shape": "ellipse",
+          "x": 10.4,
+          "y": 2.4,
+          "width": 1.15,
+          "height": 1.15,
+          "fill": "F0B429",
+          "border": {
+            "color": "F0B429",
+            "width": 0
+          }
+        },
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "FOREST GOLD",
+          "x": 0.7,
+          "y": 1.5,
+          "width": 8.5,
+          "height": 0.5,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "F0B429",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "content": "Presentation Title",
+          "x": 0.7,
+          "y": 2.0,
+          "width": 8.8,
+          "height": 1.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 40,
+            "color": "FFFFFF",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "subtitle",
+          "type": "text",
+          "content": "A concise, outcome-oriented subtitle",
+          "x": 0.7,
+          "y": 3.7,
+          "width": 8.5,
+          "height": 0.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 16,
+            "color": "FFFFFF"
+          }
+        }
+      ]
+    },
+    {
+      "id": "slide-2-cards",
+      "layout": "content",
+      "background": {
+        "color": "FFFFFF"
+      },
+      "elements": [
+        {
+          "id": "title-bar",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 0,
+          "y": 0,
+          "width": 13.333,
+          "height": 1.1,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "1F7A3D",
+            "width": 1
+          }
+        },
+        {
+          "id": "s2-title",
+          "type": "text",
+          "content": "Shapes Structure The Story",
+          "x": 0.55,
+          "y": 0.28,
+          "width": 10,
+          "height": 0.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 26,
+            "color": "14210F",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card1",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 0.7,
+          "y": 1.5,
+          "width": 3.6,
+          "height": 3.1,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "FDECC8",
+            "width": 1
+          }
+        },
+        {
+          "id": "card1-head",
+          "type": "text",
+          "content": "Cards",
+          "x": 0.95,
+          "y": 1.75,
+          "width": 3.1,
+          "height": 0.7,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 19,
+            "color": "1F7A3D",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card1-body",
+          "type": "text",
+          "content": "Group related ideas into a single visual unit.",
+          "x": 0.95,
+          "y": 2.55,
+          "width": 3.1,
+          "height": 1.8,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "14210F"
+          }
+        },
+        {
+          "id": "card2",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 4.65,
+          "y": 1.5,
+          "width": 3.6,
+          "height": 3.1,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "FDECC8",
+            "width": 1
+          }
+        },
+        {
+          "id": "card2-head",
+          "type": "text",
+          "content": "Contrast",
+          "x": 4.9,
+          "y": 1.75,
+          "width": 3.1,
+          "height": 0.7,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 19,
+            "color": "1F7A3D",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card2-body",
+          "type": "text",
+          "content": "Use light fills with dark ink for calm, readable surfaces.",
+          "x": 4.9,
+          "y": 2.55,
+          "width": 3.1,
+          "height": 1.8,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "14210F"
+          }
+        },
+        {
+          "id": "card3",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 8.6,
+          "y": 1.5,
+          "width": 3.6,
+          "height": 3.1,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "FDECC8",
+            "width": 1
+          }
+        },
+        {
+          "id": "card3-head",
+          "type": "text",
+          "content": "Emphasis",
+          "x": 8.85,
+          "y": 1.75,
+          "width": 3.1,
+          "height": 0.7,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 19,
+            "color": "1F7A3D",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card3-body",
+          "type": "text",
+          "content": "Use the dark surface sparingly, for the one idea that matters most.",
+          "x": 8.85,
+          "y": 2.55,
+          "width": 3.1,
+          "height": 1.8,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "14210F"
+          }
+        },
+        {
+          "id": "insight-banner",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 0.7,
+          "y": 4.9,
+          "width": 11.93,
+          "height": 1.3,
+          "fill": "0F2E1C",
+          "border": {
+            "color": "0F2E1C",
+            "width": 0
+          }
+        },
+        {
+          "id": "insight-text",
+          "type": "text",
+          "content": "A clear visual system does the persuading before a single word is read.",
+          "x": 1.0,
+          "y": 5.15,
+          "width": 11.3,
+          "height": 0.9,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 16,
+            "color": "FFFFFF",
+            "fontWeight": "700"
+          }
+        }
+      ]
+    },
+    {
+      "id": "slide-3-kpi-chart",
+      "layout": "content",
+      "background": {
+        "color": "FFFFFF"
+      },
+      "elements": [
+        {
+          "id": "title-bar",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 0,
+          "y": 0,
+          "width": 13.333,
+          "height": 1.1,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "1F7A3D",
+            "width": 1
+          }
+        },
+        {
+          "id": "s3-title",
+          "type": "text",
+          "content": "Metrics At A Glance",
+          "x": 0.55,
+          "y": 0.28,
+          "width": 10,
+          "height": 0.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 26,
+            "color": "14210F",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "kpi1",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 0.7,
+          "y": 1.45,
+          "width": 3.6,
+          "height": 1.35,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "1F7A3D",
+            "width": 1
+          }
+        },
+        {
+          "id": "kpi1-num",
+          "type": "text",
+          "content": "128",
+          "x": 0.8999999999999999,
+          "y": 1.55,
+          "width": 3.2,
+          "height": 0.65,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 30,
+            "color": "1F7A3D",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "kpi1-label",
+          "type": "text",
+          "content": "Active accounts",
+          "x": 0.8999999999999999,
+          "y": 2.2,
+          "width": 3.2,
+          "height": 0.5,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "14210F"
+          }
+        },
+        {
+          "id": "kpi2",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 4.87,
+          "y": 1.45,
+          "width": 3.6,
+          "height": 1.35,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "1F7A3D",
+            "width": 1
+          }
+        },
+        {
+          "id": "kpi2-num",
+          "type": "text",
+          "content": "42%",
+          "x": 5.07,
+          "y": 1.55,
+          "width": 3.2,
+          "height": 0.65,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 30,
+            "color": "1F7A3D",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "kpi2-label",
+          "type": "text",
+          "content": "Adoption this quarter",
+          "x": 5.07,
+          "y": 2.2,
+          "width": 3.2,
+          "height": 0.5,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "14210F"
+          }
+        },
+        {
+          "id": "kpi3",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 9.03,
+          "y": 1.45,
+          "width": 3.6,
+          "height": 1.35,
+          "fill": "FBF7ED",
+          "border": {
+            "color": "1F7A3D",
+            "width": 1
+          }
+        },
+        {
+          "id": "kpi3-num",
+          "type": "text",
+          "content": "4.8",
+          "x": 9.229999999999999,
+          "y": 1.55,
+          "width": 3.2,
+          "height": 0.65,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 30,
+            "color": "1F7A3D",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "kpi3-label",
+          "type": "text",
+          "content": "Average rating",
+          "x": 9.229999999999999,
+          "y": 2.2,
+          "width": 3.2,
+          "height": 0.5,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "14210F"
+          }
+        },
+        {
+          "id": "chart-1",
+          "type": "chart",
+          "chartType": "bar",
+          "title": "Illustrative trend",
+          "x": 0.7,
+          "y": 3.15,
+          "width": 11.93,
+          "height": 3.9,
+          "background": "FFFFFF",
+          "border": {
+            "color": "FDECC8",
+            "width": 1
+          },
+          "categories": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ],
+          "series": [
+            {
+              "name": "Series 1",
+              "values": [
+                35,
+                58,
+                76,
+                92
+              ],
+              "color": "1F7A3D"
+            }
+          ],
+          "showLegend": false,
+          "showValues": true
+        }
+      ]
+    },
+    {
+      "id": "slide-4-closing",
+      "layout": "hero",
+      "background": {
+        "color": "0F2E1C"
+      },
+      "elements": [
+        {
+          "id": "eyebrow",
+          "type": "text",
+          "content": "THE DECISION",
+          "x": 0.7,
+          "y": 0.75,
+          "width": 8,
+          "height": 0.45,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 13,
+            "color": "F0B429",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "title",
+          "type": "text",
+          "content": "Where We Go From Here",
+          "x": 0.7,
+          "y": 1.25,
+          "width": 11.5,
+          "height": 1.0,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 30,
+            "color": "FFFFFF",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card1",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 0.7,
+          "y": 2.55,
+          "width": 3.75,
+          "height": 3.6,
+          "fill": "14532D",
+          "border": {
+            "color": "14532D",
+            "width": 0
+          }
+        },
+        {
+          "id": "card1-num",
+          "type": "text",
+          "content": "01",
+          "x": 0.95,
+          "y": 2.75,
+          "width": 3.2,
+          "height": 0.8,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 34,
+            "color": "F0B429",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card1-head",
+          "type": "text",
+          "content": "Confirm scope",
+          "x": 0.95,
+          "y": 3.55,
+          "width": 3.25,
+          "height": 0.7,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 15,
+            "color": "FFFFFF",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card1-body",
+          "type": "text",
+          "content": "Lock the plan so the team can start immediately.",
+          "x": 0.95,
+          "y": 4.25,
+          "width": 3.25,
+          "height": 1.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 12,
+            "color": "FFFFFF"
+          }
+        },
+        {
+          "id": "card2",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 4.78,
+          "y": 2.55,
+          "width": 3.75,
+          "height": 3.6,
+          "fill": "14532D",
+          "border": {
+            "color": "14532D",
+            "width": 0
+          }
+        },
+        {
+          "id": "card2-num",
+          "type": "text",
+          "content": "02",
+          "x": 5.03,
+          "y": 2.75,
+          "width": 3.2,
+          "height": 0.8,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 34,
+            "color": "F0B429",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card2-head",
+          "type": "text",
+          "content": "Approve budget",
+          "x": 5.03,
+          "y": 3.55,
+          "width": 3.25,
+          "height": 0.7,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 15,
+            "color": "FFFFFF",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card2-body",
+          "type": "text",
+          "content": "Unblock the resources this phase needs.",
+          "x": 5.03,
+          "y": 4.25,
+          "width": 3.25,
+          "height": 1.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 12,
+            "color": "FFFFFF"
+          }
+        },
+        {
+          "id": "card3",
+          "type": "shape",
+          "shape": "roundedRectangle",
+          "x": 8.86,
+          "y": 2.55,
+          "width": 3.75,
+          "height": 3.6,
+          "fill": "14532D",
+          "border": {
+            "color": "14532D",
+            "width": 0
+          }
+        },
+        {
+          "id": "card3-num",
+          "type": "text",
+          "content": "03",
+          "x": 9.11,
+          "y": 2.75,
+          "width": 3.2,
+          "height": 0.8,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 34,
+            "color": "F0B429",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card3-head",
+          "type": "text",
+          "content": "Set the date",
+          "x": 9.11,
+          "y": 3.55,
+          "width": 3.25,
+          "height": 0.7,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 15,
+            "color": "FFFFFF",
+            "fontWeight": "700"
+          }
+        },
+        {
+          "id": "card3-body",
+          "type": "text",
+          "content": "Give the team a fixed target to build toward.",
+          "x": 9.11,
+          "y": 4.25,
+          "width": 3.25,
+          "height": 1.6,
+          "style": {
+            "fontFamily": "IBM Plex Sans",
+            "fontSize": 12,
+            "color": "FFFFFF"
+          }
+        }
+      ]
+    }
+  ]
+}

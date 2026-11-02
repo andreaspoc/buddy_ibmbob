@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+export PYTHONPATH="/opt/bob-a2a:${PYTHONPATH}"
+exec python3 -m app.a2a_cli "$@"

@@ -1,0 +1,29 @@
+@use '@carbon/styles/scss/type';
+@use 'sass:map';
+
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('../assets/fonts/IBMPlexSans-Regular.woff2?inline') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('../assets/fonts/IBMPlexSans-SemiBold.woff2?inline') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 700; font-display: swap; src: url('../assets/fonts/IBMPlexSans-Bold.woff2?inline') format('woff2'); }
+
+:root {
+  --buddy-slide-font: #{type.font-family('sans')};
+  --buddy-slide-body: #{map.get(type.$body-02, font-size)};
+  --buddy-slide-label: #{map.get(type.$body-01, font-size)};
+  --buddy-slide-title: #{map.get(type.$heading-05, font-size)};
+  --buddy-slide-heading: #{map.get(type.$heading-04, font-size)};
+  --buddy-slide-subheading: #{map.get(type.$heading-03, font-size)};
+}
+:root body[data-buddy-presentation] {
+  --font-heading: var(--buddy-slide-font);
+  --font-body: var(--buddy-slide-font);
+  font-family: var(--buddy-slide-font) !important;
+  @include type.type-style('body-02');
+  :is(h1,h2,h3,h4,h5,h6,p,li,td,th,span,strong,small,label,button,input,select,textarea,.num,.kicker) {
+    font-family: var(--buddy-slide-font) !important;
+  }
+  :is(p,li,td,.lede,.sub,.step-detail,.row-item .note,.stat .label) { font-size: var(--buddy-slide-body) !important; line-height: 1.5 !important; }
+  :is(button,input,select,textarea,label,small,.kicker,.source-note,.foot-note) { font-size: var(--buddy-slide-label) !important; line-height: 1.5 !important; }
+  :is(h1,h1.hero) { font-size: var(--buddy-slide-title) !important; line-height: 1.2 !important; }
+  :is(h2,h2.title) { font-size: var(--buddy-slide-heading) !important; line-height: 1.3 !important; }
+  :is(h3,h4) { font-size: var(--buddy-slide-subheading) !important; line-height: 1.4 !important; }
+}

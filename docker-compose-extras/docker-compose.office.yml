@@ -1,0 +1,17 @@
+# Add Office to a core-only install; use --profile office.
+services:
+  bob-agent:
+    environment:
+      BUDDY_OFFICE_ENABLED: "1"
+      BUDDY_OFFICE_PLUGIN_URL: http://office-plugin:8080
+    depends_on:
+      office-plugin:
+        condition: service_healthy
+  bob-gateway:
+    environment:
+      BUDDY_OFFICE_ENABLED: "1"
+      BUDDY_OFFICE_PLUGIN_URL: http://office-plugin:8080
+  bob-worker:
+    environment:
+      BUDDY_OFFICE_ENABLED: "1"
+      BUDDY_OFFICE_PLUGIN_URL: http://office-plugin:8080

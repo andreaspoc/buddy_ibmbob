@@ -1,0 +1,78 @@
+# Secrets and local environment
+.env
+.env.*
+!.env.example
+!deploy/**/*.env.example
+.envbcp
+*.pem
+*.key
+*.p12
+*login.txt
+*bcp
+.aws/
+.codex/
+.secrets/
+.bob-private/
+deploy/https/certs/
+deploy/k8s/runtime.env
+deploy/buddy-installation.json
+
+# Backups and local databases
+backups/
+*.dump
+*.sqlite
+*.sqlite3
+*.db
+*.db-wal
+*.db-shm
+
+# Runtime workspace: only product seed files are versioned
+workspace/*
+!workspace/AGENTS.md
+!workspace/README.md
+!workspace/.bob/
+workspace/.bob/*
+!workspace/.bob/skills/
+!workspace/.bob/rules/
+!workspace/.bob/rules-agent/
+!workspace/.bob/settings.json
+
+# Agent working state
+.agents/
+/.bob/
+
+# Dependencies and caches
+.venv/
+node_modules/
+.vite/
+.pytest_cache/
+.scannerwork/
+__pycache__/
+*.pyc
+
+# Generated output
+/coverage/
+/coverage.xml
+/reports/
+web/coverage/
+snyk.txt
+carbon-audit*.json
+carbon-zen-engine.zip
+/design-review/
+/artifacts/
+app/static/renderer.bundle.js
+*.preview.png
+
+# Agent planning notes and build output
+PROJECT.md
+app/zen
+app/static/dist/
+app/static/zen/
+app/static/decisions/
+
+# Local build output
+target/
+
+# Compose files rendered for one machine
+docker-compose.wolfi.json
+docker-compose.infrastructure.json

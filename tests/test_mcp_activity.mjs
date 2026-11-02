@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { transpile } from './frontend_transpile.mjs';
+const source = transpile(readFileSync(new URL('../web/src/lib/redaction.ts', import.meta.url), 'utf8'));
+const { redactActivity } = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+const publicStep = redactActivity({ text: 'curl -H "Authorization: Bearer historical-secret"', input: { Authorization: 'private-key', command: 'curl https://host?api_key=hidden' } });
+assert(!JSON.stringify(publicStep).includes('historical-secret'));
+assert(!JSON.stringify(publicStep).includes('private-key'));
+assert(!JSON.stringify(publicStep).includes('hidden'));
+assert.equal(redactActivity('Reading Documentation Index'), 'Reading Documentation Index');
+console.log('Historical activity credentials masked; readable titles preserved.');

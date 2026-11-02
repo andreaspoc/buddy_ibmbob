@@ -1,0 +1,88 @@
+/* Buddy purple, softened for eye comfort; login and tutorials share the same deep aubergine palette. */
+:root {
+  --brand-accent: #6d4c8f;
+  --brand-accent-hover: #5b3d79;
+  --brand-soft: #f3eff6;
+  --brand-line: #ded8e3;
+  --brand-ink: #62556e;
+  --brand-surface-background: radial-gradient(ellipse at 100% 0, #b7a4c526, transparent 65%), linear-gradient(120deg, #43325a, #4d3a66 62%, #5a4575);
+  --cds-interactive: var(--brand-accent);
+  --cds-interactive-hover: var(--brand-accent-hover);
+  --cds-focus: var(--brand-accent);
+  --workspace-accent: var(--brand-accent);
+  --workspace-accent-hover: var(--brand-accent-hover);
+  --workspace-canvas: #f9f8fb;
+  --answer-frame-primary: var(--brand-accent);
+  --answer-frame-primary-hover: var(--brand-accent-hover);
+  --answer-frame-border: #e2dce6;
+  --answer-frame-soft: #f7f4f9;
+  --answer-frame-focus: #9984aa;
+}
+.buddy-login-viewport {
+  --brand-surface-background: radial-gradient(ellipse at 100% 0, #9a7bb844, transparent 65%), linear-gradient(120deg, #3f2c52, #4d3664 62%, #5a4175);
+}
+:root[data-design-system='carbon'] body .shell {
+  --mobile-brand: var(--brand-accent);
+  --buddy-primary: var(--brand-accent);
+}
+:root[data-design-system='carbon'] body :is(.shell,.office-overlay,.feature-overlay,.welcome-overlay) :is(.send-button,.guidance-send-button,.clarification-submit-btn,.feature-primary,.office-primary,.create-submit,.save-button,.welcome-primary) {
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+  color: #fff;
+  box-shadow: none;
+}
+:root[data-design-system='carbon'] body :is(.shell,.office-overlay,.feature-overlay,.welcome-overlay) :is(.send-button,.guidance-send-button,.clarification-submit-btn,.feature-primary,.office-primary,.create-submit,.save-button,.welcome-primary):hover:not(:disabled) {
+  background: var(--brand-accent-hover);
+  border-color: var(--brand-accent-hover);
+}
+:root[data-design-system='carbon'] body .sidebar .brand-mark,
+:root[data-design-system='carbon'] body .clarification-brand-icon { background: var(--brand-surface-background); box-shadow: none; }
+:root[data-design-system='carbon'] body .sidebar .filter-tab.active { background: #6d4c8f; border-color: #a48eb5; }
+:root[data-design-system='carbon'] body .welcome-progress button[aria-current] span { background: var(--brand-accent); border-color: #b4a3bf; box-shadow: none; }
+:root[data-design-system='carbon'] body .welcome-emblem { background: var(--brand-surface-background); box-shadow: none; }
+:root[data-design-system='carbon'] body .member-chat-panel { --chat-purple: var(--brand-accent); }
+:root[data-design-system='carbon'] body :is(.member-chat-panel-header,.member-chat-launcher) { background: var(--brand-surface-background); }
+:root[data-design-system='carbon'] body .welcome-copy .welcome-eyebrow { border-left-color: #bdacc9; }
+
+/* Neutral everyday controls; plum is reserved for actions and selected states. */
+:root[data-design-system='carbon'] body .shell :is(.workspace-notes-tab,.workspace-menu-trigger,.workspace-toolbar-language select,.topbar-notifications,.composer-tool-shortcut,.composer-clip-btn,.composer-skill-picker select,.slash-button,.composer-websearch-btn) {
+  background: #f8f6fa;
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon'] body .shell .composer-websearch-btn.active {
+  background: #e6dfed;
+  color: #51405f;
+  border-color: #a38caf;
+}
+:root[data-design-system='carbon'] body .shell :is(.topbar-brand-buddy,.token-icon,.topbar-token-pill,.topbar-pill) { color: var(--brand-ink); }
+:root[data-design-system='carbon'] body .shell :is(.topbar-token-pill,.topbar-pill) { background: #f5f2f7; border-color: var(--brand-line); box-shadow: none; }
+:root[data-design-system='carbon'] body .sidebar :is(.add-item,.skill-count,.sidebar-width-btn.active) { background: #6d4c8f; color: #fff; border-color: #b3a2bf; }
+:root[data-design-system='carbon'] body .sidebar .project-select { background: #43325a; color: #f5f0f8; border-color: #a899b3; }
+:root[data-design-system='carbon'] body .sidebar :is(.section-heading,.brand-subtitle,.muted-small,.skill-description,.sidebar-bottom,.sidebar-width-label,.mode-item small) { color: #e1d7e7; }
+:root[data-design-system='carbon'] body .welcome-buddy .welcome-buddy-hero { border-color: #a08aae; box-shadow: 0 8px 24px #43325a10; }
+:root[data-design-system='carbon'] body .shell .composer { border-color: var(--brand-line); box-shadow: 0 4px 18px #43325a08; }
+@media (max-width: 700px) {
+  :root[data-design-system='carbon'] body .shell .main > .topbar {
+    background: #fcfbfd;
+    border-bottom: 1px solid var(--brand-line);
+  }
+  :root[data-design-system='carbon'] body .shell .main > .topbar .topbar-heading h1 { color: #403447; }
+  :root[data-design-system='carbon'] body .shell .main > .topbar .topbar-brand-buddy { color: var(--brand-accent); }
+  :root[data-design-system='carbon'] body .shell .main > .topbar :is(button,select) {
+    color: var(--brand-ink);
+    background: #f5f2f7;
+    border-color: var(--brand-line);
+    color-scheme: light;
+  }
+  :root[data-design-system='carbon'] body .shell .main > .topbar :is(button,select):focus-visible { outline-color: var(--brand-accent); }
+  :root[data-design-system='carbon'] body .shell .main > .topbar .workspace-menu-chevron { color: var(--brand-ink); }
+}
+
+/* Typography: IBM Plex Sans is bundled (400/600/700); bold headings, labels and actions for clearer hierarchy. */
+:root[data-design-system='carbon'] body :is(h1,h2,h3,.topbar-heading h1,.buddy-card-title,.welcome-copy h1,.welcome-finish h2,.app-dialog h2,.app-dialog h3) { font-weight: 700; letter-spacing: -.01em; }
+:root[data-design-system='carbon'] body :is(h4,h5,h6,label,legend,th,.section-heading,.buddy-input-label,.welcome-practice label,.welcome-path strong,.mode-item strong,.filter-tab) { font-weight: 600; }
+:root[data-design-system='carbon'] body :is(button,.feature-primary,.office-primary,.save-button,.send-button,.welcome-primary,.buddy-submit-button,.buddy-sso-title,.buddy-switch-link,.add-item) { font-weight: 700; }
+:root[data-design-system='carbon'] body :is(.brand-title,.buddy-login-brand,.buddy-brand-signature,.welcome-brand strong) { font-weight: 700; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-copy > p { font-weight: 400; }

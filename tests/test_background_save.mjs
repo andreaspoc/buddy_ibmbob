@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {transpile} from './frontend_transpile.mjs';
+const exports={};
+new Function('exports',transpile(readFileSync(new URL('../web/src/lib/backgroundSave.ts',import.meta.url),'utf8'),true))(exports);
+let reads=0;
+const result=await exports.waitForBackgroundSave('old-job',async id=>{assert.equal(id,'old-job');return {status:++reads<3?'running':'completed'}},new AbortController().signal,async()=>{});
+assert.equal(result.status,'completed'); assert.equal(reads,3);
+assert.equal((await exports.waitForBackgroundSave('failed-job',async()=>({status:'failed'}),new AbortController().signal)).status,'failed');
+const abort=new AbortController();abort.abort();
+await assert.rejects(exports.waitForBackgroundSave('job',async()=>{throw Error('must not read')},abort.signal));
+console.log('PASS background writer barrier, terminal failure and cancellation');

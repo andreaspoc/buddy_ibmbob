@@ -1,0 +1,27 @@
+/* Shared Buddy canvas for new and existing conversations. */
+.conversation{background:var(--workspace-canvas,#fcfaff)}
+.conversation-new .welcome.welcome-buddy{max-width:870px;margin:22px auto 28px;text-align:left}
+.welcome-buddy .welcome-buddy-hero{position:relative;isolation:isolate;overflow:hidden;padding:28px 32px 30px;border:1px solid #8a54b2;border-radius:22px;background:var(--brand-surface-background);box-shadow:0 12px 32px #55247b16;color:#fff}
+.welcome-buddy-hero::after{content:'';position:absolute;z-index:-1;pointer-events:none;right:-56px;top:-106px;width:300px;height:300px;border:1px solid #d1a4ed30;border-radius:50%;box-shadow:0 0 0 42px #c793e611,0 0 0 85px #c793e608}
+.welcome-buddy .welcome-icon{display:grid;float:left;margin:0 12px 0 0;width:34px;height:34px;border-radius:11px;background:#ffffff16;border:1px solid #ffffff38;box-shadow:none;color:#fff;font-size:21px}
+.welcome-buddy .welcome-top-row{min-height:34px;gap:10px;margin:0 0 20px}
+.welcome-buddy .eyebrow{color:#ead5fa;letter-spacing:1.6px;font-size:11px;font-weight:650}
+
+
+.welcome-buddy .welcome-buddy-hero h2{clear:both;margin:0 0 12px;color:#fff;font-size:clamp(23px,2.2vw,30px);font-weight:550;letter-spacing:-.8px;line-height:1.25;max-width:650px}
+.welcome-buddy .welcome-buddy-hero p{color:#eadcf3;margin:0;max-width:600px;font-size:12px;line-height:1.8}
+.welcome-buddy .welcome-buddy-hero p strong{color:#fff;background:#ffffff16;border:1px solid #ffffff25;border-radius:4px;padding:1px 5px}
+.welcome-buddy .intelligence-starters{justify-content:flex-start;margin:18px 0;gap:8px}
+.welcome-buddy .intelligence-starters button{background:#f9f3ff;border-color:#d7bee7;color:#613881;box-shadow:0 2px 5px #64358805}
+.welcome-buddy .intelligence-starters button:hover{background:#e9d7f7;border-color:#b48bce}
+.welcome-buddy .suggestions{margin-top:0}
+.welcome-buddy .suggestion{background:linear-gradient(135deg,#fcf9ff,#f2e9fb);border:1px solid #dbc7ea;border-radius:15px;box-shadow:0 3px 10px #59367608}
+.welcome-buddy .suggestion:hover{background:linear-gradient(135deg,#fff,#ead8f8);border-color:#b78cd0;box-shadow:0 5px 16px #59367610}
+.welcome-buddy .suggestion-icon{background:#e9d8f6;color:#7537a1}
+.welcome-buddy .suggestion-tag{background:#e9d8f6;color:#713c95}
+.welcome-buddy .suggestion-content strong{color:#4c2c64}
+.welcome-buddy .suggestion-content small{color:#796187}
+.welcome-buddy :is(button,a):focus-visible{outline:3px solid #b179da;outline-offset:3px}
+.welcome-buddy .welcome-buddy-hero button:focus-visible{outline-color:#f3d7ff}
+@media(max-width:700px){.conversation-new .welcome.welcome-buddy{margin-top:12px}.welcome-buddy .welcome-buddy-hero{padding:22px;border-radius:17px}.welcome-buddy .welcome-top-row{margin-bottom:18px}.welcome-buddy .intelligence-starters{gap:6px}.welcome-buddy .intelligence-starters button{font-size:11px;padding:8px 11px}}
+@media(max-width:400px){.welcome-buddy .welcome-buddy-hero{padding:18px}.welcome-buddy .welcome-top-row{align-items:flex-start;gap:8px}.welcome-buddy .eyebrow{font-size:9px;letter-spacing:.8px}.welcome-buddy .welcome-icon{width:28px;height:28px;margin-right:8px;font-size:17px}}

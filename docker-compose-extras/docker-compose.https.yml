@@ -1,0 +1,25 @@
+# Overlay: docker compose -f docker-compose.yml -f docker-compose.https.yml up -d
+# Install a certificate and configure the canonical URL before activation.
+services:
+  bob-agent:
+    environment:
+      BOB_UI_SECURE_COOKIE: "1"
+  bob-worker:
+    environment:
+      BOB_UI_SECURE_COOKIE: "1"
+  bob-gateway:
+    environment:
+      BOB_UI_SECURE_COOKIE: "1"
+  https-proxy:
+    image: haproxy:alpine
+    ports:
+      - "${BOB_BIND_IP:-0.0.0.0}:443:443"
+    volumes:
+      - ./deploy/https/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - ./deploy/https/certs:/etc/haproxy/certs:ro
+    networks:
+      - default
+    depends_on:
+      - bob-agent
+      - bob-gateway
+    restart: unless-stopped

@@ -1,0 +1,20 @@
+.msg-actions .answer-feedback-trigger { border:0; padding:5px 8px; background:transparent; color:#78668a; font:inherit; font-size:12px; cursor:pointer; }
+.msg-actions .answer-feedback-trigger:hover:not(:disabled) { color:#6922aa; background:#f2e9fc; border-radius:8px; }
+.answer-feedback-dialog { width:min(540px,calc(100vw - 32px)); max-height:calc(100dvh - 40px); overflow:auto; padding:24px; border:1px solid #dfd3f0; border-radius:12px; background:#fff; color:#35233e; font-family:inherit; font-size:13px; }
+.answer-feedback-dialog::backdrop { background:#24133566; }
+.answer-feedback-dialog header, .answer-feedback-dialog footer { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.answer-feedback-dialog h2 { font-family:inherit; color:#352045; margin:0; font-size:18px; font-weight:600; }
+.answer-feedback-dialog p { color:#78668a; line-height:1.65; margin:16px 0; }
+.answer-feedback-dialog label { display:flex; flex-direction:column; gap:8px; margin:18px 0; color:#4a365c; font-size:12px; }
+.answer-feedback-dialog button, .answer-feedback-dialog select, .answer-feedback-dialog textarea { font:inherit; border:1px solid #dfcee9; border-radius:8px; background:#fff; color:#35233e; padding:8px 12px; }
+.answer-feedback-dialog button { color:#653480; cursor:pointer; }
+.answer-feedback-dialog textarea { resize:vertical; }
+.answer-feedback-dialog footer { justify-content:flex-end; margin-top:22px; }
+.answer-feedback-dialog button:disabled { opacity:.45; cursor:default; }
+.answer-feedback-dialog :focus-visible { outline:2px solid #9333ea; outline-offset:2px; }
+.answer-feedback-dialog .feedback-error { color:#a22c50; }
+.feedback-review { display:block; border-top:1px solid #e4d9ec; padding:16px 0; }
+.feedback-review header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; }
+.feedback-review p { white-space:pre-wrap; overflow-wrap:anywhere; }
+.feedback-review details { margin:12px 0; }
+.feedback-review-answer { max-height:260px; overflow:auto; white-space:pre-wrap; overflow-wrap:anywhere; padding:12px 0; line-height:1.6; }

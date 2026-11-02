@@ -1,0 +1,9 @@
+.setup-wizard { position: fixed; inset: 0; overflow: auto; display: grid; place-items: center; padding: 16px; background: var(--cds-background, #f4f4f4); }
+.setup-card { width: min(100%, 520px); padding: 32px; background: var(--cds-layer, #fff); border: 1px solid var(--cds-border-subtle, #e0e0e0); }
+.setup-step { margin-bottom: 8px; font-size: 0.875rem; color: var(--cds-text-secondary, #525252); }
+.setup-fields { display: flex; flex-direction: column; gap: 20px; }
+.setup-fields h1, .setup-fields h2 { font-size: 1.5rem; font-weight: 400; }
+.setup-logo { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; }
+.setup-logo img { object-fit: contain; }
+.setup-logo label { display: flex; flex-direction: column; gap: 8px; font-size: 0.875rem; }
+.setup-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; }

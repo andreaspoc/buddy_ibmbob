@@ -1,0 +1,29 @@
+<!doctype html><html lang="en"><head><title>Shared conversation test fixture</title><meta name="viewport" content="width=device-width,initial-scale=1"></head><body><div id="root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {App} from '/src/App.tsx';
+import '/src/styles.css';
+// Entirely synthetic browser transport; no real account or conversation is used.
+const session='a'.repeat(32), token='b'.repeat(43), own='d'.repeat(32);
+history.replaceState(null,'','/shared/'+session+'/'+token);
+window.sharedTest={signedIn:false,revoked:false,requests:[]};
+const diagram=[{type:'diagram',id:'SharedTestFlow',kind:'flow',title:'Synthetic shared flow',direction:'LR'},{type:'node',id:'First',label:'Synthetic first step',shape:'rounded'},{type:'node',id:'Second',label:'Synthetic second step',shape:'rounded'},{type:'edge',id:'Link',source:'First',target:'Second'}].map(JSON.stringify).join('\n');
+const text='## Synthetic formatted answer\n\n**Important test text**\n\n| Stage | Result |\n| --- | --- |\n| Synthetic stage | Ready |\n\n```bobdiagram\n'+diagram+'\n```\n\n[Private file](private.csv)\n\n![Private image](private.png)\n\n<img src="x" onerror="window.sharedXss=true">';
+const snapshot={session_id:session,title:'Synthetic shared conversation',messages:[{role:'user',content:'Synthetic shared question'},{role:'assistant',content:text}]};
+const json=(data,status=200)=>new Response(JSON.stringify(data),{status,headers:{'Content-Type':'application/json'}});
+window.fetch=async(input,init={})=>{
+ const path=new URL(typeof input==='string'?input:input.url,location.origin).pathname;
+ sharedTest.requests.push(path);
+ if(path==='/auth/status')return json({user:sharedTest.signedIn?{username:'testreader',is_admin:false}:null,keycloak_configured:true,local_login_enabled:true});
+ if(path==='/auth/login'){sharedTest.signedIn=true;return json({username:'testreader',is_admin:false});}
+ if(path==='/personalization/tutorials')return json({disabled:true});
+ if(path.startsWith('/api/shared/'))return !sharedTest.signedIn?json({detail:'Sign in required'},401):sharedTest.revoked?json({detail:'Share not found'},404):json(snapshot);
+ if(path==='/sessions')return json([{id:own,title:'My own conversation',updated:'2026-10-12'}]);
+ if(path==='/modes')return json([{slug:'agent',name:'Agent',description:'Synthetic mode',kind:'built-in'}]);
+ if(path==='/auth/microsoft/status')return json({configured:false,connected:false});
+ if(path==='/workflows/capabilities')return json({web_search:false});
+ if(path.startsWith('/sessions/'+session))throw new Error('Shared UI tried to read sender private APIs');
+ return json([]);
+};
+createRoot(document.getElementById('root')).render(React.createElement(App));
+</script></body></html>

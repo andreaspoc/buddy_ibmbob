@@ -1,0 +1,12 @@
+.unified-search { width: min(820px, calc(100vw - 32px)); max-height: 85vh; overflow: auto; padding: 20px; }
+.unified-search-controls { display: flex; gap: 16px; margin-top: 16px; }
+.unified-search-controls label { display: flex; flex-direction: column; gap: 6px; }
+.unified-search-controls label:first-child { flex: 1; }
+.unified-search-controls input, .unified-search-controls select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid var(--border-color, #656174); background: var(--bg-secondary, #252331); color: inherit; }
+.unified-search-help { opacity: .75; font-size: .85rem; }
+.unified-search-results { list-style: none; padding: 0; display: grid; gap: 12px; }
+.unified-search-results li { border: 1px solid var(--border-color, #656174); border-radius: 10px; padding: 12px; overflow-wrap: anywhere; }
+.unified-search-results button, .unified-search-results a { display: block; text-align: start; font-weight: 600; color: inherit; }
+.unified-search-results p { margin-bottom: 0; white-space: pre-wrap; }
+.unified-search-kind { display: block; font-size: .75rem; opacity: .7; margin-bottom: 4px; }
+@media (max-width: 600px) { .unified-search-controls { flex-direction: column; } }

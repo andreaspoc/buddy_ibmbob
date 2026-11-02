@@ -1,0 +1,38 @@
+# Optional separate DecisionsBuddy service; default mode is embedded in core.
+services:
+  bob-agent:
+    environment:
+      BUDDY_DECISIONS_ENABLED: "1"
+      BUDDY_DECISIONS_PLUGIN_URL: http://decisions-plugin:8080
+    depends_on:
+      decisions-plugin:
+        condition: service_healthy
+  bob-gateway:
+    environment:
+      BUDDY_DECISIONS_ENABLED: "1"
+      BUDDY_DECISIONS_PLUGIN_URL: http://decisions-plugin:8080
+  bob-worker:
+    environment:
+      BUDDY_DECISIONS_ENABLED: "1"
+      BUDDY_DECISIONS_PLUGIN_URL: http://decisions-plugin:8080
+  decisions-plugin:
+    image: "${BUDDY_DECISIONS_IMAGE:-buddy-decisions:1.0.0}"
+    build:
+      context: .
+      dockerfile: plugins/decisions/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+    environment:
+      DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL}"
+      BUDDY_MEMORY_SIGNING_KEY: "${BUDDY_MEMORY_SIGNING_KEY:-}"
+      BUDDY_CP4D_ENCRYPTION_KEY: "${BUDDY_CP4D_ENCRYPTION_KEY:-}"
+      BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS: "${BUDDY_DECISIONS_GOVERNANCE_TTL_SECONDS:-3600}"
+      KEYCLOAK_ISSUER: "${KEYCLOAK_ISSUER:-}"
+      KEYCLOAK_CLIENT_ID: "${KEYCLOAK_CLIENT_ID:-}"
+      PYTHONPATH: /opt/bob-a2a
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready',timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+    restart: unless-stopped

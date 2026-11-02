@@ -1,0 +1,69 @@
+# Overlay for docker-compose.yml OR docker-compose.remote.yml.
+# The plugin is unprivileged. Starting the host security daemon is opt-in:
+# --profile tetragon-host. Read plugins/tetragon/README.md before enabling it.
+services:
+  bob-agent:
+    environment:
+      BUDDY_TETRAGON_ENABLED: "1"
+      BUDDY_TETRAGON_PLUGIN_URL: http://tetragon-plugin:8080
+    depends_on:
+      tetragon-plugin:
+        condition: service_healthy
+  bob-gateway:
+    environment:
+      BUDDY_TETRAGON_ENABLED: "1"
+      BUDDY_TETRAGON_PLUGIN_URL: http://tetragon-plugin:8080
+  tetragon-plugin:
+    image: "${BUDDY_TETRAGON_IMAGE:-buddy-tetragon:1.0.0}"
+    build:
+      context: .
+      dockerfile: plugins/tetragon/Dockerfile
+      args:
+        BUDDY_RUNTIME_IMAGE: "${BUDDY_RUNTIME_IMAGE:-bob-acp-runtime:1.1.0}"
+        TETRAGON_IMAGE: "${TETRAGON_IMAGE:-quay.io/cilium/tetragon:v1.7.1@sha256:afc9458ba4bc3f2795da3df6b03d88ce50e175ac3903027de8036e2046b84a02}"
+    environment:
+      DATABASE_URL: "${DATABASE_URL:?Set DATABASE_URL}"
+      PUBLIC_BASE_URL: "${PUBLIC_BASE_URL:-http://localhost:3000}"
+      BUDDY_TETRA_BIN: /usr/local/bin/tetra
+      BUDDY_TETRAGON_ADDRESS: unix:///var/run/tetragon/tetragon.sock
+      BUDDY_TETRAGON_DB: /data/rules.sqlite
+      PYTHONPATH: /opt/bob-a2a
+    volumes:
+      - buddy-tetragon-data:/data
+      - buddy-tetragon-socket:/var/run/tetragon:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,mode=1777
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/ready',timeout=5)"]
+      interval: 10s
+      timeout: 6s
+      retries: 12
+    restart: unless-stopped
+  tetragon-host:
+    profiles: [tetragon-host]
+    image: "${TETRAGON_IMAGE:-quay.io/cilium/tetragon:v1.7.1@sha256:afc9458ba4bc3f2795da3df6b03d88ce50e175ac3903027de8036e2046b84a02}"
+    privileged: true
+    pid: host
+    cgroup: host
+    network_mode: none
+    command:
+      - --server-address=unix:///var/run/tetragon/tetragon.sock
+      - --enable-k8s-api=false
+      - --enable-tracing-policy-crd=false
+      - --health-server-address=
+      - --log-format=json
+    volumes:
+      - type: bind
+        source: /sys/kernel/btf/vmlinux
+        target: /var/lib/tetragon/btf
+        read_only: true
+        bind:
+          create_host_path: false
+      - buddy-tetragon-socket:/var/run/tetragon
+    restart: unless-stopped
+volumes:
+  buddy-tetragon-data:
+  buddy-tetragon-socket:

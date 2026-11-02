@@ -1,0 +1,7 @@
+SYNTHETIC TEST DATA — not actual company revenue.
+Currency: EUR. Period: an unspecified synthetic reporting period.
+North: revenue 20000; costs 12000.
+South: revenue 15000; costs 9000.
+West: revenue 20000; costs 14000.
+Profit = revenue minus costs. Profit margin = profit divided by revenue.
+Confidential test code for this private attachment: ORCHID-42.

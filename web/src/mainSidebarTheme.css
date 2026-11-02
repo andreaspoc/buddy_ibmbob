@@ -1,0 +1,79 @@
+/* Charcoal navigation with plum selection and lavender focus accents. */
+:root[data-design-system='carbon']:root { --buddy-sidebar-background: #1d1924; }
+:root[data-design-system='carbon']:root body .shell .sidebar {
+  --sidebar-text: #f4f4f4;
+  --sidebar-secondary: #c6c6c6;
+  --sidebar-card-background: #292332;
+  --sidebar-border: #574963;
+  background: #1d1924;
+  color: var(--sidebar-text);
+  border-right-color: #3b3048;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.brand-name,.mode-item,.tasks-nav,.skill-item,.sidebar-nav-label,.template-studio-trigger,.brand-home,.project-select,.account-row button) { color: var(--sidebar-text); }
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.brand-subtitle,.section-heading,.sidebar-group-label,.skill-description,.mode-item small,.sidebar-bottom,.muted-small,.sidebar-width-label,.account-row,.sidebar-empty,.sidebar-hint) { color: var(--sidebar-secondary); }
+:root[data-design-system='carbon']:root body .shell .sidebar .brand-name span { color: #d4bbff; }
+:root[data-design-system='carbon']:root body .shell .sidebar .sidebar-template-studio :is(strong,span) { color: #f4f4f4; }
+:root[data-design-system='carbon']:root body .shell .sidebar .sidebar-template-studio small { color: #c6c6c6; }
+:root[data-design-system='carbon']:root body .shell .sidebar .tasks-nav svg { stroke: #d4bbff; }
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.sidebar-bottom,.sidebar-library-label,.sidebar-width-controls) { border-color: #3b3048; }
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.skill-item,.mcp-connection-card,.sidebar-filter-tabs,.sidebar-template-studio,.project-select,.sidebar-width-btn) {
+  background: #292332;
+  border-color: #574963;
+  color: var(--sidebar-text);
+  color-scheme: dark;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.mode-item,.tasks-nav,.skill-item,.mcp-connection-card,.section-heading,.sidebar-width-btn,.filter-tab):hover {
+  background: #352b41;
+  color: #fff;
+  border-color: #574963;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.mode-item.active,.tasks-nav.active,.filter-tab.active,.sidebar-width-btn.active) {
+  background: #3b3048;
+  color: #fff;
+  border-color: #8d8d8d;
+  box-shadow: inset 3px 0 #be95ff;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .filter-tab { color: #c6c6c6; }
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.add-item,.skill-count,.skill-symbol,.tab-badge,.sidebar-nav-badge) {
+  background: #3b3048;
+  color: #e8daff;
+  border-color: #574963;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(button,a,select):focus-visible { outline: 2px solid #be95ff; outline-offset: -2px; }
+:root[data-design-system='carbon']:root body .shell .sidebar select option { background: #292332; color: #f4f4f4; }
+
+/* Workspace navigation: Office, Notes, project files and People conversations. */
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) {
+  --chat-muted: #c6c6c6;
+  --chat-line: #574963;
+  background: var(--buddy-sidebar-background);
+  color: #f4f4f4;
+  border-color: #3b3048;
+  color-scheme: dark;
+}
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) :is(button,a,h2,h3,strong,label) {
+  color: #f4f4f4;
+}
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) :is(p,small,.office-caption,.notes-collections-heading,.member-chat-muted) { color: #c6c6c6; }
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) button {
+  background: transparent;
+  border-color: transparent;
+}
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) button:hover:not(:disabled) {
+  background: #352b41;
+  color: #fff;
+}
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) button:is(.active,.is-active,[aria-pressed='true'],[aria-selected='true']) {
+  background: #3b3048;
+  color: #fff;
+  border-color: #8d8d8d;
+  box-shadow: inset 3px 0 #be95ff;
+}
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) :is(input,select,.member-chat-search) {
+  background: #292332;
+  color: #f4f4f4;
+  border-color: #574963;
+}
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) input::placeholder { color: #c6c6c6; opacity: 1; }
+:root[data-design-system='carbon']:root body :is(.office-suite.buddy-surface .office-sidebar,.notes-workspace .notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) :is(button,a,input,select):focus-visible { outline: 2px solid #be95ff; outline-offset: -2px; }

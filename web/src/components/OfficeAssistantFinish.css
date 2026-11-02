@@ -1,0 +1,82 @@
+/* One branded assistant surface for Word, Excel, slides, PDF and HTML. */
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant {
+  min-width: 0;
+  max-width: calc(100vw - 24px);
+  background: #ffffff;
+  color: #382b45;
+  border: 1px solid #e2d9ea;
+  border-radius: var(--buddy-control-radius);
+  font: 14px/1.6 var(--cds-font-family, system-ui, sans-serif);
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant > header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  --toolbar-background: #583877;
+  --toolbar-text: #ffffff;
+  --toolbar-border: transparent;
+  gap: 12px;
+  padding: 16px;
+  min-height: 76px;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant header small { font-size: 12px; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant > header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .office-assistant-connection {
+  padding: 4px 10px;
+  border: 1px solid #ffffff45;
+  border-radius: var(--buddy-control-radius);
+  font-size: 11px;
+  background: #ffffff18;
+  color: #ffffff;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant > header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .office-assistant-connection.is-ready {
+  background: #e3f3eb;
+  border-color: #c9e5d7;
+  color: #285c43;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-log { padding: 16px; background: #faf9fc; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-intro { padding: 8px 0; color: #655c6d; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-intro > span { font-size: 18px; color: #382b45; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-intro p { margin: 10px 0 18px; font-size: 14px; line-height: 1.65; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-chips > button {
+  padding: 10px 14px !important;
+  border-radius: var(--buddy-control-radius) !important;
+  background: #ffffff !important;
+  color: #583877 !important;
+  border-color: #e2d9ea !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  box-shadow: 0 1px 3px #34204308;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-chips > button:hover:not(:disabled) {
+  background: #f3eff8 !important;
+  border-color: #b39cc8 !important;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-user {
+  background: #583877;
+  color: #ffffff;
+  border-color: #583877;
+  border-radius: 20px 20px 6px 20px;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-text .markdown-body { font-size: 14px; line-height: 1.65; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant :is(.office-assistant-preview,.office-assistant-plan-content) { border-radius: var(--buddy-control-radius); }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant :is(.office-assistant-actions button,.office-assistant-composer button,.office-assistant-context select) {
+  min-height: 38px;
+  padding: 8px 14px !important;
+  border-radius: var(--buddy-control-radius) !important;
+  font-size: 13px !important;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-composer { background: #ffffff; padding: 14px; border-color: #e2d9ea; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-composer textarea {
+  background: #ffffff;
+  border: 1px solid #d8c9e5;
+  border-radius: var(--buddy-control-radius) !important;
+  padding: 12px;
+  min-height: 88px;
+  color: #382b45;
+  font-size: 14px;
+  line-height: 1.5;
+}
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-composer textarea::placeholder { color: #75677f; opacity: 1; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-composer small { font-size: 11px; line-height: 1.5; color: #655c6d; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant button.feature-primary { background: #583877; border-color: #583877; color: #ffffff; }
+:root[data-design-system='carbon']:root body .office-assistant.office-assistant button.feature-primary:hover:not(:disabled) { background: #43285e; border-color: #43285e; }
+@media (max-width: 600px) {
+  :root[data-design-system='carbon']:root body .office-assistant.office-assistant .office-assistant-composer textarea { font-size: 16px; }
+}

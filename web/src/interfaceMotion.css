@@ -1,0 +1,136 @@
+:root { --motion-fast: 110ms; --motion-standard: 150ms; --motion-enter: 240ms; --motion-slow: 400ms; --motion-ease: cubic-bezier(.2,0,.38,.9); --motion-entrance: cubic-bezier(0,0,.38,.9); --motion-exit: cubic-bezier(.2,0,1,.9); }
+.workspace-transfer-flight {
+  position: fixed; z-index: 2500; pointer-events: none; display: flex; align-items: center; gap: 10px;
+  padding: 14px; border: 1px solid #c6a0de; border-radius: 12px; background: #fff; color: #492165;
+  box-shadow: 0 12px 36px #30144730; overflow: hidden;
+}
+.workspace-transfer-flight > span { font-size: 26px; color: #7837a7; }
+.workspace-transfer-flight > strong { white-space: nowrap; text-overflow: ellipsis; overflow: hidden; font-size: 14px; }
+[data-copy-state="copied"] { color: #326b49 !important; background: #edf8f0 !important; border-color: #b5d8bd !important; }
+.copy-error { color: #a32c43; font-size: 12px; }
+.upload-complete-mark { display: inline-grid; place-items: center; width: 23px; height: 23px; border-radius: 50%; background: #e5f4e9; color: #28623f; font-weight: 700; flex: none; }
+.upload-complete-mark[data-preparing="true"] { color: #642995; background: #f1e6f9; }
+.task-open-result { display: inline-flex; gap: 6px; align-items: center; color: #642995; font-size: 12px; font-weight: 700; }
+.task-card[data-just-completed="true"] { border-color: #b58ace; box-shadow: 0 0 0 3px #c9a4e535, 0 6px 20px #49216514; }
+[data-motion-ghost] { pointer-events: none !important; }
+@media (prefers-reduced-motion: no-preference) {
+  :where(button,a,input,textarea,select,summary) { transition: background-color var(--motion-fast), border-color var(--motion-fast), color var(--motion-fast), box-shadow var(--motion-fast), opacity var(--motion-fast), scale var(--motion-fast); }
+  :where(button,[role="button"]):active:not(:disabled) { scale: .99; }
+  :where(.suggestion,.task-card,.sticky-note,.office-file-card,.notes-card,.app-card,.installed-app-card,.integration-card) { transition: translate var(--motion-standard) var(--motion-ease), box-shadow var(--motion-standard), border-color var(--motion-standard); }
+  :where(.suggestion,.task-card,.office-file-card,.notes-card,.app-card,.installed-app-card,.integration-card):hover { translate: 0 -1px; }
+  .sticky-note:hover { translate: 0 -1px; }
+  .sidebar { transition: transform var(--motion-enter) var(--motion-ease), visibility var(--motion-enter); }
+  body.resizing-sidebar .sidebar { transition: none; }
+  .chat-layout-panel,.chat-layout-main { transition: none; }
+  .feature-overlay,.sidebar-backdrop,.office-modal-backdrop { animation: workspace-backdrop-in var(--motion-slow) var(--motion-ease); }
+  [data-copy-state="copied"],.upload-complete-mark { animation: workspace-success-pop var(--motion-enter) var(--motion-ease); }
+  .task-card[data-just-completed="true"] { animation: workspace-completed-glow var(--motion-slow) var(--motion-ease); }
+  .task-notice { animation: workspace-notice-in var(--motion-enter) var(--motion-ease); }
+  .thinking-chevron,.workspace-menu-chevron { transition: rotate var(--motion-standard) var(--motion-ease); }
+  @keyframes workspace-backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes workspace-success-pop { 0% { scale: .98; opacity: .3; } 60% { scale: 1.02; opacity: 1; } 100% { scale: 1; } }
+  @keyframes workspace-completed-glow { 0% { box-shadow: 0 0 0 0 #b58ace80; } 70% { box-shadow: 0 0 0 8px #b58ace00; } }
+  @keyframes workspace-notice-in { from { opacity: 0; translate: 4px 0; } to { opacity: 1; translate: 0 0; } }
+}
+@media (prefers-reduced-motion: reduce) {
+  .workspace-transfer-flight { display: none; }
+  :where(.sidebar,.suggestion,.task-card,.sticky-note,.office-file-card,.notes-card,.app-card,.installed-app-card,.integration-card,.feature-overlay,.task-notice,.upload-complete-mark,[data-copy-state]) { animation: none !important; transition: none !important; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .office-file-table tbody tr { transition: background-color var(--motion-standard), box-shadow var(--motion-standard); }
+  .office-file-table tbody tr:hover { background: #f6effb; box-shadow: inset 3px 0 #a568d1; }
+  .upload-pending .upload-complete-mark { animation: upload-in-progress 1.2s ease-in-out infinite; }
+  @keyframes upload-in-progress { 50% { translate: 0 -1px; opacity: .5; } }
+}
+
+/* A paper flight carries the current picker to its destination mode. */
+.conversation-stage, .conversation-page {
+  display: flex; flex-direction: column; flex: 1 1 0%;
+  width: 100%; min-height: 0; position: relative;
+}
+.conversation-stage { overflow: hidden; }
+.workspace-chat-mode {
+  display: inline-grid; grid-template-columns: 1fr 1fr; position: relative; isolation: isolate; gap: 2px; padding: 3px;
+  border: 1px solid var(--cds-border-subtle-01, #dedbe3);
+  border-radius: 8px; background: var(--cds-layer-01, #f4f4f4);
+}
+.workspace-chat-mode button {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 32px; padding: 6px 10px; border: 0; border-radius: 5px;
+  background: transparent; color: var(--cds-text-secondary, #525252);
+  font: inherit; font-size: 12px; white-space: nowrap; cursor: pointer;
+}
+.workspace-chat-mode button[aria-pressed="true"] {
+  color: var(--cds-text-primary, #161616); font-weight: 600;
+}
+.workspace-chat-mode button:focus-visible { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: 1px; }
+.workspace-chat-mode button:disabled { cursor: default; opacity: .6; }
+/* One quiet, stationary symbol connects skills with collaborating agents. */
+.conversation-mode-transition {
+  position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
+  width: 72px; height: 72px; z-index: 10; pointer-events: none;
+  border-radius: 50%; background: var(--cds-background, #fff);
+  color: var(--cds-interactive, #6929c4);
+  display: grid; place-items: center;
+}
+.conversation-mode-transition svg { position: absolute; width: 36px; height: 36px; }
+@media (prefers-reduced-motion: reduce) { .conversation-mode-transition { display: none; } }
+.skill-picker.is-moving-to-notes, .conversation-mode-heading.is-moving-to-notes { opacity: 0; pointer-events: none; }
+.sticky-note-flight.skill-picker, .sticky-note-flight.conversation-mode-heading {
+  --paper: #eee3ff; --paper-edge: #dbcaee; --paper-deep: #d7c4ed;
+}
+
+.topbar-agent-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: var(--cds-interactive, #0f62fe);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.conversation-mode-heading {
+  display: flex; align-items: center; gap: 10px; flex: none;
+  padding: 12px 24px; border-bottom: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  background: var(--cds-background, #fff);
+}
+.conversation-mode-icon {
+  display: grid; place-items: center; width: 36px; height: 36px; border-radius: 8px;
+  background: #f1e8fb; color: #6929c4;
+}
+.conversation-page[data-mode="agents"] .conversation-mode-icon { background: #e8f1ff; color: #0f62fe; }
+.conversation-mode-heading > div { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.conversation-mode-heading strong { font-size: 14px; }
+.conversation-mode-heading div > span { font-size: 12px; color: var(--cds-text-secondary, #525252); }
+@media (max-width: 480px) { .conversation-mode-heading { padding: 10px 12px; } }
+
+.workspace-chat-mode::before {
+  content: ''; position: absolute; z-index: -1; top: 3px; bottom: 3px; left: 3px;
+  width: calc((100% - 8px) / 2); border-radius: 5px;
+  background: var(--cds-background, #fff); box-shadow: 0 1px 3px #00000016;
+}
+.workspace-chat-mode[data-mode="agents"]::before { transform: translateX(calc(100% + 2px)); }
+@media (prefers-reduced-motion: no-preference) {
+  .workspace-chat-mode::before { transition: transform var(--motion-enter) var(--motion-ease); }
+}
+
+/* Preserve the moving selection surface within the shared toolbar theme. */
+.workspace-navigation .workspace-chat-mode button {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+}
+.workspace-navigation .workspace-chat-mode button[aria-pressed="true"] {
+  color: var(--cds-text-primary, #161616) !important;
+}
+
+.conversation-page.is-moving-to-notes { opacity: 0; pointer-events: none; }
+.conversation-page.sticky-note-flight {
+  --paper: #eee3ff; --paper-edge: #dbcaee; --paper-deep: #d7c4ed;
+  min-height: 0; flex: none; padding: 0; border: 0; border-radius: 18px;
+}
+.conversation-flight-symbol { object-fit: contain; }

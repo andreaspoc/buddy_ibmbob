@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Interactive Presentation Template</title>
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<!-- Chart.js & GSAP -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js" integrity="sha384-NrKB+u6Ts6AtkIhwPixiKTzgSKNblyhlk0Sohlgar9UHUBzai/sgnNNWWd291xqt" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+
+<style>
+  /* ==========================================================================
+     1. DESIGN SYSTEM & THEME TOKENS
+     Adjust these CSS variables to re-theme the entire presentation.
+     ========================================================================== */
+  :root {
+    --bg: #0d0818;
+    --bg-alt: #150a24;
+    --surface: #1c1030;
+    --line: #30224a;
+    --brand-primary: #a63bff;   /* Main accent (e.g. Your Organization Purple) */
+    --brand-secondary: #ff7a1a; /* Secondary accent (e.g. Your Organization Orange) */
+    --brand-cyan: #5b8def;      /* Tertiary accent */
+    --green: #4ade95;           /* Status: Healthy / Complete */
+    --amber: #ffb648;           /* Status: At risk / Pending */
+    --coral: #ff5470;           /* Status: Critical / Delayed */
+    --text: #eef3fa;            /* Primary light text */
+    --muted: #8ea0bb;           /* Secondary muted text */
+    --muted-dim: #5d7191;       /* Tertiary dimmed text / borders */
+    --font-heading: 'IBM Plex Sans', sans-serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0; width: 100%; height: 100%;
+    background: var(--bg); color: var(--text);
+    font-family: var(--font-body);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, .num, .kicker { font-family: var(--font-heading); }
+  ::selection { background: var(--brand-primary); color: #1c0630; }
+
+  /* Ambient glowing background */
+  .ambient { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+  .ambient .glow {
+    position: absolute; border-radius: 50%; filter: blur(95px); opacity: .28;
+    mix-blend-mode: screen;
+  }
+  .glow.g1 { width: 40vw; height: 40vw; background: var(--brand-primary); top: -14vw; right: -8vw; animation: drift1 24s ease-in-out infinite; }
+  .glow.g2 { width: 32vw; height: 32vw; background: var(--brand-secondary); bottom: -10vw; left: -6vw; animation: drift2 28s ease-in-out infinite; }
+  @keyframes drift1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-4vw, 5vw); } }
+  @keyframes drift2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(5vw, -4vw); } }
+
+  .grain {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .035;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+
+  /* ==========================================================================
+     2. SLIDE CONTAINER & TYPOGRAPHY
+     ========================================================================== */
+  #deck { position: relative; width: 100%; height: 100%; z-index: 2; }
+  .slide {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 6.5vh 8vw;
+    opacity: 0; visibility: hidden;
+    overflow-y: auto; overflow-x: hidden;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .slide:first-child { opacity: 1; visibility: visible; }
+  .slide-inner { width: 100%; max-width: 1400px; margin: 0 auto; }
+
+  .kicker {
+    font-size: .95rem; font-weight: 500; color: var(--muted);
+    letter-spacing: .02em; margin: 0 0 1.1rem 0;
+  }
+  .kicker::before {
+    content: ''; display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--brand-primary); margin-right: .6rem; vertical-align: middle;
+    box-shadow: 0 0 10px 2px rgba(166, 59, 255, .6);
+  }
+
+  h1.display {
+    font-size: clamp(2.6rem, 5.6vw, 5.2rem);
+    line-height: 1.03; font-weight: 700; margin: 0 0 1rem 0; letter-spacing: -.01em;
+  }
+  h2.title {
+    font-size: clamp(1.9rem, 3.4vw, 3rem);
+    line-height: 1.08; font-weight: 700; margin: 0 0 1.6rem 0; letter-spacing: -.01em;
+  }
+  p.lede {
+    font-size: clamp(1rem, 1.3vw, 1.25rem); color: var(--muted);
+    max-width: 50ch; line-height: 1.5; margin: 0 0 2rem 0;
+  }
+  .accent { color: var(--brand-primary); }
+  .accent-alt { color: var(--brand-secondary); }
+
+  /* ==========================================================================
+     3. LAYOUT UTILITIES
+     ========================================================================== */
+  .split { display: grid; grid-template-columns: 1fr 1fr; gap: 4vw; align-items: center; }
+  .split.narrow-right { grid-template-columns: 1.15fr .85fr; }
+  .split.narrow-left { grid-template-columns: .85fr 1.15fr; }
+  .stagger { opacity: 0; }
+
+  /* Filter / Mode Switcher Chips */
+  .chips { display: flex; gap: .6rem; margin-bottom: 1.6rem; flex-wrap: wrap; }
+  .chip {
+    font-family: var(--font-body); font-size: .85rem; font-weight: 500;
+    color: var(--muted); background: transparent; border: 1px solid var(--line);
+    padding: .5rem 1rem; border-radius: 999px; cursor: pointer; transition: all .2s ease;
+    min-height: 44px;
+  }
+  .chip:hover { border-color: var(--brand-primary); color: var(--text); }
+  .chip.active { background: var(--brand-primary); border-color: var(--brand-primary); color: #1c0630; font-weight: 600; }
+
+  .chart-wrap { position: relative; height: min(46vh, 420px); width: 100%; }
+
+  /* Footnotes and citations */
+  .foot-note { margin-top: 1.8rem; color: var(--muted-dim); font-size: .82rem; }
+  .source-note { margin-top: 1.4rem; font-size: .8rem; color: var(--muted-dim); }
+  .source-note a { color: var(--muted-dim); text-decoration: underline; text-decoration-color: var(--line); }
+  .source-note a:hover { color: var(--brand-primary); }
+
+  /* ==========================================================================
+     4. COMPONENT: STAT ROW & CARDS
+     ========================================================================== */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 0; }
+  .stat { flex: 1 1 200px; padding: 0 2.2rem 0 0; margin-right: 2.2rem; border-right: 1px solid var(--line); }
+  .stat:last-child { border-right: none; }
+  .stat .num { font-size: clamp(2.4rem, 4vw, 3.8rem); font-weight: 700; line-height: 1; }
+  .stat .num small { font-size: .45em; color: var(--muted); font-weight: 500; margin-left: .15em; }
+  .stat .label { margin-top: .65rem; color: var(--muted); font-size: .95rem; }
+  .stat.trend-up .num { color: var(--green); }
+  .stat.trend-warn .num { color: var(--amber); }
+  .stat.trend-coral .num { color: var(--coral); }
+  .stat.trend-flat .num { color: var(--text); }
+
+  /* Circular Badge Stat Row */
+  .stat-circle-row { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: center; gap: 2rem 2.5rem; }
+  .stat-circle-wrap { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .stat-circle {
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-heading); font-weight: 700; line-height: 1.05;
+    border: 3px solid var(--brand-primary); background: rgba(166, 59, 255, .08); color: var(--text);
+    padding: .4rem;
+  }
+  .stat-circle.big { width: min(18vh, 160px); height: min(18vh, 160px); font-size: 1.5rem; }
+  .stat-circle.small { width: min(13vh, 118px); height: min(13vh, 118px); font-size: 1.1rem; }
+  .stat-circle.orange { border-color: var(--brand-secondary); background: rgba(255, 122, 26, .1); }
+  .stat-circle.green { border-color: var(--green); background: rgba(74, 222, 149, .1); }
+  .stat-circle-label { margin-top: .85rem; font-size: .85rem; color: var(--muted); max-width: 16ch; line-height: 1.3; }
+
+  /* ==========================================================================
+     5. COMPONENT: SVG PROGRESS RINGS
+     ========================================================================== */
+  .ring-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 3rem; margin-top: 1rem; }
+  .ring-block { display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .ring-block-title { font-weight: 600; font-size: 1.05rem; margin-bottom: 1.1rem; }
+  .ring { position: relative; width: min(28vh, 240px); height: min(28vh, 240px); flex: none; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring circle { fill: none; stroke-width: 10; }
+  .ring .track { stroke: var(--line); }
+  .ring .fill { stroke: var(--brand-primary); stroke-linecap: round; }
+  .ring.orange .fill { stroke: var(--brand-secondary); }
+  .ring.green .fill { stroke: var(--green); }
+  .ring .ring-label {
+    position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .ring .ring-label .num { font-size: 2.2rem; font-weight: 700; }
+  .ring .ring-label .sub { font-size: .82rem; color: var(--muted); margin-top: .2rem; }
+  .ring-block-sub { margin-top: 1rem; color: var(--muted); font-size: .95rem; }
+
+  /* ==========================================================================
+     6. COMPONENT: AGENDA & ROW LISTS
+     ========================================================================== */
+  .agenda-list.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0 4vw; }
+  .agenda-item {
+    display: flex; align-items: baseline; gap: 1.4rem; padding: 1.1rem 0;
+    border-bottom: 1px solid var(--line); cursor: pointer;
+    width: 100%; text-align: left; color: inherit; background: none; border-top: 0; border-left: 0; border-right: 0;
+  }
+  .agenda-item:first-child { border-top: 1px solid var(--line); }
+  .agenda-item .idx { font-family: var(--font-heading); color: var(--muted-dim); font-size: 1rem; width: 2.2rem; }
+  .agenda-item .label { font-size: 1.25rem; font-weight: 600; transition: color .2s; }
+  .agenda-item .arrow { margin-left: auto; color: var(--muted-dim); opacity: 0; transition: opacity .2s, transform .2s; transform: translateX(-6px); }
+  .agenda-item:hover .label { color: var(--brand-primary); }
+  .agenda-item:hover .arrow { opacity: 1; transform: translateX(0); }
+
+  .row-list { display: flex; flex-direction: column; }
+  .row-item {
+    display: flex; align-items: baseline; gap: 1.1rem; padding: 1.05rem 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .row-item:first-child { border-top: 1px solid var(--line); }
+  .row-item .dotmark { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .row-item .name { font-weight: 600; font-size: 1.05rem; min-width: 280px; }
+  .row-item .note { color: var(--muted); font-size: .95rem; }
+  .dot-green { background: var(--green); box-shadow: 0 0 8px 1px rgba(74,222,149,.5); }
+  .dot-amber { background: var(--amber); box-shadow: 0 0 8px 1px rgba(255,182,72,.5); }
+  .dot-coral { background: var(--coral); box-shadow: 0 0 8px 1px rgba(255,84,112,.5); }
+  .dot-purple { background: var(--brand-primary); box-shadow: 0 0 8px 1px rgba(166,59,255,.5); }
+
+  /* Animated signal graphic motif */
+  .signal { display: flex; align-items: flex-end; gap: 10px; height: 180px; }
+  .signal span {
+    display: block; width: 16px; border-radius: 5px 5px 0 0;
+    background: linear-gradient(180deg, var(--brand-primary), rgba(166,59,255,.15));
+    animation: pulse 1.8s ease-in-out infinite;
+  }
+  .signal span:nth-child(1) { height: 35%; animation-delay: 0s; }
+  .signal span:nth-child(2) { height: 65%; animation-delay: .15s; }
+  .signal span:nth-child(3) { height: 100%; animation-delay: .3s; }
+  .signal span:nth-child(4) { height: 50%; animation-delay: .45s; }
+  .signal span:nth-child(5) { height: 80%; animation-delay: .6s; }
+  @keyframes pulse { 0%, 100% { transform: scaleY(.75); opacity: .75; } 50% { transform: scaleY(1); opacity: 1; } }
+
+  /* ==========================================================================
+     7. NAVIGATION ZONES & HEAD-UP DISPLAY (HUD)
+     ========================================================================== */
+  .nav-zone { position: fixed; top: 0; bottom: 0; width: 6.5vw; min-width: 44px; z-index: 20; cursor: pointer; display: flex; align-items: center; }
+  button.nav-zone { border: 0; background: none; color: inherit; padding: 0; }
+  .nav-zone.left { left: 0; justify-content: flex-start; }
+  .nav-zone.right { right: 0; justify-content: flex-end; }
+  .nav-zone .chev {
+    width: 42px; height: 42px; margin: 0 16px; opacity: .85; transform: scale(1);
+    transition: opacity .2s ease, transform .2s ease, border-color .2s ease;
+    border-radius: 50%; border: 1.5px solid rgba(166, 59, 255, .6); background: rgba(28, 16, 48, .88);
+    display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+  }
+  .nav-zone:hover .chev { opacity: 1; transform: scale(1.1); border-color: var(--brand-primary); background: rgba(166, 59, 255, .3); }
+  .nav-zone .chev svg { width: 18px; height: 18px; stroke: #ffffff; stroke-width: 2.5; }
+
+  .hud {
+    position: fixed; left: 8vw; right: 8vw; bottom: 4vh; z-index: 20;
+    display: flex; align-items: center; justify-content: space-between;
+    font-size: .8rem; color: var(--muted-dim);
+  }
+  .dots { display: flex; gap: 8px; }
+  .dot { width: 9px; height: 9px; border: 0; padding: 0; border-radius: 50%; background: var(--line); cursor: pointer; transition: background .25s, transform .25s; }
+  .dot.active { background: var(--brand-primary); transform: scale(1.3); }
+  button:focus-visible { outline: 2px solid var(--brand-secondary); outline-offset: 4px; }
+  .library-error { position: fixed; top: 1rem; left: 50%; transform: translateX(-50%); z-index: 50; padding: .6rem 1rem; color: white; background: #7b1f30; border-radius: .4rem; }
+  .library-error[hidden] { display: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .ambient .glow, .signal span { animation: none !important; }
+    .chip, .dot, .nav-zone .chev { transition: none !important; }
+  }
+  .counter { font-variant-numeric: tabular-nums; letter-spacing: .05em; }
+
+  @media (max-width: 860px) {
+    .split, .split.narrow-right, .split.narrow-left { grid-template-columns: 1fr; }
+    .agenda-list.two-col { grid-template-columns: 1fr; }
+    .stat-row { flex-direction: column; }
+    .stat { border-right: none; border-bottom: 1px solid var(--line); padding: 1.2rem 0; margin-right: 0; }
+  }
+  @media (max-width: 860px), (max-height: 560px) {
+    html, body, #deck { height: 100%; height: 100dvh; }
+    .slide {
+      justify-content: flex-start;
+      padding: max(24px, env(safe-area-inset-top)) 7vw calc(92px + env(safe-area-inset-bottom));
+      touch-action: pan-y;
+    }
+    .slide-inner { margin: auto; }
+    .chart-wrap { height: clamp(240px, 40dvh, 420px); }
+    .nav-zone { top: auto; bottom: calc(8px + env(safe-area-inset-bottom)); width: 52px; height: 52px; min-width: 52px; }
+    .nav-zone.left { left: 8px; }
+    .nav-zone.right { right: 8px; }
+    .nav-zone .chev { width: 44px; height: 44px; margin: 4px; opacity: 1; transform: none; }
+    .hud { left: 64px; right: 64px; bottom: calc(20px + env(safe-area-inset-bottom)); justify-content: center; min-height: 28px; }
+    .hud .hint { display: none; }
+    .hud .dots { max-width: 50%; overflow-x: auto; scrollbar-width: none; }
+    .hud .dots::-webkit-scrollbar { display: none; }
+    .hud .dot { width: 28px; height: 28px; flex: 0 0 28px; background: radial-gradient(circle, var(--line) 0 5px, transparent 6px); }
+    .hud .dot.active { background: radial-gradient(circle, var(--brand-primary) 0 5px, transparent 6px); }
+    .hud .counter { white-space: nowrap; margin-left: 10px; }
+    .agenda-item { align-items: center; min-height: 52px; }
+    .agenda-item .label { font-size: 1rem; }
+    .agenda-item .arrow { opacity: 1; transform: none; }
+    .row-item { flex-wrap: wrap; }
+    .row-item .name { min-width: 0; }
+    .ring-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .ring { width: min(38vw, 190px); height: min(38vw, 190px); }
+  }
+  @media (max-width: 480px) {
+    h1.display { font-size: clamp(2.25rem, 10vw, 3.3rem); }
+    h2.title { font-size: clamp(1.8rem, 8vw, 2.5rem); }
+    .hud .dots { display: none; }
+    .hud .counter { margin: 0; font-size: .9rem; color: var(--text); }
+    .signal { height: 110px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Ambient Backdrop -->
+<div class="ambient"><div class="glow g1"></div><div class="glow g2"></div></div>
+<div class="grain"></div>
+
+<!-- Slide Deck Container -->
+<div id="deck">
+
+  <!-- ========================================================================
+       SLIDE 1: HERO / COVER
+       ======================================================================== -->
+  <section class="slide" data-title="Title">
+    <div class="slide-inner split narrow-right">
+      <div>
+        <p class="kicker">Executive Review</p>
+        <h1 class="display">Department<br>Programme<br><span class="accent">Overview</span></h1>
+        <p class="lede">Comprehensive monthly operational review, performance metrics, and strategic delivery milestones.</p>
+        <p class="foot-note">Reporting period: Q3 2026 &nbsp;·&nbsp; Prepared by Department Leadership</p>
+      </div>
+      <div style="display:flex; justify-content:center;">
+        <div class="signal"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SLIDE 2: AGENDA
+       ======================================================================== -->
+  <section class="slide" data-title="Agenda">
+    <div class="slide-inner">
+      <p class="kicker">Contents</p>
+      <h2 class="title">Table of Contents</h2>
+      <div class="agenda-list two-col">
+        <div>
+          <button type="button" class="agenda-item" data-goto="2"><span class="idx">01</span><span class="label">Executive Snapshot</span><span class="arrow">→</span></button>
+          <button type="button" class="agenda-item" data-goto="3"><span class="idx">02</span><span class="label">Workstream Progress</span><span class="arrow">→</span></button>
+          <button type="button" class="agenda-item" data-goto="4"><span class="idx">03</span><span class="label">Operational Health & KPIs</span><span class="arrow">→</span></button>
+        </div>
+        <div>
+          <button type="button" class="agenda-item" data-goto="5"><span class="idx">04</span><span class="label">Infrastructure Rollout</span><span class="arrow">→</span></button>
+          <button type="button" class="agenda-item" data-goto="6"><span class="idx">05</span><span class="label">Incident Breakdown</span><span class="arrow">→</span></button>
+          <button type="button" class="agenda-item" data-goto="7"><span class="idx">06</span><span class="label">Action Plan & Next Steps</span><span class="arrow">→</span></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SLIDE 3: EXECUTIVE SNAPSHOT (Counters)
+       ======================================================================== -->
+  <section class="slide" data-title="Executive Snapshot">
+    <div class="slide-inner">
+      <p class="kicker">Section 01</p>
+      <h2 class="title">Executive Snapshot</h2>
+      <div class="stat-row">
+        <div class="stat stagger trend-up">
+          <div class="num" data-count="99.98" data-suffix="%">0%</div>
+          <div class="label">System Uptime</div>
+        </div>
+        <div class="stat stagger trend-flat">
+          <div class="num" data-count="14" data-suffix="">0</div>
+          <div class="label">Active Workstreams</div>
+        </div>
+        <div class="stat stagger trend-warn">
+          <div class="num" data-count="0" data-suffix="">0</div>
+          <div class="label">Critical SLA Breaches</div>
+        </div>
+        <div class="stat stagger trend-up">
+          <div class="num" data-count="2.4" data-suffix=" hrs">0</div>
+          <div class="label">Avg. Resolution Time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SLIDE 4: DYNAMIC BAR CHART (Toggleable Chips)
+       ======================================================================== -->
+  <section class="slide" data-title="Workstream Progress">
+    <div class="slide-inner split">
+      <div>
+        <p class="kicker">Section 02</p>
+        <h2 class="title">Programme Health</h2>
+        <p class="lede stagger">Milestone completion across major engineering tracks. Use toggle below to switch reporting scopes.</p>
+        <div class="chips">
+          <button class="chip active" data-chart-toggle="period">Current Sprint</button>
+          <button class="chip" data-chart-toggle="cumulative">Cumulative YTD</button>
+        </div>
+        <p class="foot-note" id="chartCallout" style="min-height:1.4em; color:var(--brand-primary);"></p>
+      </div>
+      <div class="chart-wrap"><canvas id="chartWorkstreams"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SLIDE 5: PROGRESS RINGS (Gauges)
+       ======================================================================== -->
+  <section class="slide" data-title="Infrastructure Rollout">
+    <div class="slide-inner">
+      <p class="kicker">Section 03</p>
+      <h2 class="title" style="text-align:center;">Infrastructure Deployment</h2>
+      <div class="ring-grid">
+        <div class="ring-block stagger">
+          <div class="ring-block-title">Cabinets Installed</div>
+          <div class="ring">
+            <svg viewBox="0 0 120 120">
+              <circle class="track" cx="60" cy="60" r="52"></circle>
+              <circle class="fill" id="ringFill1" cx="60" cy="60" r="52" stroke-dasharray="327" stroke-dashoffset="327"></circle>
+            </svg>
+            <div class="ring-label"><span class="num" id="ringNum1">0%</span><span class="sub">complete</span></div>
+          </div>
+          <div class="ring-block-sub">18 of 24 units in place</div>
+        </div>
+        <div class="ring-block stagger">
+          <div class="ring-block-title">Field Nodes Activated</div>
+          <div class="ring orange">
+            <svg viewBox="0 0 120 120">
+              <circle class="track" cx="60" cy="60" r="52"></circle>
+              <circle class="fill" id="ringFill2" cx="60" cy="60" r="52" stroke-dasharray="327" stroke-dashoffset="327"></circle>
+            </svg>
+            <div class="ring-label"><span class="num" id="ringNum2">0%</span><span class="sub">complete</span></div>
+          </div>
+          <div class="ring-block-sub">42 of 60 nodes live</div>
+        </div>
+        <div class="ring-block stagger">
+          <div class="ring-block-title">Customer Migrations</div>
+          <div class="ring green">
+            <svg viewBox="0 0 120 120">
+              <circle class="track" cx="60" cy="60" r="52"></circle>
+              <circle class="fill" id="ringFill3" cx="60" cy="60" r="52" stroke-dasharray="327" stroke-dashoffset="327"></circle>
+            </svg>
+            <div class="ring-label"><span class="num" id="ringNum3">0%</span><span class="sub">complete</span></div>
+          </div>
+          <div class="ring-block-sub">8,200 of 9,500 users</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SLIDE 6: DOUGHNUT CHART (Distribution)
+       ======================================================================== -->
+  <section class="slide" data-title="Incident Breakdown">
+    <div class="slide-inner split">
+      <div>
+        <p class="kicker">Section 04</p>
+        <h2 class="title">Incident Root Causes</h2>
+        <p class="lede stagger">Classification of unplanned service interrupts by technical domain.</p>
+        <div class="chips">
+          <button class="chip active" data-doughnut-toggle="primary">Primary View</button>
+          <button class="chip" data-doughnut-toggle="secondary">Secondary View</button>
+        </div>
+        <p class="foot-note">Direct telemetry from automated alerting.</p>
+      </div>
+      <div class="chart-wrap"><canvas id="chartDoughnut"></canvas></div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       SLIDE 7: CLOSING & DISCUSSION
+       ======================================================================== -->
+  <section class="slide" data-title="Closing">
+    <div class="slide-inner split narrow-right">
+      <div>
+        <p class="kicker">Summary</p>
+        <h1 class="display">Questions<br>&amp; <span class="accent">Discussion</span></h1>
+        <p class="lede">Next milestone review scheduled for end of month.</p>
+        <p class="foot-note" style="margin-top:2.5rem; font-size:1.05rem; color:var(--muted);">Engineering & Operations Team</p>
+      </div>
+      <div style="display:flex; justify-content:center;">
+        <div class="signal"><span></span><span></span><span></span><span></span><span></span></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Navigation click zones & HUD controls -->
+<button type="button" class="nav-zone left" id="navLeft" aria-label="Previous slide"><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg></span></button>
+<button type="button" class="nav-zone right" id="navRight" aria-label="Next slide"><span class="chev"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></span></button>
+<p class="library-error" id="library-error" role="alert" hidden>Charts or animations could not load. Check your internet connection.</p>
+
+<div class="hud">
+  <div class="dots" id="dots"></div>
+  <div class="counter" id="counter">01 / 07</div>
+  <div class="hint">← → or Space to navigate</div>
+</div>
+
+<!-- ==========================================================================
+     8. JAVASCRIPT CONTROLLER & CHART BINDINGS
+     ========================================================================== -->
+<script>
+(function(){
+  if (!window.Chart || !window.gsap) {
+    document.getElementById('library-error').hidden = false;
+    return;
+  }
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // --- Slide Engine State ---
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const total = slides.length;
+  let idx = 0;
+  let animating = false;
+
+  // Build HUD dots
+  const dotsWrap = document.getElementById('dots');
+  slides.forEach((s, i) => {
+    const d = document.createElement('button');
+    d.type = 'button';
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.setAttribute('aria-label', `Go to slide ${i + 1}`);
+    d.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(d);
+  });
+  const dotEls = Array.from(dotsWrap.children);
+
+  function updateHud() {
+    dotEls.forEach((d, i) => d.classList.toggle('active', i === idx));
+    document.getElementById('counter').textContent =
+      String(idx + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+  }
+
+  function staggerContent(slide) {
+    const items = slide.querySelectorAll('.stagger');
+    if (!items.length) return;
+    gsap.fromTo(items, { opacity: 0, y: reducedMotion ? 0 : 22 }, { opacity: 1, y: 0, duration: reducedMotion ? 0 : .6, stagger: reducedMotion ? 0 : .09, ease: 'power2.out', delay: reducedMotion ? 0 : .25 });
+  }
+
+  // --- Slide Activation Hook ---
+  function runSlideEffects(slide) {
+    const title = slide.dataset.title;
+    if (title === 'Executive Snapshot') animateCounters(slide);
+    if (title === 'Workstream Progress') ensureChartRendered('chartWorkstreams');
+    if (title === 'Infrastructure Rollout') animateProgressRings();
+    if (title === 'Incident Breakdown') ensureChartRendered('chartDoughnut');
+  }
+
+  function ensureChartRendered(id) {
+    const c = window[id];
+    if (c) { c.resize(); c.update(); }
+  }
+
+  // Slide Transitions
+  gsap.set(slides, { autoAlpha: 0, display: 'none' });
+  gsap.set(slides[0], { autoAlpha: 1, display: 'flex' });
+  staggerContent(slides[0]);
+  runSlideEffects(slides[0]);
+  updateHud();
+
+  function goTo(newIdx) {
+    if (animating || newIdx === idx || newIdx < 0 || newIdx >= total) return;
+    animating = true;
+    const dir = newIdx > idx ? 1 : -1;
+    const cur = slides[idx];
+    const nxt = slides[newIdx];
+    nxt.scrollTop = 0;
+
+    gsap.set(nxt, { display: 'flex', autoAlpha: 0, y: 48 * dir });
+    const tl = gsap.timeline({
+      onComplete() {
+        gsap.set(cur, { display: 'none' });
+        animating = false;
+      }
+    });
+    tl.to(cur, { autoAlpha: 0, y: reducedMotion ? 0 : -40 * dir, duration: reducedMotion ? 0 : .45, ease: 'power2.inOut' }, 0)
+      .to(nxt, { autoAlpha: 1, y: 0, duration: reducedMotion ? 0 : .55, ease: 'power2.out' }, reducedMotion ? 0 : .08)
+      .call(() => { staggerContent(nxt); runSlideEffects(nxt); }, null, reducedMotion ? 0 : .2);
+
+    idx = newIdx;
+    updateHud();
+  }
+
+  const next = () => goTo(idx + 1);
+  const prev = () => goTo(idx - 1);
+
+  document.getElementById('navLeft').addEventListener('click', prev);
+  document.getElementById('navRight').addEventListener('click', next);
+  document.querySelectorAll('.agenda-item[data-goto]').forEach(el => {
+    el.addEventListener('click', () => goTo(Number.parseInt(el.dataset.goto, 10)));
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if (e.target instanceof HTMLElement && (e.target.isContentEditable || e.target.closest('input, textarea, select, button'))) return;
+    if (e.code === 'ArrowRight' || e.code === 'Space') { e.preventDefault(); next(); }
+    else if (e.code === 'ArrowLeft') { e.preventDefault(); prev(); }
+  });
+
+  // Horizontal swipes change slides; vertical gestures continue to scroll long slides.
+  let touchStart = null;
+  document.getElementById('deck').addEventListener('touchstart', (e) => {
+    if (e.touches.length !== 1 || (e.target instanceof Element && e.target.closest('button, a, canvas'))) return;
+    touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  }, { passive: true });
+  document.getElementById('deck').addEventListener('touchend', (e) => {
+    if (!touchStart || e.changedTouches.length !== 1) return;
+    const dx = e.changedTouches[0].clientX - touchStart.x;
+    const dy = e.changedTouches[0].clientY - touchStart.y;
+    touchStart = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) next(); else prev();
+    }
+  }, { passive: true });
+
+  window.addEventListener('resize', () => {
+    if (slides[idx].dataset.title === 'Workstream Progress') ensureChartRendered('chartWorkstreams');
+    if (slides[idx].dataset.title === 'Incident Breakdown') ensureChartRendered('chartDoughnut');
+  });
+
+  // --- Numerical Counter Animation ---
+  function animateCounters(slide) {
+    slide.querySelectorAll('.num[data-count]').forEach(el => {
+      const target = Number.parseFloat(el.dataset.count);
+      const suffix = el.dataset.suffix || '';
+      const decimals = (el.dataset.count.split('.')[1] || '').length;
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target, duration: reducedMotion ? 0 : 1.4, delay: reducedMotion ? 0 : .25, ease: 'power2.out',
+        onUpdate() { el.textContent = obj.val.toFixed(decimals) + suffix; }
+      });
+    });
+  }
+
+  // --- SVG Ring Gauge Animation ---
+  function animateRing(fillId, numId, done, target) {
+    const circumference = 327; // 2 * PI * 52
+    const fill = document.getElementById(fillId);
+    const numEl = document.getElementById(numId);
+    if (!fill || !numEl) return;
+    const pct = target > 0 ? (done / target) * 100 : 0;
+    const obj = { val: 0 };
+    gsap.to(obj, {
+      val: pct, duration: reducedMotion ? 0 : 1.5, delay: reducedMotion ? 0 : .2, ease: 'power2.out',
+      onUpdate() {
+        const offset = circumference - (Math.min(obj.val, 100) / 100) * circumference;
+        fill.style.strokeDashoffset = offset;
+        numEl.textContent = Math.round(obj.val) + '%';
+      }
+    });
+  }
+
+  function animateProgressRings() {
+    animateRing('ringFill1', 'ringNum1', 18, 24);
+    animateRing('ringFill2', 'ringNum2', 42, 60);
+    animateRing('ringFill3', 'ringNum3', 8200, 9500);
+  }
+
+  // --- Chart.js Configuration & Data Models ---
+  Chart.defaults.color = '#8ea0bb';
+  Chart.defaults.font.family = "'IBM Plex Sans', sans-serif";
+
+  // 1. Workstream Bar Chart
+  const workstreamLabels = ['Track Alpha', 'Core Cloud', 'Data Pipeline', 'Security', 'Edge Network'];
+  const workstreamData = {
+    period: [82, 65, 45, 90, 58],
+    cumulative: [92, 80, 72, 95, 84]
+  };
+  const barColors = ['#a63bff', '#ff7a1a', '#4ade95', '#5b8def', '#ffb648'];
+
+  const ctxBar = document.getElementById('chartWorkstreams').getContext('2d');
+  window.chartWorkstreams = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+      labels: workstreamLabels,
+      datasets: [{
+        label: '% complete',
+        data: workstreamData.period,
+        backgroundColor: barColors,
+        borderRadius: 6,
+        maxBarThickness: 56,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: { duration: reducedMotion ? 0 : 900, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1c1030', borderColor: '#30224a', borderWidth: 1,
+          titleColor: '#eef3fa', bodyColor: '#8ea0bb', padding: 10,
+          callbacks: { label: (c) => c.parsed.y + '% complete' }
+        }
+      },
+      scales: {
+        y: { min: 0, max: 100, grid: { color: 'rgba(255,255,255,.06)' }, ticks: { callback: (v) => v + '%' } },
+        x: { grid: { display: false } }
+      },
+      onClick: (evt, els) => {
+        const callout = document.getElementById('chartCallout');
+        if (els.length) {
+          const i = els[0].index;
+          callout.textContent = workstreamLabels[i] + ': currently ' + window.chartWorkstreams.data.datasets[0].data[i] + '% completed';
+        }
+      }
+    }
+  });
+
+  document.querySelectorAll('[data-chart-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-chart-toggle]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.dataset.chartToggle;
+      window.chartWorkstreams.data.datasets[0].data = workstreamData[key];
+      window.chartWorkstreams.update();
+      document.getElementById('chartCallout').textContent = '';
+    });
+  });
+
+  // 2. Incident Doughnut Chart
+  const doughnutDataSets = {
+    primary: {
+      labels: ['Fiber / Physical', 'Power / Facilities', 'Hardware Failure', 'Configuration'],
+      data: [42, 28, 18, 12],
+      colors: ['#a63bff', '#ff7a1a', '#ff5470', '#5b8def']
+    },
+    secondary: {
+      labels: ['Outside Hours', 'Within Office Hours'],
+      data: [70, 30],
+      colors: ['#ff7a1a', '#a63bff']
+    }
+  };
+
+  const ctxDoughnut = document.getElementById('chartDoughnut').getContext('2d');
+  window.chartDoughnut = new Chart(ctxDoughnut, {
+    type: 'doughnut',
+    data: {
+      labels: doughnutDataSets.primary.labels,
+      datasets: [{
+        data: doughnutDataSets.primary.data,
+        backgroundColor: doughnutDataSets.primary.colors,
+        borderColor: '#0d0818',
+        borderWidth: 3,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '62%',
+      animation: { duration: reducedMotion ? 0 : 900, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { position: 'bottom', labels: { boxWidth: 10, boxHeight: 10, padding: 16, usePointStyle: true, pointStyle: 'circle' } },
+        tooltip: {
+          backgroundColor: '#1c1030', borderColor: '#30224a', borderWidth: 1,
+          titleColor: '#eef3fa', bodyColor: '#8ea0bb', padding: 10
+        }
+      }
+    }
+  });
+
+  document.querySelectorAll('[data-doughnut-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-doughnut-toggle]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const key = btn.dataset.doughnutToggle;
+      const set = doughnutDataSets[key];
+      window.chartDoughnut.data.labels = set.labels;
+      window.chartDoughnut.data.datasets[0].data = set.data;
+      window.chartDoughnut.data.datasets[0].backgroundColor = set.colors;
+      window.chartDoughnut.update();
+    });
+  });
+
+})();
+</script>
+</body>
+</html>

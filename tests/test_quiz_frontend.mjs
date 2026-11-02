@@ -1,0 +1,10 @@
+import { runQuizChecks } from './contracts/quiz.mjs';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {createRequire} from 'node:module';
+const require = createRequire(new URL('../web/package.json', import.meta.url));
+const ts = require('typescript');
+const exports = {};
+const source = fs.readFileSync('web/src/lib/quiz.ts', 'utf8');
+new Function('exports', 'TextEncoder', ts.transpileModule(source, {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText)(exports,TextEncoder);
+runQuizChecks(exports);

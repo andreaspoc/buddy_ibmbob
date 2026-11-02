@@ -1,0 +1,97 @@
+/* Tutorials share the login screen's gradient, white cards and bold type. */
+:root[data-design-system='carbon'] body .welcome-tour {
+  --welcome-muted: #eadcf3;
+  --tutorial-ink: #2e2040;
+  --tutorial-muted: #625270;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-copy h1 {
+  font-size: clamp(44px, 5.4vw, 76px);
+  line-height: 1.12;
+  font-weight: 700;
+  letter-spacing: -.045em;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-copy > p {
+  font-size: 18px;
+  line-height: 1.6;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-brand strong {
+  font-size: 24px;
+  font-weight: 700;
+}
+:root[data-design-system='carbon'] body .welcome-tour :is(.welcome-stage,.welcome-screenshot,.welcome-notes-guide) {
+  background: #fff;
+  color: var(--tutorial-ink);
+  border: 1px solid #e2dae9;
+  border-radius: 20px;
+  box-shadow: 0 24px 70px #2e204026;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage {
+  --welcome-muted: var(--tutorial-muted);
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :is(.welcome-stage-label,.welcome-path p,.welcome-practice p,.welcome-practice small,.welcome-notes-request,.welcome-notes-result) {
+  color: var(--tutorial-muted);
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :is(.welcome-path strong,.welcome-practice label,.welcome-request span,.welcome-request p,.welcome-finish h2) {
+  color: var(--tutorial-ink);
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :is(.welcome-practice label,.welcome-path strong) {
+  font-size: 18px;
+  font-weight: 700;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :is(.welcome-orbit > span:not(.welcome-emblem),.welcome-notes-toolbar,.welcome-notes-target,.welcome-review) {
+  background: #f8f6fa;
+  color: #43285f;
+  border-color: #d9cfe3;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :is(.welcome-notes-replay,.welcome-path > div > span) {
+  color: #5f3a86;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage button:not(.welcome-primary) {
+  color: #43285f;
+  border-color: #d9cfe3;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage :focus-visible {
+  outline-color: #5f3a86;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-stage .form-error { color: #a32c43; }
+:root[data-design-system='carbon'] body .welcome-tour .welcome-practice :is(input,select) {
+  background: #fff;
+  border-color: #d9cfe3;
+  color: var(--tutorial-ink);
+  font-size: 18px;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-primary {
+  background: linear-gradient(110deg, #8456ad, #6f43a0);
+  color: #fff;
+  border-color: #6f43a0;
+  font-size: 18px;
+  font-weight: 700;
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-primary:hover:not(:disabled) {
+  background: linear-gradient(110deg, #9468bb, #7f52ad);
+}
+:root[data-design-system='carbon'] body .welcome-tour .welcome-finish h2 {
+  font-size: 34px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+:root[data-design-system='carbon'] body .approval-guide {
+  background: #fff;
+  color: #2e2040;
+  border-color: #e2dae9;
+  border-radius: 20px;
+}
+:root[data-design-system='carbon'] body .approval-guide::before { background: #fff; }
+:root[data-design-system='carbon'] body .approval-guide > strong {
+  color: #2e2040;
+  font-size: 24px;
+  font-weight: 700;
+}
+:root[data-design-system='carbon'] body .approval-guide .approval-guide-close { color: #5f3a86; }
+@media (max-width: 900px) {
+  :root[data-design-system='carbon'] body .welcome-tour .welcome-copy h1 { font-size: 42px; }
+}
+:root[data-design-system='carbon'] body .welcome-tour:lang(hi) .welcome-copy h1 {
+  line-height: 1.3;
+  letter-spacing: 0;
+}

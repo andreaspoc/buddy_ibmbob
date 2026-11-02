@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Search streaming test fixture</title></head><body><nav aria-label="Streaming preview controls"><strong>Web search preview · simulated timing and sample text</strong> <button id="start">Start streaming</button> <button id="stop">Stop streaming</button></nav><div id="root"></div><script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { flushSync } from 'react-dom';
+import { ChatView } from '/src/components/ChatView.tsx';
+import '/src/styles.css';
+import {createTextStream} from '/src/lib/streamText.ts';
+const root=createRoot(document.getElementById('root'));
+const noop=()=>{};
+window.renderAnswer=(content,isStreaming,activity={})=>flushSync(()=>root.render(React.createElement('div',{style:{height:'600px',display:'flex',flexDirection:'column'}},React.createElement(ChatView,{messages:[{id:'stable',role:'assistant',content,isStreaming,...activity}],isStreaming,activeMode:'agent',slideCount:8,onSlideCountChange:noop,activeAgent:'',modes:[],skills:[],agents:[],templates:[],selectedTemplateId:'',onSendMessage:noop,onUploadFile:noop,onStop:noop,onOpenTemplateModal:noop}))));
+let text = '';
+let timer;
+const stream = createTextStream(chunk => {text += chunk; window.renderAnswer(text,true,{statusText:'Reading sources…',toolsUsed:[{name:'fetch_page',status:'running'}]});});
+const sample = 'Search results are ready. [Official source](https://example.com/releases) supports this sample response.\n\n**Live Markdown** remains readable while the answer grows.\n\n1. Incoming text appears on the next frame.\n2. Completion keeps every received character.\n3. Scrolling follows the response until you scroll up.\n\nThis is sample text for the streaming preview.';
+document.getElementById('start').onclick = () => {
+ clearInterval(timer); stream.clear(); text=''; let offset=0; window.renderAnswer('',true,{statusText:'Searching the web…',toolsUsed:[{name:'brave_web_search',status:'running'}]});
+ timer=setInterval(()=>{stream.push(sample.slice(offset,offset+53));offset+=53;if(offset>=sample.length){clearInterval(timer);stream.drain().then(()=>window.renderAnswer(text,false));}},200);
+};
+document.getElementById('stop').onclick=()=>{clearInterval(timer);stream.flush();window.renderAnswer(text,false);};
+window.renderAnswer('A preliminary finding is available. More sources are being checked.',true,{statusText:'Searching the web…',toolsUsed:[{name:'brave_web_search',status:'running'}]});
+</script></body></html>

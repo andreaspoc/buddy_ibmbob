@@ -1,0 +1,11 @@
+/* Reference picker placement above the conversation surface. Geometry is owned by carbonFoundation.scss. */
+:root[data-design-system='carbon']:root body .composer-tool-row .note-chat-references .office-reference-picker { left: -16px; }
+/* Pickers extend above the input and must stay above the conversation surface. */
+:root[data-design-system='carbon']:root body .shell .composer-wrap:has(.office-reference-picker) {
+  position: relative;
+  z-index: 90;
+  overflow: visible;
+}
+:root[data-design-system='carbon']:root body .shell .composer-tool-row:has(.office-reference-picker) {
+  overflow: visible;
+}

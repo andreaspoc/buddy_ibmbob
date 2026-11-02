@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {transpile} from './frontend_transpile.mjs';
+const policySource=transpile(readFileSync(new URL('../web/src/lib/approvalPolicy.ts',import.meta.url),'utf8'));
+const policyUrl=`data:text/javascript;base64,${Buffer.from(policySource).toString('base64')}`;
+const runtimeSource=transpile(readFileSync(new URL('../web/src/lib/approvalRuntime.ts',import.meta.url),'utf8')).replace("'./approvalPolicy'",JSON.stringify(policyUrl));
+const {fetchApprovalRuntime}=await import(`data:text/javascript;base64,${Buffer.from(runtimeSource).toString('base64')}`);
+const {DEFAULT_APPROVAL_POLICY}=await import(policyUrl);
+assert.equal(DEFAULT_APPROVAL_POLICY.mode,'auto','Auto-approval must be enabled by default');
+let result={policy:{mode:'auto',actions:[]},revision:0,mutable:true,reason:null};let ok=true;const calls=[];
+globalThis.fetch=async(url,options)=>{calls.push({url,options});return{ok,json:async()=>result};};
+assert.deepEqual(await fetchApprovalRuntime('task id'),result);assert.equal(calls[0].url,'/jobs/task%20id/approval-policy');assert.equal(calls[0].options.method,'GET');
+const policy={mode:'selected',actions:['files','publish']};result={...result,policy,revision:1};
+assert.equal((await fetchApprovalRuntime('task id',policy)).revision,1);assert.equal(calls[1].options.method,'PUT');assert.deepEqual(JSON.parse(calls[1].options.body),policy);
+ok=false;result={detail:'This task has finished.'};await assert.rejects(fetchApprovalRuntime('task'),/This task has finished/);
+ok=true;result={policy:{mode:'invented',actions:[]},revision:0,mutable:true};await assert.rejects(fetchApprovalRuntime('task'),/Invalid approval/);
+result={policy:{mode:'auto',actions:[]},revision:2,mutable:false,reason:'Remote agent'};assert.equal((await fetchApprovalRuntime('task')).mutable,false);
+console.log('Default auto-approval, runtime GET/PUT, validation, and failure checks passed.');

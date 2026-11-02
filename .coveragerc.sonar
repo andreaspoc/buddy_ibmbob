@@ -1,0 +1,11 @@
+[run]
+branch = True
+relative_files = True
+source =
+    app
+    bindings
+    plugins
+data_file = reports/sonar-python/.coverage
+
+[xml]
+output = reports/sonar-python/coverage.xml

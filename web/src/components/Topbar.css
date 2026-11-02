@@ -1,0 +1,80 @@
+/* Language remains available alongside workspace navigation at every screen size. */
+.workspace-toolbar-language { display: flex; align-items: center; margin-left: 4px; flex: none; }
+.workspace-toolbar-language .language-selector select {
+  width: 100px; min-height: 36px; padding: 7px 8px;
+  border: 1px solid #e3d2ef; border-radius: 9px;
+  background: #fcfaff; color: #61377f; font-size: 12px;
+}
+.workspace-toolbar-language .language-selector select:hover { border-color: #b28bcf; background: #f6effc; }
+.workspace-toolbar-language .language-selector select:focus-visible { outline: 2px solid var(--brand-accent, #735e83); outline-offset: 3px; }
+@container (max-width: 600px) {
+  .shell .main > .topbar {
+    height: auto; min-height: 62px; flex-wrap: wrap; padding-block: 9px;
+  }
+  :root[data-ui-density="comfortable"] .shell .main > .topbar { height: auto; }
+  .shell .main > .topbar .topbar-heading { flex: 1 1 auto; }
+  .shell .main > .topbar .workspace-navigation {
+    order: 2; flex: 1 0 100%; justify-content: space-between; gap: 3px; min-width: 0;
+  }
+  .workspace-toolbar-language { margin-left: auto; }
+  .workspace-toolbar-language .language-selector select { width: 88px; min-height: 40px; font-size: 11px; }
+}
+
+/* Buddy stays beside usage and remains available when mobile hides metadata. */
+.topbar-pinned-reminders {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  max-width: 840px;
+  min-width: 0;
+  padding-top: 4px;
+}
+.topbar-pinned-reminders .missed-call-pin-slot {
+  flex: 1 1 auto;
+}
+.topbar-pinned-reminders .missed-call-pin-rail {
+  padding: 8px 4px 4px;
+  gap: 8px;
+  overflow-y: visible;
+}
+.topbar-pinned-reminders .missed-call-pin {
+  flex: 0 1 190px;
+  min-width: 150px;
+  padding: 6px 8px 5px 10px;
+  border-radius: 4px 4px 12px 4px;
+  box-shadow: 0 2px 5px #402b5020;
+}
+.topbar-pinned-reminders .missed-call-pin strong {
+  font-size: 13px;
+  line-height: 17px;
+}
+.topbar-pinned-reminders .missed-call-pin-detail {
+  font-size: 11px;
+  line-height: 15px;
+}
+.topbar-pinned-reminders .missed-call-pin-head {
+  display: block;
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-10deg) scale(0.65);
+  transform-origin: center top;
+  pointer-events: none;
+}
+.topbar-pinned-reminders .missed-call-pin .missed-call-pin-remove {
+  width: 24px;
+  height: 24px;
+  font-size: 18px;
+  line-height: 1;
+}
+.shell .main > .topbar .topbar-pinned-reminders ~ .topbar-buddy-action {
+  margin-left: 0;
+}
+.shell .main > .topbar .topbar-buddy-action {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+.shell .main > .topbar .topbar-buddy-action + .topbar-actions {
+  flex: 0 1 auto;
+  margin-left: 0;
+}

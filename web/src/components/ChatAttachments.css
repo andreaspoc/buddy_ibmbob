@@ -1,0 +1,5 @@
+.attached-chip .attached-chip-info { flex:1; min-width:0; flex-wrap:wrap; overflow:visible; }
+.attached-chip .attached-chip-name { max-width:min(280px, 60vw); }
+.attached-chip .attached-chip-info button { border:1px solid #cbb5da; padding:4px 8px; background:#fff; color:#4b1a6c; border-radius:6px; font:inherit; cursor:pointer; }
+.attached-chip .attached-chip-info button:focus-visible { outline:2px solid #682393; outline-offset:2px; }
+.attached-chip .attached-chip-remove { flex-shrink:0; align-self:flex-start; }

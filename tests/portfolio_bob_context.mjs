@@ -1,0 +1,40 @@
+// Synthetic context authorization tests; no live requests or model calls.
+import assert from 'node:assert/strict';
+import {loadPortfolioBobContext, preparePortfolioBobContext} from '../web/src/lib/portfolioBob.ts';
+const portfolio={projects:[{id:1,name:'Synthetic A'},{id:2,name:'Synthetic B'},{id:6,name:'Synthetic C'}],people:[{id:'keycloak.user',name:'Synthetic user'}],work_items:[{id:3,project_id:1,title:'Synthetic work'}],assignments:[{id:4,project_id:1,person_id:'keycloak.user'}],dependencies:[{id:5,source_project_id:1,target_project_id:2}]};
+let calls=[];
+const install=(failure=false,data=portfolio)=>{calls=[];globalThis.fetch=async(url,options)=>{calls.push({url,options});if(options.signal?.aborted)throw new DOMException('Aborted','AbortError');return url.endsWith('/context')?new Response(JSON.stringify(failure?{detail:'Access revoked'}:{portfolio:data,instructions:'Recorded facts only'}),{status:failure?403:200}):new Response(JSON.stringify({items:[{project_id:2,level:'risk'}]}));};};
+install();const task=JSON.parse(await loadPortfolioBobContext({source:'task',projectId:'1',workItemId:'3'}));assert.equal(task.focus.work_item.id,3);assert.equal(task.focus.project.name,'Synthetic A');assert.ok(task.snapshot_captured_at);assert.equal(calls.length,1);
+install();await assert.rejects(loadPortfolioBobContext({source:'project',projectId:'999'}),/no longer available/);assert.equal(calls.length,1);
+install();await assert.rejects(loadPortfolioBobContext({source:'task',projectId:'2',workItemId:'3'}),/another project/);
+install();await assert.rejects(loadPortfolioBobContext({source:'dependency',projectId:'6',dependencyId:'5'}),/does not belong/);
+install();const scenario=JSON.parse(await loadPortfolioBobContext({source:'scenario',personId:'keycloak.user',scenario:{kind:'person_departure',person_id:'keycloak.user',status:'departed',departure_date:null,apply:true,untrusted:'Ignored'}}));assert.equal(scenario.scenario.applied,false);assert.deepEqual(JSON.parse(calls[1].options.body),{kind:'person_departure',person_id:'keycloak.user',departure_date:null,status:'departed'});assert.equal(calls[1].url,'/api/projects/impact/preview');assert.equal(calls[1].options.method,'POST');assert.equal(scenario.scenario.impact.items[0].project_id,2);
+install();const dated=JSON.parse(await loadPortfolioBobContext({source:'scenario',scenario:{kind:'project_change',project_id:1,status:'active',start_date:'2026-10-01',due_date:'2026-10-31'}}));assert.equal(dated.scenario.change.start_date,'2026-10-01');
+install();await assert.rejects(loadPortfolioBobContext({source:'scenario',scenario:{kind:'project_change',project_id:999,status:'paused'}}),/no longer available/);assert.equal(calls.length,1);
+install(true);await assert.rejects(loadPortfolioBobContext(),/Access revoked/);assert.equal(calls.length,1);
+install();const controller=new AbortController();controller.abort();await assert.rejects(loadPortfolioBobContext(undefined,controller.signal),{name:'AbortError'});
+install(false,{...portfolio,projects:[{id:1,description:'a'.repeat(180001)}]});await assert.rejects(loadPortfolioBobContext(),/context limit/);
+console.log('PASS contextual record authorization, project membership, unsaved scenario recheck, mutation exclusion, cancellation and size limits');
+
+// Deferred reads prove overlap without timing-sensitive performance assertions.
+const deferred = () => { let resolve; const promise = new Promise(done => { resolve = done; }); return {promise, resolve}; };
+let contextRead = deferred(), workspaceRead = deferred(), workspaceCalls = 0;
+globalThis.fetch = async () => contextRead.promise;
+const preparation = preparePortfolioBobContext(undefined, [], () => {workspaceCalls++; return workspaceRead.promise;});
+assert.equal(workspaceCalls, 1, 'workspace lookup starts while authorized context is pending');
+workspaceRead.resolve([{id:'workspace',name:'Projects'}]);
+contextRead.resolve(new Response(JSON.stringify({portfolio,instructions:'Recorded facts only'})));
+const prepared = await preparation;
+assert.equal(prepared.projects[0].id, 'workspace');
+assert.equal(JSON.parse(prepared.serialized).portfolio.projects.length, 3);
+install();
+await preparePortfolioBobContext(undefined, [{id:'cached'}], () => {throw new Error('cached project list should be reused');});
+contextRead = deferred(); workspaceRead = deferred();
+globalThis.fetch = async () => contextRead.promise;
+const cancelled = new AbortController();
+const pending = preparePortfolioBobContext(undefined, [], () => workspaceRead.promise, cancelled.signal);
+cancelled.abort();
+workspaceRead.resolve([]);
+contextRead.resolve(new Response(JSON.stringify({portfolio})));
+await assert.rejects(pending, {name:'AbortError'});
+console.log('PASS parallel context/workspace reads, cached workspace reuse and cancellation before mutation');

@@ -1,0 +1,65 @@
+.conversation-mode-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  flex: none;
+  padding: 12px 24px;
+  border-bottom: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  background: var(--cds-background, #fff);
+}
+.conversation-mode-toolbar > .conversation-mode-heading { padding: 0; border: 0; background: transparent; }
+.missed-call-pin-slot { display: flex; align-items: center; gap: 4px; min-width: 0; flex: 1 1 0; }
+.missed-call-pin-rail { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1; overflow-x: auto; overflow-y: hidden; padding: 14px 4px 8px; scroll-snap-type: x proximity; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #b7a4c6 transparent; }
+.missed-call-rail-arrow { flex: none; width: 28px; min-height: 36px; border: 0; border-radius: 4px; background: var(--cds-layer-01, #f4f4f4); color: var(--cds-text-primary, #161616); cursor: pointer; font-size: 24px; }
+.missed-call-rail-arrow:disabled { opacity: .35; cursor: default; }
+.missed-call-rail-arrow:focus-visible,.missed-call-pin-rail:focus-visible { outline: 2px solid var(--cds-focus, #0f62fe); outline-offset: -2px; }
+.missed-call-rail-more { display: grid; justify-items: center; flex: none; font-size: 12px; line-height: 16px; color: var(--cds-text-secondary, #525252); }
+.conversation-mode-toolbar > .conversation-mode-heading { flex-shrink: 0; }
+.missed-call-pin[data-color="yellow"] { --call-paper: #fff3bd; --call-edge: #ebd88c; --call-fold: #f4dfa0; }
+.missed-call-pin[data-color="mint"] { --call-paper: #dff3e8; --call-edge: #bcdcca; --call-fold: #baddca; }
+.missed-call-pin[data-color="sky"] { --call-paper: #e0effc; --call-edge: #bed7ee; --call-fold: #bad6ed; }
+.missed-call-pin[data-color="lavender"] { --call-paper: #eee3ff; --call-edge: #dbcaee; --call-fold: #d7c4ed; }
+.missed-call-pin {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  flex: 0 0 240px;
+  min-width: 0;
+  scroll-snap-align: start;
+  --call-paper: #fce0e7;
+  --call-edge: #efc5d1;
+  --call-fold: #efc1cf;
+  padding: 12px 9px 8px 14px;
+  border: 1px solid var(--call-edge);
+  border-radius: 5px 5px 16px 5px;
+  background: linear-gradient(142deg, color-mix(in srgb, var(--call-paper), white 24%), var(--call-paper));
+  color: #342345;
+  box-shadow: 0 5px 9px #402b5010, 0 16px 28px -20px #402b5040;
+  transform-origin: 50% 0;
+  animation: missed-call-pin-arrive var(--motion-slow) var(--motion-ease) backwards;
+}
+.missed-call-pin::after { content: ''; position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; border-radius: 0 0 15px 0; background: linear-gradient(135deg, transparent 47%, var(--call-fold) 49%); pointer-events: none; }
+.missed-call-pin-head { position: absolute; top: -12px; left: 50%; width: 24px; height: 28px; transform: translateX(-50%) rotate(-12deg); pointer-events: none; }
+.missed-call-pin-head::before { content: ''; position: absolute; z-index: 1; top: 0; left: 3px; width: 18px; height: 18px; border: 1px solid #583877; border-radius: 50%; background: radial-gradient(circle at 32% 26%, #d3b8ed, #80549e 50%, #583877 85%); box-shadow: 1px 3px 4px #34204340, inset 0 1px 2px #ffffff70; }
+.missed-call-pin-head::after { content: ''; position: absolute; top: 16px; left: 11px; width: 2px; height: 12px; background: linear-gradient(90deg, #a79caa, #584e60); clip-path: polygon(0 0,100% 0,100% 80%,50% 100%,0 80%); }
+.missed-call-pin button { border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+.missed-call-pin-open { text-align: left; min-width: 0; padding: 0; }
+.missed-call-pin-open strong { display: block; font-size: 14px; line-height: 20px; font-weight: 600; letter-spacing: .16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.missed-call-pin-detail { display: block; font-size: 12px; line-height: 16px; letter-spacing: .32px; margin-top: 2px; white-space: nowrap; }
+.missed-call-pin .missed-call-pin-remove { flex: none; font-size: 22px; width: 32px; height: 32px; border-radius: 5px; }
+.missed-call-pin button:hover { background: #ffffff66; }
+.missed-call-pin button:focus-visible { outline: 2px solid #80549e; outline-offset: 2px; }
+.missed-call-pin button:disabled { opacity: .55; cursor: wait; }
+.missed-call-pin-error { font-size: 11px; max-width: 150px; }
+@keyframes missed-call-pin-arrive { from { opacity: 0; transform: translate(70px,60px) rotate(9deg) scale(.75); } to { opacity: 1; transform: translate(0,0) rotate(-1deg) scale(1); } }
+@media(max-width: 650px) { .conversation-mode-toolbar { gap: 4px; flex-wrap: wrap; padding: 10px 12px; } .missed-call-pin-slot { flex-basis: 100%; } .missed-call-pin { flex-basis: 230px; } }
+@media(prefers-reduced-motion: reduce) { .missed-call-pin { animation: none; } }
+.toolbar-reminder-plane { position: absolute; z-index: 2; left: 50%; top: 0; color: #80549e; font-size: 24px; pointer-events: none; animation: toolbar-reminder-deliver var(--motion-slow) var(--motion-ease) both; }
+@keyframes toolbar-reminder-deliver { from { opacity: 1; transform: translate(80px,45px) rotate(-40deg) scale(.8); } 80% { opacity: 1; transform: translate(0,0) rotate(-40deg) scale(.5); } to { opacity: 0; transform: translate(0,0) scale(0); } }
+@media(prefers-reduced-motion: reduce) { .toolbar-reminder-plane { display: none; animation: none; } }
+
+.missed-call-pin .missed-call-title-tooltip { flex: 1; min-width: 0; }
+.missed-call-title-tooltip .missed-call-pin-open { display: block; width: 100%; }
+.missed-call-title-tooltip .cds--tooltip-content { max-width: min(320px, calc(100vw - 32px)); white-space: normal; overflow-wrap: anywhere; font-size: 14px; line-height: 20px; letter-spacing: .16px; }

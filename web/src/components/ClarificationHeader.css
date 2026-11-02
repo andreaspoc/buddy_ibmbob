@@ -1,0 +1,375 @@
+/* Full IBM Carbon Design System styling for ClarificationCard */
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card {
+  container-type: inline-size;
+  margin: 16px 0 8px;
+  padding: 0;
+  border: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  border-radius: var(--buddy-panel-radius, 4px) !important;
+  background: var(--cds-layer-01, #ffffff);
+  color: var(--cds-text-primary, #161616);
+  box-shadow: none;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card.is-answered {
+  border-color: var(--cds-border-subtle-01, #e0e0e0);
+  background: var(--cds-layer-01, #ffffff);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card.is-cancelled {
+  border-color: var(--cds-border-subtle-01, #e0e0e0);
+  background: var(--cds-layer-01, #ffffff);
+
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-header-row.clarification-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px 16px;
+  min-height: 0;
+  padding: 12px 16px;
+  background: var(--cds-background, #ffffff) !important;
+  border: 0;
+  border-bottom: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  border-radius: 0;
+  box-shadow: none;
+  color: var(--cds-text-primary, #161616) !important;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-header-row .clarification-title {
+  margin: 0;
+  font: 600 14px/20px var(--cds-font-family, sans-serif);
+  color: var(--cds-text-primary, #161616) !important;
+  letter-spacing: 0.16px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-header-row .clarification-status {
+  margin: 0;
+  padding: 2px 8px;
+  border: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  border-radius: var(--buddy-pill-radius, 9999px);
+  background: var(--cds-layer-02, #f4f4f4);
+  color: var(--cds-text-secondary, #525252) !important;
+  font: 400 12px/16px var(--cds-font-family, sans-serif);
+  box-shadow: none;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-header-row .clarification-status.is-answered {
+  background: #defbe6;
+  color: #0e6027 !important;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-questions-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 16px;
+  padding: 16px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card fieldset + fieldset {
+  padding-top: 16px;
+  border-top: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-legend {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+  font: 600 14px/20px var(--cds-font-family, sans-serif);
+  color: var(--cds-text-primary, #161616);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-step-num {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--cds-interactive, #0f62fe);
+  color: var(--cds-text-on-color, #ffffff);
+  font: 600 11px/18px var(--cds-font-family, sans-serif);
+  border: 0;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-question-text {
+  flex: 1;
+  min-width: 0;
+  font: 600 14px/20px var(--cds-font-family, sans-serif);
+  color: var(--cds-text-primary, #161616);
+  line-height: 20px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-context-pill {
+  margin: 0 0 12px 26px;
+  font: 400 12px/16px var(--cds-font-family, sans-serif);
+  color: var(--cds-text-secondary, #525252);
+  background: transparent;
+  padding: 0;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-options-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+}
+
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  border-radius: var(--buddy-panel-radius, 4px) !important;
+  background: var(--cds-layer-01, #ffffff);
+  color: var(--cds-text-primary, #161616);
+  cursor: pointer;
+  user-select: none;
+  transition: background-color var(--motion-standard) var(--motion-ease), border-color var(--motion-standard) var(--motion-ease), box-shadow var(--motion-standard) var(--motion-ease);
+  box-shadow: none;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile:hover {
+  background: var(--cds-layer-hover-01, #e8e8e8);
+  border-color: var(--cds-border-subtle-01, #e0e0e0);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile:has(input:focus-visible) {
+  outline: 2px solid var(--cds-focus, #0f62fe) !important;
+  outline-offset: -2px !important;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile.is-selected {
+  border-color: var(--cds-interactive, #0f62fe) !important;
+
+  background: var(--cds-layer-selected-01, #edf5ff) !important;
+  box-shadow: inset 0 0 0 1px var(--cds-interactive, #0f62fe) !important;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-selection-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--buddy-pill-radius, 9999px);
+  background: var(--cds-interactive, #0f62fe);
+  color: var(--cds-text-on-color, #ffffff);
+  font: 600 11px/1.2 var(--cds-font-family, sans-serif);
+  flex-shrink: 0;
+  box-shadow: 0 1px 4px rgba(15, 98, 254, 0.3);
+
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-hint {
+  font: 500 11px/1.2 var(--cds-font-family, sans-serif);
+  color: var(--cds-text-secondary, #8d8d8d);
+  opacity: 0;
+  transition: opacity var(--motion-standard) var(--motion-ease);
+  flex-shrink: 0;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile:hover .clarification-option-hint {
+  opacity: 1;
+}
+
+@keyframes clarification-badge-pop {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-custom-radio {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--cds-border-strong-01, #8d8d8d);
+  border-radius: 50%;
+  background: var(--cds-layer-01, #ffffff);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile.is-selected .clarification-custom-radio {
+  border-color: var(--cds-interactive, #0f62fe);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-radio-inner {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background-color var(--motion-standard) var(--motion-ease);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile.is-selected .clarification-radio-inner {
+  background: var(--cds-interactive, #0f62fe);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-text {
+  font: 400 14px/20px var(--cds-font-family, sans-serif);
+  color: var(--cds-text-primary, #161616);
+  flex: 1;
+  min-width: 0;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-selection-mark {
+  color: var(--cds-interactive, #0f62fe);
+  font-size: 14px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-write-icon {
+  color: var(--cds-icon-secondary, #525252);
+  margin-left: 4px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-textarea-wrap {
+  margin-top: 8px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-custom-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 80px;
+  max-height: 240px;
+  padding: 10px 12px;
+  border: 1px solid var(--cds-border-strong-01, #8d8d8d);
+  border-bottom: 2px solid var(--cds-border-strong-01, #8d8d8d);
+  border-radius: 0 !important;
+  background: var(--cds-field-01, #f4f4f4);
+  color: var(--cds-text-primary, #161616);
+  font: 400 14px/20px var(--cds-font-family, sans-serif);
+  resize: vertical;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-custom-textarea:focus {
+  outline: 2px solid var(--cds-focus, #0f62fe);
+  outline-offset: -2px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-actions-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  background: var(--cds-layer-01, #ffffff);
+  border-radius: 0 0 var(--buddy-panel-radius, 4px) var(--buddy-panel-radius, 4px) !important;
+  flex-wrap: wrap;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-completion {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: auto;
+  font: 400 12px/16px var(--cds-font-family, sans-serif);
+  color: var(--cds-text-secondary, #525252);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-completion-track {
+  width: 80px;
+  height: 4px;
+  background: var(--cds-border-subtle-01, #e0e0e0);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-completion-track span {
+  display: block;
+  height: 100%;
+  background: var(--cds-interactive, #0f62fe);
+  transition: width var(--motion-enter) var(--motion-ease);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-cancel-btn {
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid var(--cds-border-subtle-01, #e0e0e0);
+  border-radius: var(--buddy-panel-radius, 4px) !important;
+  background: transparent;
+  color: var(--cds-text-primary, #161616);
+  font: 400 14px/20px var(--cds-font-family, sans-serif);
+  cursor: pointer;
+  transition: background-color var(--motion-standard) var(--motion-ease), border-color var(--motion-standard) var(--motion-ease);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-cancel-btn:hover:not(:disabled) {
+  background: var(--cds-layer-hover-01, #e8e8e8);
+  border-color: var(--cds-border-subtle-01, #e0e0e0);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-cancel-btn:focus-visible {
+  outline: 2px solid var(--cds-focus, #0f62fe);
+  outline-offset: -2px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-cancel-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-radius: var(--buddy-panel-radius, 4px) !important;
+  background: var(--cds-interactive, #0f62fe);
+  color: var(--cds-text-on-color, #ffffff);
+  font: 400 14px/20px var(--cds-font-family, sans-serif);
+  box-shadow: none;
+  cursor: pointer;
+  transition: background-color var(--motion-standard) var(--motion-ease);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-submit-btn:hover:not(:disabled) {
+  background: var(--cds-interactive-hover, #0353e9);
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-submit-btn:focus-visible {
+  outline: 2px solid var(--cds-focus, #0f62fe);
+  outline-offset: 2px;
+}
+
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-submit-btn:disabled {
+  background: var(--cds-button-disabled, #8d8d8d);
+  color: var(--cds-text-disabled, #c6c6c6);
+  cursor: not-allowed;
+  border-color: transparent;
+}
+
+/* Native progress avoids layout styles in the form component. */
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card progress.clarification-completion-track {
+  appearance: none;
+  border: 0;
+  color: var(--cds-interactive);
+}
+.clarification-completion-track::-webkit-progress-bar { background: var(--cds-border-subtle-01, #e0e0e0); }
+.clarification-completion-track::-webkit-progress-value { background: var(--cds-interactive, #0f62fe); }
+.clarification-completion-track::-moz-progress-bar { background: var(--cds-interactive, #0f62fe); }
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card fieldset:disabled .clarification-option-tile {
+  cursor: default;
+}
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-option-tile { flex-wrap: wrap; }
+:root[data-design-system='carbon']:root body .clarification-card.clarification-card .clarification-selection-badge { box-shadow: none; }

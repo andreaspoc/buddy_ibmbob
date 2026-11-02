@@ -1,0 +1,21 @@
+.integration-catalog { margin-top: 24px; }
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; margin: 18px 0; }
+.catalog-card { border: 1px solid var(--border-color, #ded5e8); border-radius: 16px; padding: 18px; background: var(--bg-secondary, #faf7ff); }
+.catalog-heading { display: flex; gap: 12px; align-items: center; }
+.catalog-heading h3 { margin: 0 0 4px; }
+.catalog-heading span { font-size: .85rem; }
+.catalog-icon { display: inline-flex; flex-shrink: 0; width: 48px; height: 48px; align-items: center; justify-content: center; border-radius: 14px; color: var(--accent-color, #8134d8); background: rgba(168,71,255,.1); }
+.catalog-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.catalog-form { border: 1px solid var(--border-color, #ded5e8); border-radius: 16px; padding: 18px; margin: 16px 0; }
+.catalog-form label, .integration-catalog > label { display: flex; flex-direction: column; gap: 6px; margin: 12px 0; }
+.catalog-form label:has(input[type=checkbox]) { flex-direction: row; align-items: center; }
+.catalog-form input:not([type=checkbox]), .catalog-form textarea, .catalog-form select, .integration-catalog > label input { width: 100%; box-sizing: border-box; border: 1px solid var(--border-color, #ded5e8); border-radius: 8px; background: var(--bg-primary, #fff); color: inherit; padding: 10px 12px; font: inherit; }
+.catalog-form fieldset { margin: 12px 0; border: 1px solid var(--border-color, #ded5e8); border-radius: 12px; }
+.catalog-card p { white-space: pre-wrap; overflow-wrap: anywhere; }
+.mcp-server-catalog { max-width: 1000px; }
+.catalog-form .catalog-check { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.catalog-user-list { max-height: 240px; overflow-y: auto; }
+.catalog-access-hint { color: var(--text-secondary, #766980); font-size: .85rem; line-height: 1.6; }
+.catalog-provider-icon { font-size: 20px; font-weight: 750; letter-spacing: -.05em; }
+.catalog-card details { margin: 10px 0; font-size: .85rem; }
+.catalog-card > a { font-size: .85rem; }

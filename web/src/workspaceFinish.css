@@ -1,0 +1,128 @@
+/* Shared workspace surfaces; Carbon owns control geometry. */
+:root[data-design-system='carbon']:root {
+  --workspace-card-radius: var(--buddy-panel-radius);
+  --workspace-control-radius: var(--buddy-control-radius);
+  --workspace-card-shadow: 0 2px 8px #302e2b08;
+}
+:root[data-design-system='carbon']:root body .shell .main :is(.task-card,.knowledge-card,.suggestion,.composer) {
+  background: #ffffff;
+  border: 1px solid #d8d3cc;
+  border-radius: var(--workspace-card-radius);
+  box-shadow: var(--workspace-card-shadow);
+}
+:root[data-design-system='carbon']:root body .shell .main .composer:focus-within {
+  border-color: #a497b0;
+  box-shadow: 0 0 0 3px #65458a12;
+}
+:root[data-design-system='carbon']:root body .shell .main .composer textarea { background: transparent; }
+/* High specificity keeps the shared toolbar contract, including the alternate theme. */
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) :is(button:not(.cds--btn),select),
+:root[data-design-system='carbon']:root body .shell .main .composer-wrap :is(.composer-tool-shortcut,.composer-clip-btn,.slash-button,.composer-websearch-btn) {
+  border-radius: var(--buddy-control-radius) !important;
+  border: 1px solid #d0cbc4;
+  background: #ffffff;
+  color: #302e2b;
+  box-shadow: 0 1px 2px #302e2b0a, inset 0 1px #ffffff;
+  font-weight: 500;
+  transition: background-color var(--motion-standard) var(--motion-ease), border-color var(--motion-standard) var(--motion-ease), box-shadow var(--motion-standard) var(--motion-ease);
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) :is(button:not(.cds--btn),select):hover:not(:disabled),
+:root[data-design-system='carbon']:root body .shell .main .composer-wrap :is(.composer-tool-shortcut,.composer-clip-btn,.slash-button,.composer-websearch-btn):hover:not(:disabled) {
+  background: #faf9f7;
+  border-color: #a9a198;
+  box-shadow: 0 2px 5px #302e2b14;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) button:is([aria-pressed='true'],[aria-expanded='true'],[aria-selected='true'],.active) {
+  background: #e3e8ea;
+  color: #344c56;
+  border-color: #9dabb1;
+  box-shadow: inset 0 0 0 1px #9dabb133;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) button:active:not(:disabled) {
+  box-shadow: inset 0 1px 3px #302e2b20;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) button:disabled {
+  opacity: .5;
+  box-shadow: none;
+  cursor: not-allowed;
+}
+/* Keep explicit primary actions recognizable alongside white secondary buttons. */
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) button.feature-primary {
+  background: var(--brand-accent);
+  color: #fff;
+  border-color: var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-menu) button.feature-primary:hover:not(:disabled) {
+  background: var(--brand-accent-hover);
+  border-color: var(--brand-accent-hover);
+}
+@media (prefers-reduced-motion: reduce) {
+  :root[data-design-system='carbon']:root body .buddy-toolbar button,
+  :root[data-design-system='carbon']:root body .shell .main .composer button { transition: none; }
+}
+
+:root[data-design-system='carbon']:root body .shell .main .composer-tool-row :is(.office-chat-references > button,.note-chat-references > button,.composer-websearch-btn),
+:root[data-design-system='carbon']:root body .shell .main button.chat-context-chip {
+  background: #fff;
+  color: #344c56;
+  border: 1px solid #c4cfd3;
+  border-radius: var(--buddy-control-radius) !important;
+  box-shadow: 0 1px 3px #302e2b0b;
+}
+:root[data-design-system='carbon']:root body .shell .main .composer-wrap .composer-tool-shortcut:is(.is-active,[aria-pressed='true']) {
+  background: #e3e8ea;
+  border-color: #9dabb1;
+  color: #344c56;
+}
+/* Compact navigation and icon actions share the Carbon control geometry. */
+:root[data-design-system='carbon']:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.workspace-notes-tab,.workspace-menu-trigger),
+:root[data-design-system='carbon']:root body .shell .main .composer-wrap .composer-tool-shortcut {
+  border-radius: var(--buddy-control-radius) !important;
+  padding-inline: 14px;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .topbar-notifications,
+:root[data-design-system='carbon']:root body .shell .main .composer-wrap :is(.composer-clip-btn,.slash-button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  border-radius: 50% !important;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-icon { border-radius: 50%; }
+/* Lighter main workspace canvas, with white cards still clearly separated. */
+:root[data-design-system='carbon']:root body .shell .main {
+  --workspace-canvas: #f7f6f4;
+  --bg-main: #f7f6f4;
+  --ck-canvas: #f7f6f4;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar,
+:root[data-design-system='carbon']:root body .shell .main .chat-context-bar {
+  --toolbar-background: #efede9;
+  --toolbar-border: #ded9d2;
+}
+
+/* Keep the notification bell legible against the light workspace toolbar. */
+:root[data-design-system='carbon']:root:root:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .topbar-notifications {
+  background: #fff;
+  border: 1px solid #ded9d2;
+  border-radius: 10px !important;
+  color: #525252;
+  color-scheme: light;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root:root:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .topbar-notifications:hover {
+  background: #f0eeeb;
+  border-color: #b8b2aa;
+  color: #161616;
+}
+:root[data-design-system='carbon']:root:root:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .topbar-notifications svg {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: inherit;
+  fill: currentColor;
+}

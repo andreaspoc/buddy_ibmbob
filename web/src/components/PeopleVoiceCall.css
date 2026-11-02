@@ -1,0 +1,53 @@
+.people-voice-host { position: fixed; z-index: 960; right: calc(22px / var(--ui-scale, 1)); bottom: calc(var(--member-chat-panel-bottom, 90px) / var(--ui-scale, 1)); width: min(360px, calc(100vw / var(--ui-scale, 1) - 24px)); color: #161616; }
+.people-voice-host:has(.people-voice-call) { top: calc(20px / var(--ui-scale, 1)); bottom: auto; right: auto; left: calc(50vw / var(--ui-scale, 1)); transform: translateX(-50%); }
+.people-voice-call, .people-voice-notice { padding: 16px; border: 1px solid #d4bbff; background: #ffffff; box-shadow: 0 8px 30px #16161624; border-radius: 8px; }
+.people-voice-call { border-top: 4px solid #8a3ffc; }
+.people-voice-status { display: grid; gap: 4px; font-size: 14px; }
+.people-voice-status strong { font-weight: 600; overflow-wrap: anywhere; color: #161616; }
+.people-voice-status span { color: #525252; font-size: 13px; }
+.people-voice-controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+.people-voice-controls button, .people-voice-notice button { padding: 8px 12px; min-height: 36px; background: #f4f4f4; color: #161616; border: 1px solid #c6c6c6; font: inherit; font-size: 13px; cursor: pointer; }
+.people-voice-controls .people-voice-answer { background: #8a3ffc; color: #ffffff; border-color: #8a3ffc; }
+.people-voice-controls .people-voice-end { background: #da1e28; border-color: #da1e28; color: #ffffff; }
+.people-voice-controls button:focus-visible, .people-voice-notice button:focus-visible { outline: 2px solid #8a3ffc; outline-offset: 2px; }
+.people-voice-notice { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-top: 8px; }
+.people-voice-notice button { margin-inline-start: auto; }
+.member-chat-conversation-header .member-chat-call { flex: none; white-space: nowrap; }
+
+.people-voice-controls .people-voice-end { min-width: 96px; min-height: 44px; font-weight: 600; }
+
+/* One stable rail keeps call controls and catch-up alerts below the app header. */
+.member-chat-widget .people-notification-stack {
+  position: fixed;
+  z-index: 1100;
+  top: calc(76px / var(--ui-scale, 1));
+  right: calc(20px / var(--ui-scale, 1));
+  width: min(360px, calc(100vw / var(--ui-scale, 1) - 24px));
+  max-height: calc((100dvh - 100px) / var(--ui-scale, 1));
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  pointer-events: none;
+}
+.member-chat-widget .people-voice-host { display: contents; }
+.member-chat-widget .people-voice-host > audio { display: none; }
+.member-chat-widget .member-chat-toast-stack {
+  position: static;
+  width: 100%;
+  max-width: 100%;
+  max-height: none;
+  overflow: visible;
+  flex: none;
+}
+.people-notification-stack > .people-voice-notice,
+.people-notification-stack .people-voice-call,
+.people-notification-stack .people-voice-notice { pointer-events: auto; margin-top: 0; flex: none; }
+.people-voice-notice > div { min-width: 0; overflow-wrap: anywhere; }
+.people-voice-notice p { color: #6f617a; font-size: 12px; }
+.people-voice-call[data-phase="incoming"] { border-color: #23764e; }
+.people-voice-controls .people-voice-answer { background: #23764e; border-color: #23764e; min-height: 44px; }
+@media (max-width: 600px) {
+  .member-chat-widget .people-notification-stack { top: calc((64px + env(safe-area-inset-top, 0px)) / var(--ui-scale, 1)); right: calc(12px / var(--ui-scale, 1)); }
+}

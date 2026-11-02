@@ -1,0 +1,16 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Chat input layout preview</title></head><body><div id="root"></div><script type="module">
+import React, {useState} from 'react';
+import {createRoot} from 'react-dom/client';
+import {ChatView} from '/src/components/ChatView.tsx';
+import {ApprovalSettingsMenu} from '/src/components/ApprovalControls.tsx';
+import {DEFAULT_APPROVAL_POLICY} from '/src/lib/approvalPolicy.ts';
+import '/src/styles.css';
+const noop=()=>{};
+function Preview(){
+ const [policy,setPolicy]=useState(DEFAULT_APPROVAL_POLICY);
+ return React.createElement('main',{className:'main',style:{height:'100vh'}},
+ React.createElement('nav',{className:'feature-toolbar','aria-label':'Workspace tools'},React.createElement('strong',null,'Chat input layout preview'),React.createElement(ApprovalSettingsMenu,{policy,onChange:setPolicy,disabled:false})),
+ React.createElement(ChatView,{messages:[],isStreaming:false,activeMode:'agent',slideCount:5,onSlideCountChange:noop,activeAgent:'',modes:[],skills:[{name:'example-skill',description:'Sample skill for layout testing'}],agents:[],templates:[],selectedTemplateId:'',onSendMessage:noop,onUploadFile:noop,onStop:noop,onApprovalDecision:noop,onOpenTemplateModal:noop}));
+}
+createRoot(document.getElementById('root')).render(React.createElement(Preview));
+</script></body></html>

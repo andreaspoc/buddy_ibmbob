@@ -1,0 +1,10 @@
+import { runFixedRoutingChecks } from './contracts/fixedDiagramRouting.mjs';
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const ts = require('../web/node_modules/typescript');
+const source = ts.transpileModule(fs.readFileSync(new URL('../web/src/lib/fixedDiagramRouting.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } }).outputText;
+const module = { exports: {} };
+new Function('require', 'exports', 'module', source)(() => { throw Error('Unexpected runtime import'); }, module.exports, module);
+runFixedRoutingChecks(module.exports);

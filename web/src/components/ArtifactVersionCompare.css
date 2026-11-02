@@ -1,0 +1,19 @@
+.artifact-comparison { margin-top:12px; overflow:hidden; border:1px solid #e4d6ee; border-radius:14px; background:#fcfaff; color:#543568; }
+.artifact-comparison header { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:14px 16px; border-bottom:1px solid #eadff2; }
+.artifact-comparison header p { margin:4px 0 0; font-size:12px; color:#5f5a70; }
+.artifact-comparison > p { margin:12px 16px; line-height:1.5; }
+.artifact-comparison-summary { font-size:12px; color:#826b91; }
+.artifact-comparison-columns { display:grid; grid-template-columns:1fr 1fr; min-width:0; }
+.artifact-comparison-column { min-width:0; }
+.artifact-comparison-column + .artifact-comparison-column { border-left:1px solid #eadff2; }
+.artifact-comparison-column h4 { margin:0; padding:10px 12px; font-size:12px; font-weight:600; background:#f2eaf8; }
+.artifact-comparison-column pre { margin:0; padding:10px 0; height:300px; overflow:auto; font:11px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace; background:#fff; color:#44354f; }
+.artifact-comparison-column pre span { display:block; min-width:max-content; padding-right:12px; }
+.artifact-comparison-column pre i { display:inline-block; width:44px; padding-right:10px; text-align:right; font-style:normal; user-select:none; color:#5f5a70; }
+.artifact-comparison-column .changed-before { background:#fff0f0; }
+.artifact-comparison-column .changed-after { background:#eaf7ef; }
+.artifact-comparison footer { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; padding:12px; border-top:1px solid #eadff2; }
+.artifact-editor .artifact-comparison footer button:last-child { color:#fff; background:#7b25ae; border-color:#7b25ae; }
+.artifact-history-row { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; padding:12px 0; border-bottom:1px solid #eee5f5; }
+.artifact-history-row time { color:#5f5a70; font-size:12px; }
+@media(max-width:600px) { .artifact-comparison-columns { grid-template-columns:1fr; } .artifact-comparison-column + .artifact-comparison-column { border-left:0; border-top:1px solid #eadff2; } .artifact-comparison-column pre { height:200px; } }

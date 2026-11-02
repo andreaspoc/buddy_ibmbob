@@ -1,0 +1,37 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(new URL('../web/package.json', import.meta.url));
+const ts = require('typescript');
+const React = require('react');
+const { renderToStaticMarkup } = require('react-dom/server');
+const source = fs.readFileSync(new URL('../web/src/components/IntelligentAnswer.tsx', import.meta.url), 'utf8');
+const code = ts.transpileModule(source, { compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
+let filter = '', view = 'tabs', hook = 0;
+const exports = {};
+new Function('exports', 'require', code)(exports, name => {
+  if (name.endsWith('.css')) return {};
+  if (name === 'react/jsx-runtime') return require(name);
+  if (name === 'react') return {...React, useId: () => 'design-test', useState: () => [hook++ === 0 ? filter : view, () => {}]};
+  if (name.includes('interactiveState')) return {useInteractiveState: () => ({state: {selected: 0}, setState() {}, status: 'local'})};
+  if (name.includes('i18n')) return {t: text => text};
+  if (name === './Toolbar') return {Toolbar: ({children, ...props}) => React.createElement('div', props, children)};
+  return {};
+});
+const spec = {kind: 'explore', title: 'Synthetic design fixture', items: ['Alpha','Beta','Gamma','Delta'].map(title => ({title, body: `Details for ${title}`}))};
+function render() { hook = 0; return renderToStaticMarkup(exports.IntelligentAnswer({spec, source: '', pending: false, onPrompt() {}})); }
+filter = 'Beta';
+let html = render();
+assert.match(html, /role="tab"[^>]*aria-selected="true"[^>]*tabindex="0"[^>]*>/);
+assert.match(html, /aria-labelledby="design-test-tab1"/);
+assert.match(html, /Details for Beta/);
+assert.doesNotMatch(html, /Details for Alpha/);
+assert.match(html, /role="group" aria-label="Layout view"/);
+assert.match(html, /aria-pressed="true"/);
+view = 'grid'; filter = '';
+html = render();
+assert.doesNotMatch(html, /Docmost|Browse Space/);
+assert.match(html, /Details/);
+assert.doesNotMatch(html, /ia-live-pulse|ia-badge-primary|ia-selected-pill|ia-grid-card-num/);
+assert.doesNotMatch(html, /ia-grid-card is-selected/);
+console.log('PASS: filtered tab selection and panel association, layout toggle semantics, generic card actions');

@@ -1,0 +1,61 @@
+@use '@carbon/styles/scss/colors';
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+
+/* Category color supports labels and explicit selected states; it never replaces them. */
+:root[data-design-system='carbon']:root:root body .intelligent-answer {
+  --ia-primary: var(--cds-interactive);
+  --ia-text: var(--cds-text-primary);
+  --ia-text-secondary: var(--cds-text-secondary);
+  --ia-border: var(--cds-border-subtle);
+  :is(.ia-grid-card,.ia-tab-btn,.ia-comparison-card,.ia-step-row) {
+    --ia-category: #{colors.$purple-70};
+    --ia-category-soft: #{colors.$purple-10};
+    &:nth-child(3n + 2) { --ia-category: #{colors.$blue-70}; --ia-category-soft: #{colors.$blue-10}; }
+    &:nth-child(3n + 3) { --ia-category: #{colors.$teal-70}; --ia-category-soft: #{colors.$teal-10}; }
+  }
+  :is(.ia-grid-card,.ia-comparison-card) {
+    border-radius: var(--buddy-panel-radius);
+    border-color: var(--cds-border-subtle);
+    border-top: spacing.$spacing-02 solid var(--ia-category);
+    background: var(--cds-layer);
+    &.is-selected { border-color: var(--ia-category); }
+    &:focus-within { outline: 2px solid var(--cds-focus); outline-offset: 2px; }
+  }
+  .ia-topic-title {
+    @include type.type-style('heading-compact-01');
+    display: block; width: 100%; text-align: start;
+    padding: 0; border: 0; background: transparent; color: var(--cds-text-primary);
+    cursor: pointer;
+    &:hover { color: var(--ia-category); text-decoration: underline; }
+  }
+  :is(.ia-grid-card-head,.ia-card-top) { color: var(--ia-category); }
+  :is(.ia-tab-index,.ia-card-index,.ia-step-num-badge) {
+    color: var(--ia-category); background: var(--ia-category-soft);
+    border-radius: var(--buddy-control-radius);
+  }
+  .ia-tab-btn {
+    color: var(--cds-text-secondary);
+    cursor: pointer;
+    &[aria-selected='true'] {
+      color: var(--ia-category); background: var(--ia-category-soft);
+      border-bottom-color: var(--ia-category);
+      box-shadow: inset 0 -2px var(--ia-category);
+    }
+  }
+  .ia-comparison-select-btn[aria-pressed='true'],.ia-selected-pill {
+    color: var(--ia-category); background: var(--ia-category-soft); border-color: var(--ia-category);
+  }
+  .ia-card-select-btn {
+    color: var(--ia-category); background: var(--ia-category-soft);
+    border-color: transparent; border-radius: var(--buddy-control-radius);
+    &:hover:not(:disabled) { border-color: var(--ia-category); }
+  }
+  :is(button,input):focus-visible { outline: 2px solid var(--cds-focus); outline-offset: 2px; }
+  .ia-step-row.is-done { border-inline-start: spacing.$spacing-02 solid var(--cds-support-success); }
+  .ia-step-row.is-done .ia-step-custom-box { background: var(--cds-support-success); color: var(--cds-text-on-color); }
+}
+:root[data-design-system='carbon']:root:root body .intelligent-answer .ia-step-checkbox:focus-visible + .ia-step-custom-box {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 2px;
+}

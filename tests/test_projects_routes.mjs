@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {isProjectsPath,navigateProjects,updateConversationUrl} from '../web/src/lib/conversationUrl.ts';
+let current=new URL('https://buddy.test/?conversation=chat&keycloak_error=old'),pushes=0;
+globalThis.window={get location(){return current},history:{state:{},pushState(state,_,url){this.state=state;current=new URL(url);pushes++},replaceState(state,_,url){this.state=state;current=new URL(url)}}};
+assert.equal(isProjectsPath('/projects'),true);assert.equal(isProjectsPath('/projects/'),true);assert.equal(isProjectsPath('/projects/123/files'),false);assert.equal(isProjectsPath('//evil.test/projects'),false);
+navigateProjects(true);assert.equal(current.pathname,'/projects');assert.equal(current.searchParams.get('conversation'),'chat');assert.equal(current.searchParams.has('keycloak_error'),false);navigateProjects(true);assert.equal(pushes,1);
+updateConversationUrl('portfolio-bob','');assert.equal(current.pathname,'/projects');assert.equal(current.searchParams.get('conversation'),'portfolio-bob');navigateProjects(false);assert.equal(current.pathname,'/');
+current=new URL('https://buddy.test/notes');navigateProjects(true);navigateProjects(false);assert.equal(current.pathname,'/notes');
+current=new URL('https://buddy.test/?next=%2Fprojects');navigateProjects(true,true);assert.equal(current.pathname,'/projects');assert.equal(current.searchParams.has('next'),false);
+current=new URL('https://buddy.test/projects');window.history.state={projectsReturnPath:'https://evil.test'};navigateProjects(false);assert.equal(current.pathname,'/');
+console.log('PASS Projects URL recognition, browser history, query preservation and safe sign-in return');

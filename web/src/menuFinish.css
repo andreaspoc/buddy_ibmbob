@@ -1,0 +1,131 @@
+/* White floating menus with purple accents and Carbon control geometry. */
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu {
+  --toolbar-background: #ffffff;
+  --toolbar-text: #382b45;
+  --toolbar-border: #e2d9ea;
+  --toolbar-control: #ffffff;
+  --toolbar-hover: #f3eff8;
+  --toolbar-selected: #ebe2f3;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  padding: 12px;
+  gap: 10px;
+  border: 1px solid #e2d9ea;
+  border-radius: var(--buddy-popover-radius);
+  box-shadow: 0 12px 36px #34204324;
+}
+:root[data-design-system='carbon']:root body .workspace-panel-heading {
+  --toolbar-background: #583877;
+  --toolbar-text: #ffffff;
+  --toolbar-border: transparent;
+}
+:root[data-design-system='carbon']:root body .workspace-panel-buddy .workspace-panel-heading { --toolbar-background: #70518a; }
+:root[data-design-system='carbon']:root body .workspace-panel-heading.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  border-radius: 0;
+  padding: 12px 16px;
+  font-weight: 600;
+}
+:root[data-design-system='carbon']:root body .workspace-tools-panel > section {
+  padding: 8px;
+  border: 1px solid #e8e1ef;
+  border-radius: var(--buddy-panel-radius);
+  background: #faf9fc;
+}
+:root[data-design-system='carbon']:root body .workspace-tools-panel.buddy-toolbar.buddy-toolbar.buddy-toolbar h3 {
+  display: inline-block;
+  padding: 4px 10px;
+  margin: 0 0 8px;
+  border-radius: 999px;
+  background: #f0eaf6;
+  color: #583877;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .04em;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(button:not(.cds--btn),select) {
+  border-radius: var(--buddy-control-radius) !important;
+  padding-inline: 14px;
+  border-color: #e2d9ea;
+  background: #ffffff;
+  color: #583877;
+  box-shadow: 0 1px 2px #34204308;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar button:hover:not(:disabled) {
+  background: #f3eff8;
+  border-color: #b39cc8;
+  color: #4b2e65;
+}
+:root[data-design-system='carbon']:root body .buddy-toolbar-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar button:is([aria-pressed='true'],[aria-selected='true'],.active) {
+  background: #ebe2f3;
+  border-color: #a58abc;
+  color: #4b2e65;
+}
+/* Main navigation gets distinct accent colors; the rest of the bar stays quiet. */
+:root[data-design-system='carbon']:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .workspace-notes-tab {
+  background: #583877;
+  border-color: #583877;
+  color: #fff;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .workspace-menu-buddy .workspace-menu-trigger {
+  background: #70518a;
+  border-color: #70518a;
+  color: #fff;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.workspace-notes-tab,.workspace-menu-buddy .workspace-menu-trigger):hover {
+  background: #43285e;
+  border-color: #43285e;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(.workspace-notes-tab,.workspace-menu-buddy .workspace-menu-trigger) :is(span,svg) { color: inherit; }
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-icon,
+:root[data-design-system='carbon']:root body .catalog-icon.catalog-icon {
+  background: #f0eaf6;
+  border-color: #d8c9e5;
+  color: #583877;
+  border-radius: 50%;
+}
+
+/* Apps mirrors the Buddy menu: white panel, rich header and grouped choices. */
+:root[data-design-system='carbon']:root body .installed-apps.installed-apps.buddy-surface {
+  background: #ffffff;
+  border-color: #e2d9ea;
+  border-radius: var(--buddy-popover-radius);
+  box-shadow: 0 16px 48px #34204326;
+}
+:root[data-design-system='carbon']:root body .installed-apps .buddy-section-header {
+  --toolbar-background: #583877;
+  --toolbar-text: #ffffff;
+  --toolbar-border: transparent;
+}
+:root[data-design-system='carbon']:root body .installed-apps .buddy-section-header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  border-radius: 0;
+  padding: 16px;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-apps-controls {
+  --toolbar-background: #faf9fc;
+  --toolbar-border: #e2d9ea;
+}
+:root[data-design-system='carbon']:root body .installed-apps > section {
+  background: #faf9fc;
+  border: 1px solid #e8e1ef;
+  border-radius: var(--buddy-panel-radius);
+  padding: 14px;
+}
+:root[data-design-system='carbon']:root body .installed-apps h3 {
+  display: inline-flex;
+  padding: 5px 12px;
+  background: #f0eaf6;
+  color: #583877;
+  border-radius: 999px;
+}
+:root[data-design-system='carbon']:root body .installed-apps h3::after { display: none; }
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-card {
+  background: #ffffff;
+  border-color: #e2d9ea;
+  border-radius: var(--buddy-popover-radius);
+  box-shadow: 0 1px 3px #34204308;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-card:hover:not(:disabled) {
+  background: #f8f5fc;
+  border-color: #b39cc8;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-arrow { color: #70518a; }

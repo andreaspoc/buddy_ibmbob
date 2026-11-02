@@ -1,0 +1,54 @@
+# Versioned shared Python SDK, authentication, storage and Bob runtime. No frontend build.
+# Avoid inheriting buildpack development libraries (including ImageMagick and
+# OpenEXR) in the deployed runtime. Install runtime tools explicitly below.
+FROM node:24-bookworm-slim
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    BOB_WORKSPACE="/workspace" \
+    PORT="8080"
+
+RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
+      ca-certificates curl python3 python3-pip git chromium bubblewrap \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libsasl2-2)" ge '2.1.28+dfsg-10+deb12u1' \
+    && rm -rf /var/lib/apt/lists/*
+
+# Keep Monday startup independent of per-user npm caches. Releases with the ATP
+# runtime require isolated-vm 5, which does not build against Node 24.
+RUN npm install -g @mondaydotcomorg/monday-api-mcp@1.11.3 --no-audit --no-fund \
+      --fetch-retries=0 --fetch-timeout=20000 \
+    && command -v mcp-server-monday-api
+
+# Bob Shell is distributed as a versioned tarball, not on the public npm registry.
+# Preselect npm so IBM's installer never prompts for a package manager.
+# Pinned so a new IBM release cannot change the branding patch target. 2.0.7+ ships as @ibm/bob.
+RUN curl -fsSL --retry 3 https://bob.ibm.com/download/bobshell.sh -o /tmp/bobshell.sh \
+    && bash /tmp/bobshell.sh --pm npm --version 2.0.9 \
+    && rm /tmp/bobshell.sh \
+    && command -v bob \
+    && bob --version \
+    && node -e '\
+const fs = require("fs"); \
+const p = "/usr/local/lib/node_modules/@ibm/bob/dist/bob.js"; \
+let code = fs.readFileSync(p, "utf8"); \
+code = code.replaceAll("You are Bob, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.", \
+  "You are Buddy, an enterprise AI assistant. You assist employees across engineering, business operations, data analysis, presentations, document management, research, planning, automation, and general workplace tasks."); \
+code = code.replaceAll("You can write, modify, and refactor code in any programming language or framework. Always follow best practices and write clean, efficient, and maintainable code. Make sure to test your code thoroughly before submitting it. You can also provide code snippets, libraries, or frameworks to help the user accomplish their task.", \
+  "You are Buddy. Never introduce yourself as a software engineer or limit your scope to coding. You assist employees across engineering, business operations, data analysis, reports, presentations, documentation, automation, and general workplace tasks. Always be professional, helpful, accurate, and provide high-quality responses tailored to Buddy."); \
+code = code.replaceAll(", powered by IBM Bob", "").replaceAll("powered by IBM Bob", ""); \
+fs.writeFileSync(p, code, "utf8"); \
+'
+
+COPY requirements.txt /opt/bob-a2a/requirements.txt
+RUN pip3 install --break-system-packages --no-cache-dir -r /opt/bob-a2a/requirements.txt
+
+RUN node -e 'const fs = require("fs"); const p = "/usr/local/lib/node_modules/@ibm/bob/dist/bob.js"; const code = fs.readFileSync(p, "utf8"); fs.writeFileSync(p, code.replaceAll("You are Bob", "You are Buddy"), "utf8");'
+# Update npm's bundled dependencies, independently of the Node base image.
+RUN npm install -g npm@11.21.1 --no-audit --no-fund && npm --version
+COPY app /opt/bob-a2a/app
+RUN chmod +x /opt/bob-a2a/app/bin/a2a && ln -sf /opt/bob-a2a/app/bin/a2a /usr/local/bin/a2a
+WORKDIR /workspace
+ENV PYTHONPATH=/opt/bob-a2a BUDDY_RUNTIME_API=1
+RUN apt-get update && apt-get install -y --no-install-recommends fonts-noto-core && rm -rf /var/lib/apt/lists/*
+EXPOSE 8080

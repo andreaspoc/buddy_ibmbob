@@ -1,0 +1,27 @@
+.decisions-workspace {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--workspace-canvas, #f7f6f4);
+  overflow: hidden;
+  position: relative;
+  z-index: 10;
+}
+
+.decisions-workspace-body {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.decisions-workspace-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}

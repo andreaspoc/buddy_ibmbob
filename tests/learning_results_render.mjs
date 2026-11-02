@@ -1,0 +1,40 @@
+/** Synthetic result fixtures; no live data or model calls. Run with Node 22+. */
+import { createRequire } from 'node:module';
+import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
+const require = createRequire(new URL('../web/package.json', import.meta.url));
+const { createServer } = await import(require.resolve('vite'));
+const { renderToStaticMarkup } = require('react-dom/server');
+const React = require('react');
+const server = await createServer({ root: fileURLToPath(new URL('../web', import.meta.url)), configFile:false, cacheDir:fileURLToPath(new URL('../web/node_modules/.vite-learning-report-tests', import.meta.url)), plugins:[(await import(require.resolve('@vitejs/plugin-react'))).default()], optimizeDeps:{noDiscovery:true,include:[]}, server: {middlewareMode:true, hmr:false, ws:false}, appType:'custom' });
+try {
+ const { QuizGradingState, QuizReport, QuizStatistics } = await server.ssrLoadModule('/src/components/LearningQuizResults.tsx');
+ const waiting=renderToStaticMarkup(React.createElement(QuizGradingState));
+ assert.ok(waiting.includes('Preparing your results'));
+ assert.ok(waiting.includes('aria-busy="true"'));
+ assert.ok(waiting.includes('automatically'));
+ assert.ok(waiting.includes('administrators'));
+ const savedWaiting=renderToStaticMarkup(React.createElement(QuizGradingState,{saved:true}));
+ assert.ok(savedWaiting.includes('ANSWERS SAVED'));
+ const questions=[{id:'a',type:'single',question:'Fixture concept A',options:['Right choice','Wrong choice'],answer:[0],points:2,study_topic:'Fixture topic',reading:'Actual source section'},{id:'b',type:'text',question:'Fixture concept B',answer:'Reference reasoning',points:2}];
+ const base={id:'attempt1',username:'kc-'+ 'a'.repeat(40),display_name:'Alex Example',quiz_version:1,submitted_at:'2026-10-26T00:00:00Z',questions,answers:{a:[1],b:'Response'},grades:{a:{score:0,feedback:'Review the concept'},b:{score:1,feedback:'Missing detail',method:'ai'}},score:1,max_score:4,pending_manual:false,folder_id:'f',source_book_id:'book',reading_recommendations:[{question_id:'a',title:'Actual source chapter',chapter_id:'c',reason:'Related to fixture topic'}]};
+ const html=renderToStaticMarkup(React.createElement(QuizReport,{submission:base}));
+ for(const text of ['25%','Needs improvement','Fixture topic','Actual source chapter','?chapter=c','Correct answer','Incorrect choice','Why this answer','Review the concept','View chart data']) assert.ok(html.includes(text),text);
+ assert.equal((html.match(/class="learning-feedback-card"/g)||[]).length,1,'One reviewed question at a time');
+ const adminHtml=renderToStaticMarkup(React.createElement(QuizReport,{submission:base,administrator:true}));
+ assert.ok(adminHtml.includes('Alex Example'));
+ assert.ok(!adminHtml.includes(base.username),'Internal account ID is not a person label');
+ const {learningUserName}=await server.ssrLoadModule('/src/lib/learningIdentity.ts');
+ assert.equal(learningUserName({username:base.username}),'Learner');
+ const pending=renderToStaticMarkup(React.createElement(QuizReport,{submission:{...base,pending_manual:true,grades:{...base.grades,b:{score:null}}}}));
+ assert.ok(pending.includes('Provisional score'));
+ const cohort=renderToStaticMarkup(React.createElement(QuizStatistics,{submissions:[base,{...base,id:'other',quiz_version:2,score:4,grades:{a:{score:2},b:{score:2}}}]}));
+ assert.ok(cohort.includes('100%'),'Newest version used');
+ assert.ok(cohort.includes('Answer outcomes by question'));
+ const provisional=renderToStaticMarkup(React.createElement(QuizStatistics,{submissions:[base,{...base,id:'pending',score:4,pending_manual:true}]}));
+ assert.ok(provisional.includes('25%'),'Pending grades excluded from final average');
+ assert.ok(cohort.includes('Answer choice selections'));
+ const empty=renderToStaticMarkup(React.createElement(QuizStatistics,{submissions:[]}));
+ assert.equal(empty,'');
+ console.log('PASS report rendering, one-question review, improvement reading links, provisional marks, Carbon chart datasets, version isolation, empty state');
+} finally { await server.close(); }

@@ -1,0 +1,97 @@
+.structured-diagram{margin:16px 0;border:1px solid #ded7ea;border-radius:12px;background:#fff;overflow:hidden;color:#252038;box-shadow:0 2px 10px #26104408}.structured-diagram-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 14px;background:#faf8fd;border-bottom:1px solid #eee8f4}.structured-diagram-toolbar strong{font-size:14px;flex:1;min-width:120px}.diagram-actions{display:flex;gap:6px;flex-wrap:wrap}.diagram-actions button{font:inherit;font-size:12px;border:1px solid #ded5ed;border-radius:6px;padding:6px 10px;background:white;color:#57318a;cursor:pointer}.diagram-actions button:hover{background:#f2eafa}.diagram-actions button:focus-visible{outline:2px solid #7e48b4;outline-offset:2px}.diagram-actions button:disabled{opacity:.45;cursor:default}.diagram-stream-status{font-size:12px;color:#73548f}.structured-flow-canvas{height:390px;min-height:280px;width:100%;position:relative}.structured-node{width:184px;height:76px;border:1.5px solid #8060b4;background:#faf7ff;display:flex;align-items:center;justify-content:center;padding:12px;box-sizing:border-box;font-size:13px;color:#252038;text-align:center;box-shadow:0 2px 5px #47286e0d}.structured-node span{overflow-wrap:anywhere;max-height:52px;overflow:hidden;line-height:1.3}.structured-node-rounded{border-radius:14px}.structured-node-ellipse{border-radius:50%}.structured-node-database{border-radius:50% / 18%;border-top-width:5px;border-bottom-width:3px}.structured-node-diamond{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);background:#ece3f6;padding:12px 38px}.structured-node .react-flow__handle{background:#8060b4;width:6px;height:6px;border:1px solid white}.structured-diagram .react-flow__node.selected .structured-node{outline:2px solid #a36ed5;outline-offset:3px}.structured-diagram .react-flow__attribution{font-size:9px}.diagram-placeholder{height:100%;display:flex;align-items:center;justify-content:center;color:#5f5a70;font-size:14px}.diagram-source{margin:0!important;border-top:1px solid #eee8f4;padding:14px!important;background:#f9f7fc!important;color:#40374e!important;white-space:pre-wrap;overflow-wrap:anywhere;max-height:300px;overflow:auto;font-size:12px}.diagram-notice{font-size:12px;padding:8px 14px;margin:0;color:#73548f}.structured-sequence-scroll{overflow-x:auto;padding:12px;min-height:280px}.structured-sequence{display:block;min-width:500px;width:100%;max-width:1100px;margin:auto;transition:height var(--motion-enter) var(--motion-ease)}.structured-sequence rect{fill:#faf7ff;stroke:#8060b4}.structured-sequence text{font:13px sans-serif;fill:#252038}.structured-sequence path,.structured-sequence line{stroke:#8060b4;stroke-width:1.5;fill:none}.structured-sequence .sequence-lifeline{stroke-dasharray:5 5;stroke:#b4a4ca}.sequence-message{animation:diagram-message-in var(--motion-enter) var(--motion-ease) backwards}@keyframes diagram-message-in{from{opacity:0}to{opacity:1}}@media(max-width:480px){.structured-diagram-toolbar{padding:10px;gap:8px}.diagram-actions{width:100%}.diagram-actions button{flex:1}.structured-flow-canvas{height:330px}}@media(prefers-reduced-motion:reduce){.sequence-message{animation:none}.structured-sequence{transition:none}}
+.structured-diagram .react-flow__node,.structured-diagram .react-flow__edge{animation:diagram-message-in var(--motion-enter) var(--motion-ease) both}@media(prefers-reduced-motion:reduce){.structured-diagram .react-flow__node,.structured-diagram .react-flow__edge{animation:none}}
+.structured-sequence path.sequence-arrowhead{fill:#6f42c1;stroke:none}
+
+/* Color communicates grouping; labels and shapes carry the explanation. */
+.structured-diagram { border-color:#dce3ee; border-radius:16px; box-shadow:0 8px 28px #2435540a; }
+.structured-diagram-toolbar { background:linear-gradient(110deg,#f5f0ff,#f1f7ff); padding:14px 16px; }
+.structured-flow-canvas { background:linear-gradient(150deg,#fcfdff,#f7f9fd); height:clamp(330px,48vh,520px); }
+.structured-node { background:var(--node-fill); border-color:var(--node-stroke); color:var(--node-text); border-radius:10px; box-shadow:0 4px 12px #253b5612; font-weight:600; }
+.structured-node-rounded { border-radius:18px; }
+.structured-node-ellipse { border-radius:50%; }
+.structured-node-database { border-radius:50% / 18%; }
+.structured-node-diamond { background:var(--node-fill); border-radius:0; }
+.structured-node .react-flow__handle { background:var(--node-stroke); }
+.structured-diagram .react-flow__controls { border-radius:10px; overflow:hidden; box-shadow:0 3px 12px #24355420; }
+.structured-diagram .react-flow__edge.animated path.react-flow__edge-path { stroke-dasharray:7 7; animation:diagram-transfer-flow 1.6s linear infinite; }
+.diagram-transfer { stroke-dasharray:7 7; animation:diagram-transfer-flow 1.6s linear infinite; }
+@keyframes diagram-transfer-flow { to { stroke-dashoffset:-28; } }
+.diagram-motion-caption { margin:0; padding:8px 16px; border-top:1px solid #e8edf4; background:#fbfcff; font-size:11px; color:#64748b; }
+.diagram-motion-paused .diagram-transfer { animation:none; stroke-dasharray:none; }
+.diagram-actions button[aria-pressed="true"] { background:#ede5fa; border-color:#a789cc; }
+@media (prefers-reduced-motion:reduce) {
+  .structured-diagram .react-flow__edge.animated path.react-flow__edge-path,
+  .diagram-transfer { animation:none; stroke-dasharray:none; }
+}
+/* Keep entry animation on the edge group and transfer motion on its path. */
+.structured-diagram .react-flow__edge.animated { animation:diagram-message-in var(--motion-enter) var(--motion-ease) both; stroke-dasharray:none; }
+@media (prefers-reduced-motion:reduce) { .structured-diagram .react-flow__edge.animated { animation:none; } }
+
+/* Large diagrams keep text at its natural size and use normal scrolling. */
+.structured-flow-scroll{overflow:auto;overscroll-behavior:contain;width:100%;background:#f7f9fd;scrollbar-gutter:stable}
+.structured-flow-scroll .structured-flow-canvas{min-height:0}
+.diagram-reading-caption{margin:0;padding:9px 16px;border-top:1px solid #e8edf4;background:#fbfcff;font-size:12px;color:#64748b}
+
+.diagram-reading-view .react-flow__pane{touch-action:pan-x pan-y}
+.structured-sequence{max-width:none;flex-shrink:0}
+
+/* Float the visual surface; connection anchors and ELK coordinates stay fixed. */
+.structured-node-anchor { position:relative; width:184px; height:76px; }
+.structured-node-anchor > .react-flow__handle { background:var(--node-stroke); width:6px; height:6px; border:1px solid white; }
+.structured-node, .sequence-participant-float { animation:diagram-surface-float 4s ease-in-out infinite; animation-delay:var(--float-delay,0s); }
+@keyframes diagram-surface-float { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-4px); } }
+.structured-node-tooltip {
+  animation: diagram-message-in var(--motion-standard) var(--motion-ease) both;
+}
+.structured-node-anchor:hover .structured-node,
+.structured-node-anchor:focus-within .structured-node,
+.sequence-participant-float:hover { animation-play-state:paused; }
+.diagram-motion-paused .structured-node,
+.diagram-motion-paused .sequence-participant-float,
+.structured-diagram .react-flow__node.dragging .structured-node { animation:none; transform:none; }
+@media (prefers-reduced-motion:reduce) {
+  .structured-node, .sequence-participant-float { animation:none; transform:none; }
+}
+/* Ports provide fixed attachment points for ELK's wrapped routes. */
+.structured-node-anchor > .react-flow__handle { opacity:0; pointer-events:none; }
+
+/* Explicit user opt-in can enable motion when the device requests less motion. */
+.diagram-motion-override:not(.diagram-motion-paused) .structured-node,
+.diagram-motion-override:not(.diagram-motion-paused) .sequence-participant-float { animation:diagram-surface-float 4s ease-in-out infinite; animation-delay:var(--float-delay,0s); }
+.diagram-motion-override .react-flow__edge.animated path.react-flow__edge-path,
+.diagram-motion-override:not(.diagram-motion-paused) .diagram-transfer { animation:diagram-transfer-flow 1.6s linear infinite; stroke-dasharray:7 7; }
+.diagram-moving-particle { filter:drop-shadow(0 0 3px #ffffff); }
+
+.structured-flow-frame { position:relative; }
+.structured-flow-frame > .react-flow__controls { position:absolute; left:12px; bottom:12px; margin:0; z-index:10; }
+.structured-lane { width:100%; height:100%; box-sizing:border-box; border:1px solid var(--lane-stroke); border-radius:12px; background:var(--lane-fill); opacity:.82; pointer-events:none; }
+.structured-lane strong { display:block; padding:12px 16px; max-height:44px; overflow:hidden; box-sizing:border-box; color:var(--lane-text); font-size:13px; line-height:18px; overflow-wrap:anywhere; }
+
+/* The native dialog escapes chat clipping and keeps keyboard focus in the viewer. */
+.diagram-maximized-dialog { width:calc(100vw - 32px); height:calc(100dvh - 32px); max-width:none; max-height:none; padding:0; border:0; border-radius:16px; background:#fff; overflow:hidden; }
+.diagram-maximized-dialog::backdrop { background:#14102c99; }
+.diagram-maximized-dialog > .structured-diagram { margin:0; height:100%; box-sizing:border-box; display:flex; flex-direction:column; }
+.structured-diagram-maximized > .structured-flow-frame { flex:1; min-height:0; }
+.structured-diagram-maximized .structured-flow-scroll { height:100%!important; }
+.structured-diagram-maximized .structured-flow-scroll:not(.diagram-reading-view) > .structured-flow-canvas { height:100%!important; }
+.structured-diagram-maximized > .structured-diagram-toolbar,
+.structured-diagram-maximized > p { flex-shrink:0; }
+.structured-diagram-maximized > .structured-sequence-scroll { flex:1; min-height:0; overflow:hidden; display:flex; }
+.structured-diagram-maximized .structured-sequence { width:100%!important; height:100%; min-width:0; }
+.structured-diagram-maximized > .diagram-source { max-height:25vh; flex-shrink:0; }
+@media (max-width:600px) { .diagram-maximized-dialog { width:100vw; height:100dvh; border-radius:0; } }
+
+/* Sequence exploration stays inside the existing wrapping toolbar. */
+.structured-diagram .sequence-step-picker { min-width:0; max-width:min(220px, 100%); padding:5px 8px; border:1px solid #d9e1ed; border-radius:6px; background:#fff; color:#334155; font:inherit; }
+.structured-diagram .sequence-message:focus-visible { outline:2px solid var(--brand-accent, #735e83); outline-offset:4px; }
+
+/* Inline answers use the card width and let the surrounding chat scroll naturally. */
+.structured-diagram:not(.structured-diagram-maximized) { width:100%; max-width:100%; min-width:0; box-sizing:border-box; }
+.structured-diagram:not(.structured-diagram-maximized) .structured-flow-canvas { min-height:0; }
+.structured-diagram:not(.structured-diagram-maximized) .structured-flow-scroll { overscroll-behavior:auto; scrollbar-gutter:auto; }
+.structured-diagram:not(.structured-diagram-maximized) .structured-sequence-scroll { overflow:visible; min-height:0; }
+.structured-diagram:not(.structured-diagram-maximized) .structured-sequence { width:100%; min-width:0; max-width:100%; height:auto; }
+
+/* A full-height inline answer must pass wheel and touch scrolling to the chat. */
+.structured-diagram:not(.structured-diagram-maximized) .react-flow__pane { touch-action:pan-y; }
+.structured-diagram:not(.structured-diagram-maximized) .react-flow__node { touch-action:pan-y; }

@@ -1,0 +1,52 @@
+{
+  "name": "web",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build && node build-document-export.mjs && node build-carbon-charts.mjs",
+    "lint": "oxlint",
+    "preview": "vite preview",
+    "build:document-export": "node build-document-export.mjs",
+    "build:carbon-charts": "node build-carbon-charts.mjs",
+    "test:coverage": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@carbon/charts": "1.27.22",
+    "@carbon/icons-react": "^11.90.0",
+    "@carbon/motion": "^11.54.0",
+    "@carbon/react": "^1.118.0",
+    "@carbon/styles": "^1.117.0",
+    "@xyflow/react": "^12.12.0",
+    "dompurify": "^3.4.17",
+    "elkjs": "^0.12.0",
+    "fflate": "^0.8.3",
+    "leaflet": "^1.9.4",
+    "marked": "^18.0.14",
+    "mermaid": "^12.2.0",
+    "pptxgenjs": "^4.0.1",
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@types/dompurify": "^3.0.5",
+    "@types/leaflet": "^1.9.22",
+    "@types/node": "^24.13.3",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.7",
+    "@vitejs/plugin-react": "^6.1.1",
+    "@vitest/coverage-v8": "5.0.5",
+    "jsdom": "30.1.3",
+    "oxlint": "^1.81.0",
+    "sass": "^1.106.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.3.0",
+    "vitest": "5.0.5"
+  },
+  "overrides": {
+    "lodash-es": "^4.18.1",
+    "image-size": "^2.0.3",
+    "katex": "^0.18.2"
+  }
+}

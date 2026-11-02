@@ -1,0 +1,9 @@
+.answer-quality { margin-block: 1rem 2rem; padding: 1rem; border: 1px solid var(--border-color, #d5dce4); border-radius: 12px; }
+.answer-quality > header { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; }
+.answer-quality h3 { margin: 0; margin-right: auto; }
+.answer-quality-metrics { display: flex; flex-wrap: wrap; gap: 1rem 2rem; }
+.answer-quality-metrics dd { margin: .25rem 0 0; font-size: 1.6rem; font-weight: 700; }
+.answer-quality-tables { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 1.5rem; }
+.answer-quality table { width: 100%; border-collapse: collapse; text-align: left; }
+.answer-quality th, .answer-quality td { padding: .5rem .25rem; border-bottom: 1px solid var(--border-color, #d5dce4); overflow-wrap: anywhere; }
+.answer-quality-trend { max-height: 20rem; overflow: auto; }

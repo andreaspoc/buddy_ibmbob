@@ -1,0 +1,5 @@
+.app-collaboration-activity { display: grid; gap: .5rem; list-style: none; margin: .75rem 0; padding: .75rem; background: var(--cds-layer-01, #f4f4f4); border-inline-start: 3px solid var(--cds-support-info, #8a3ffc); color: var(--cds-text-primary, #161616); font-size: .8125rem; }
+.app-collaboration-activity li { display: flex; align-items: baseline; gap: .5rem; }
+.app-collaboration-activity [data-stage="failed"], .app-collaboration-activity [data-stage="cancelled"] { color: var(--cds-support-error, #da1e28); }
+
+.app-collaboration-activity small { display: block; margin-top: .25rem; color: var(--cds-text-secondary, #525252); overflow-wrap: anywhere; }

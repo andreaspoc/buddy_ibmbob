@@ -1,0 +1,1210 @@
+@use 'sass:map';
+@use '@carbon/themes/scss/component-tokens' as button-tokens;
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/motion' as motion;
+@use '@carbon/styles/scss/colors';
+@use '@carbon/styles/scss/border-radius';
+@use '@carbon/styles/scss/layout';
+@use '@carbon/styles/scss/type';
+@use '@carbon/styles/scss/theme';
+@use '@carbon/styles/scss/themes';
+@use '@carbon/styles/scss/breakpoint';
+@use '@carbon/grid/scss/config' as grid;
+@use '@carbon/styles/scss/components/button';
+@use '@carbon/styles/scss/components/text-input';
+@use '@carbon/styles/scss/components/notification';
+@use '@carbon/styles/scss/components/inline-loading';
+@use '@carbon/styles/scss/components/stack';
+@use '@carbon/styles/scss/components/tooltip';
+@use '@carbon/styles/scss/components/ui-shell';
+
+// Legacy component sheets contain !important declarations. Keep their precedence
+// while deriving the complete type style from Carbon instead of duplicating values.
+@mixin carbon-type-important($name) {
+  @each $property, $value in map.get(type.$tokens, $name) {
+    #{$property}: var(--cds-#{$name}-#{$property}, #{$value}) !important;
+  }
+}
+
+/* Carbon productive typography and spacing, with Buddy's purple identity.
+ * Fonts: @ibm/plex-sans 1.1.0, SIL OFL (see assets/fonts/IBM-Plex-LICENSE.txt).
+ * Load this foundation last so legacy appearance layers cannot override Carbon.
+ * Spacing and typography come from the installed Carbon Sass modules. Embedded files use
+ * their own iframe/document styles; authored Markdown keeps its content scale.
+ */
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: type.font-weight('regular');
+  font-display: swap; src: url('./assets/fonts/IBMPlexSans-Regular.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: type.font-weight('semibold');
+  font-display: swap; src: url('./assets/fonts/IBMPlexSans-SemiBold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 700;
+  font-display: swap; src: url('./assets/fonts/IBMPlexSans-Bold.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'IBM Plex Sans'; font-style: italic; font-weight: type.font-weight('regular');
+  font-display: swap; src: url('./assets/fonts/IBMPlexSans-Italic.woff2') format('woff2');
+}
+:root {
+  --motion-fast: #{motion.$duration-fast-02};
+  --motion-standard: #{motion.$duration-moderate-01};
+  --motion-enter: #{motion.$duration-moderate-02};
+  --motion-slow: #{motion.$duration-slow-01};
+  --motion-ease: #{motion.motion(standard, productive)};
+  --motion-entrance: #{motion.motion(entrance, productive)};
+  --motion-exit: #{motion.motion(exit, productive)};
+  @include theme.theme(themes.$white);
+  --cds-font-family: #{type.font-family('sans')};
+  --cds-spacing-02: #{spacing.$spacing-02};
+  --cds-spacing-03: #{spacing.$spacing-03};
+  --cds-spacing-04: #{spacing.$spacing-04};
+  --cds-spacing-05: #{spacing.$spacing-05};
+  --cds-spacing-06: #{spacing.$spacing-06};
+  --cds-spacing-07: #{spacing.$spacing-07};
+  --cds-weight-regular: #{type.font-weight('regular')};
+  --cds-weight-semibold: #{type.font-weight('semibold')};
+  --cds-interactive: var(--brand-accent, #{map.get(themes.$white, interactive)});
+  --cds-interactive-hover: var(--brand-accent-hover, #{map.get(button-tokens.$button-primary-hover, white-theme)});
+  --cds-focus: var(--brand-accent, #{map.get(themes.$white, focus)});
+  --cds-button-tertiary: var(--brand-accent, #{map.get(button-tokens.$button-tertiary, white-theme)});
+  --cds-button-primary: var(--brand-accent, #{map.get(button-tokens.$button-primary, white-theme)});
+  --cds-button-primary-hover: var(--brand-accent-hover, #{map.get(button-tokens.$button-primary-hover, white-theme)});
+  --cds-button-primary-active: var(--brand-accent-hover, #{map.get(button-tokens.$button-primary-active, white-theme)});
+  --workspace-ink: var(--cds-text-primary);
+  --workspace-muted: var(--cds-text-secondary);
+  --workspace-line: var(--cds-border-subtle);
+  --workspace-accent: var(--cds-interactive);
+  --workspace-accent-hover: var(--cds-interactive-hover);
+  --cds-border-radius-none: 0px;
+  @include button.radius(border-radius.$border-radius-04);
+  --buddy-control-radius: #{border-radius.$border-radius-04};
+  --buddy-panel-radius: #{border-radius.$border-radius-08};
+  --buddy-popover-radius: #{border-radius.$border-radius-02};
+  --cds-popover-border-radius: var(--buddy-popover-radius);
+  --workspace-radius: var(--buddy-panel-radius);
+  --workspace-gutter: var(--cds-spacing-06);
+  font-family: type.font-family('sans');
+  font-size: 100%;
+  font-weight: var(--cds-weight-regular);
+  line-height: 1.5;
+}
+html[lang='hi'] { font-family: type.font-family('sans'); }
+body { font-family: type.font-family('sans'); @include type.type-style('body-01'); }
+/* These hosts also cover portals and lazily loaded workspaces. */
+:root[data-design-system='carbon']:root:root body :is(.shell, .buddy-surface, .buddy-login-viewport, dialog, [role='dialog'], .workspace-tools-panel, .member-chat-panel, .feedback-region, .office-file-popup, .office-assistant, .notes-workspace, .tasks-view, .shared-knowledge, .administration-page, .artifact-workspace-panel) {
+  font-family: type.font-family('sans');
+  @include type.type-style('body-01');
+  letter-spacing: 0;
+}
+/* Do not change text authored inside document previews or editable content. */
+:root[data-design-system='carbon']:root:root body :is(h1,h2,h3,h4,h5,h6):not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) {
+  font-family: type.font-family('sans');
+  font-weight: var(--cds-weight-semibold);
+  letter-spacing: 0;
+  overflow-wrap: anywhere;
+}
+:root[data-design-system='carbon']:root:root body h1:not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('productive-heading-04'); }
+:root[data-design-system='carbon']:root:root body h2:not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('productive-heading-03'); }
+:root[data-design-system='carbon']:root:root body :is(h3,h4,h5,h6):not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('body-02'); }
+:root[data-design-system='carbon']:root:root body :is(strong,b):not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { font-weight: var(--cds-weight-semibold); }
+:root[data-design-system='carbon']:root:root body :is(button,input,select,textarea):not(:where(.cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) {
+  font-family: type.font-family('sans');
+  font-weight: var(--cds-weight-regular);
+  letter-spacing: .16px;
+}
+:root[data-design-system='carbon']:root:root body :is(button,select):not(:where(.cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body :is(input,textarea):not(:where([type='checkbox'],[type='radio'],[type='range'],[type='color'],.cds--text-input,.cds--inline-notification *,.html-deck-stage *,[contenteditable] *)) { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body :is(button,a,input,textarea,select):focus-visible { outline: 2px solid var(--cds-focus); outline-offset: 2px; }
+:root[data-design-system='carbon']:root:root body .sidebar :focus-visible, :root[data-design-system='carbon']:root:root body .buddy-brand-showcase :focus-visible { outline-color: var(--cds-focus-inverse); }
+
+/* Supporting text and labels share one scale on every app surface. */
+:root[data-design-system='carbon']:root:root body p:not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body :is(small,label):not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('label-01'); font-weight: type.font-weight('regular'); letter-spacing: .32px; }
+:root[data-design-system='carbon']:root:root body th:not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('label-01'); font-weight: type.font-weight('semibold'); letter-spacing: .32px; }
+:root[data-design-system='carbon']:root:root body td:not(:where(.markdown-body *, .cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *, [contenteditable] *)) { @include type.type-style('body-01'); }
+
+/* Product navigation: regular labels, semibold selection, one control rhythm. */
+:root[data-design-system='carbon']:root:root body .shell .main > .topbar { padding-inline: var(--workspace-gutter); gap: spacing.$spacing-05; border-color: var(--cds-border-subtle); }
+:root[data-design-system='carbon']:root:root body .shell .main > .topbar h1 { @include type.type-style('productive-heading-03'); font-weight: type.font-weight('semibold'); letter-spacing: 0; overflow-wrap: normal; }
+:root[data-design-system='carbon']:root:root body :is(.workspace-menu-trigger,.workspace-toolbar-language select,.workspace-notes-tab) { min-height: 40px; border-radius: var(--buddy-panel-radius); @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .workspace-menu-trigger { padding: spacing.$spacing-03 spacing.$spacing-04; }
+:root[data-design-system='carbon']:root:root body .workspace-menu-trigger[aria-expanded='true'] { box-shadow: inset 0 -2px var(--cds-interactive); }
+:root[data-design-system='carbon']:root:root body .shell .sidebar { padding: spacing.$spacing-05 spacing.$spacing-03 spacing.$spacing-04 spacing.$spacing-05; }
+:root[data-design-system='carbon']:root:root body .shell .sidebar .brand-name { @include type.type-style('body-02'); font-weight: type.font-weight('semibold'); letter-spacing: 0; }
+:root[data-design-system='carbon']:root:root body .shell .sidebar :is(.brand-subtitle,.section-heading,.sidebar-width-controls,.account-row) { @include type.type-style('label-01'); letter-spacing: .16px; }
+:root[data-design-system='carbon']:root:root body .shell .sidebar .section-heading { font-weight: type.font-weight('semibold'); margin-block: spacing.$spacing-05 spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body .shell .sidebar :is(.mode-item,.skill-item,.new-chat) { @include type.type-style('body-01'); border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .shell .sidebar .mode-item { min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-04; }
+:root[data-design-system='carbon']:root:root body .shell .sidebar .mode-item.active { font-weight: type.font-weight('semibold'); box-shadow: inset 3px 0 var(--cds-focus-inverse); }
+:root[data-design-system='carbon']:root:root body .shell .sidebar .new-chat { min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-05; }
+:root[data-design-system='carbon']:root:root body .shell .sidebar .sidebar-width-btn { min-height: 28px; padding: spacing.$spacing-02 spacing.$spacing-03; @include type.type-style('label-01'); border-radius: var(--buddy-panel-radius); }
+
+/* Reading and composing retain Carbon's larger body style. */
+:root[data-design-system='carbon']:root:root body .shell .messages { gap: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body .shell .message-label { @include type.type-style('label-01'); font-weight: type.font-weight('semibold'); letter-spacing: .32px; margin-bottom: spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body .shell .bubble { @include type.type-style('body-02'); }
+:root[data-design-system='carbon']:root:root body .shell .message-meta { @include type.type-style('label-01'); }
+:root[data-design-system='carbon']:root:root body .shell .composer { padding: spacing.$spacing-05; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .shell .composer textarea { @include type.type-style('body-02'); }
+:root[data-design-system='carbon']:root:root body .shell .composer-header { margin-bottom: spacing.$spacing-03; gap: spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body .shell :is(.send-button,.stop-button,.guidance-send-button) { min-height: 40px; min-width: 40px; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .shell :is(.composer-tool-shortcut,.composer-clip-btn,.composer-websearch-btn,.composer-skill-picker select) { min-height: 32px; border-radius: var(--buddy-panel-radius); @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .shell .composer-tool-shortcut { padding: spacing.$spacing-02 spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body .shell :is(.suggestion) { border-radius: var(--buddy-panel-radius); border-color: var(--cds-border-subtle); box-shadow: none; }
+:root[data-design-system='carbon']:root:root body .shell .suggestion { padding: spacing.$spacing-05; gap: spacing.$spacing-05; }
+:root[data-design-system='carbon']:root:root body .shell .suggestion strong { @include type.type-style('body-01'); font-weight: type.font-weight('semibold'); }
+:root[data-design-system='carbon']:root:root body .shell .suggestion p { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .shell .suggestion small { @include type.type-style('label-01'); }
+:root[data-design-system='carbon']:root:root body .shell .intelligence-starters { gap: spacing.$spacing-03; margin-block: spacing.$spacing-06 spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body .shell .intelligence-starters button { min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-05; border-radius: var(--buddy-panel-radius); }
+
+/* Shared fields and actions across dialogs, settings, administration and Office. */
+:root[data-design-system='carbon']:root:root body :is(dialog,[role='dialog'],.feature-dialog,.workspace-tools-panel,.office-suite,.administration-page,.notes-workspace,.tasks-view,.shared-knowledge) :is(button,select):not(:where(.cds--btn,.cds--text-input__visibility__toggle,.cds--inline-notification *,.html-deck-stage *,[contenteditable] *)) {
+  min-height: 32px; border-radius: var(--buddy-panel-radius);
+}
+:root[data-design-system='carbon']:root:root body :is(dialog,[role='dialog'],.feature-dialog,.workspace-tools-panel,.office-suite,.administration-page,.notes-workspace,.tasks-view,.shared-knowledge) :is(input,textarea,select):not(:where([type='checkbox'],[type='radio'],[type='range'],[type='color'],.cds--text-input,.cds--inline-notification *,.html-deck-stage *,[contenteditable] *)) {
+  min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-05; border-radius: 0;
+  border: 1px solid transparent; border-bottom-color: var(--cds-border-strong);
+  background: var(--cds-field); color: var(--cds-text-primary);
+}
+:root[data-design-system='carbon']:root:root body :is(dialog,[role='dialog'],.feature-dialog) { border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body :is(.dialog-top,.feature-dialog-header,.workspace-panel-heading) { padding-bottom: spacing.$spacing-05; margin-bottom: spacing.$spacing-05; border-bottom: 1px solid var(--cds-border-subtle); }
+:root[data-design-system='carbon']:root:root body :is(.workspace-tools-panel,.feature-dialog,.create-dialog,.my-access-dialog,.answer-feedback-dialog) { padding: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body .workspace-tools-panel button { padding: spacing.$spacing-03 spacing.$spacing-05; min-height: 40px; }
+:root[data-design-system='carbon']:root:root body :is(.feature-primary,.office-primary,.save-button,.create-submit) { background: var(--cds-interactive); border-color: var(--cds-interactive); color: var(--cds-text-on-color); min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-05; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body :is(.feature-primary,.office-primary,.save-button,.create-submit):hover:not(:disabled) { background: var(--cds-interactive-hover); }
+:root[data-design-system='carbon']:root:root body :is(.task-card,.knowledge-card,.note-card,.office-create > button,.office-storage) { border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body :is(.tasks-view,.administration-page,.office-content) { padding: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body :is(.task-filters,.office-library-tools,.knowledge-toolbar,.notes-toolbar) { gap: spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body :is(.office-caption,.notes-eyebrow,.notes-collections-heading,.eyebrow) { @include type.type-style('label-01'); font-weight: type.font-weight('semibold'); letter-spacing: .32px; }
+:root[data-design-system='carbon']:root:root body :is(.task-card > strong,.office-file-name,.knowledge-card h3) { @include type.type-style('body-01'); font-weight: type.font-weight('semibold'); }
+:root[data-design-system='carbon']:root:root body :is(.office-heading p,.notes-hero-copy p,.knowledge-hero p) { @include type.type-style('body-02'); }
+:root[data-design-system='carbon']:root:root body .office-top { padding: spacing.$spacing-05 spacing.$spacing-06; gap: spacing.$spacing-05; }
+:root[data-design-system='carbon']:root:root body .office-suite { border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .office-heading h1 { @include type.type-style('productive-heading-04'); letter-spacing: 0; }
+:root[data-design-system='carbon']:root:root body .office-brand strong { @include type.type-style('productive-heading-03'); letter-spacing: 0; }
+:root[data-design-system='carbon']:root:root body .office-create { gap: spacing.$spacing-05; }
+:root[data-design-system='carbon']:root:root body .office-create > button { padding: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body :is(.member-chat-panel,.member-chat-launcher) { border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .member-chat-panel :is(button,input,textarea) { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .buddy-login-shell { padding: spacing.$spacing-07; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .buddy-login-viewport :is(input,button):not(.cds--btn,.cds--text-input,.cds--text-input__visibility__toggle,.cds--inline-notification__close-button) { @include type.type-style('body-02'); border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .buddy-login-viewport :is(.buddy-text-input,.buddy-submit-button):not(.cds--btn,.cds--text-input) { @include type.type-style('body-02'); }
+:root[data-design-system='carbon']:root:root body .buddy-login-viewport .buddy-submit-button { font-weight: type.font-weight('regular'); }
+
+@container (max-width: #{map.get(grid.$grid-breakpoints, md, width)}) {
+  :root[data-design-system='carbon']:root:root body .shell .main > .topbar { padding-inline: spacing.$spacing-05; gap: spacing.$spacing-03; }
+  :root[data-design-system='carbon']:root:root body :is(.workspace-menu-tools,.workspace-menu-settings) .workspace-menu-trigger { width: 40px; padding: spacing.$spacing-03; }
+}
+@container (max-width: #{map.get(grid.$grid-breakpoints, sm, width)}) {
+  :root[data-design-system='carbon']:root:root body .shell .main > .topbar .workspace-navigation { flex-wrap: wrap; gap: spacing.$spacing-03; }
+  :root[data-design-system='carbon']:root:root body .workspace-toolbar-language { margin-left: 0; }
+}
+@include breakpoint.breakpoint-down(md) {
+  :root { --workspace-gutter: 16px; }
+  :root[data-design-system='carbon']:root:root body .shell .main > .topbar h1 { @include type.type-style('body-02'); }
+  :root[data-design-system='carbon']:root:root body .shell .composer { padding: spacing.$spacing-04; }
+  :root[data-design-system='carbon']:root:root body .shell .conversation { padding: spacing.$spacing-05; }
+  :root[data-design-system='carbon']:root:root body :is(.tasks-view,.administration-page,.office-content) { padding: spacing.$spacing-05; }
+  :root[data-design-system='carbon']:root:root body .buddy-login-shell { padding: spacing.$spacing-06; }
+  /* Keep composing visible when translated tool labels are longer. Tools remain
+     available in horizontally scrollable rows instead of consuming the viewport. */
+  :root[data-design-system='carbon']:root:root body :is(.composer-tool-row,.composer-header-actions) { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: thin; }
+  :root[data-design-system='carbon']:root:root body .composer-tool-row > * { flex: none; flex-wrap: nowrap; }
+  :root[data-design-system='carbon']:root:root body .composer-header-actions > * { flex-shrink: 0; }
+}
+@media (any-pointer: coarse) {
+  :root[data-design-system='carbon']:root:root body :is(input,textarea,select):not(:where([type='checkbox'],[type='radio'],[type='range'],[type='color'],.cds--text-input,.cds--inline-notification *,.html-deck-stage *,[contenteditable] *)) { font-size: max(16px, calc(16px / var(--ui-scale))); }
+  :root[data-design-system='carbon']:root:root body :is(.workspace-menu-trigger,.workspace-notes-tab,.workspace-toolbar-language select,.composer button,.member-chat-panel button) { min-height: 44px; min-width: 44px; }
+}
+
+/* Tutorials use the same productive scale, spacing and controls as app screens. */
+:root[data-design-system='carbon']:root:root body .welcome-tour {
+  --welcome-purple: var(--cds-interactive);
+  --welcome-muted: var(--cds-text-secondary);
+  padding: spacing.$spacing-07;
+  gap: var(--cds-spacing-07);
+}
+:root[data-design-system='carbon']:root:root body .welcome-tour :is(button,select) { min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-05; border-radius: var(--buddy-panel-radius); @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .welcome-top { gap: spacing.$spacing-06; padding-bottom: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body .welcome-brand { gap: spacing.$spacing-05; }
+:root[data-design-system='carbon']:root:root body .welcome-brand strong { @include type.type-style('productive-heading-03'); font-weight: type.font-weight('semibold'); letter-spacing: 0; }
+:root[data-design-system='carbon']:root:root body :is(.welcome-header-label,.welcome-footer-brand > span) { @include type.type-style('body-01'); font-weight: type.font-weight('regular'); letter-spacing: 0; }
+:root[data-design-system='carbon']:root:root body :is(.welcome-eyebrow,.welcome-stage-label,.welcome-request > span,.welcome-screenshot figcaption strong,.welcome-note-demo small,.welcome-notes-guide > div > span) { @include type.type-style('label-01'); font-weight: type.font-weight('semibold'); letter-spacing: .32px; }
+:root[data-design-system='carbon']:root:root body .welcome-progress button { gap: spacing.$spacing-03; padding: spacing.$spacing-03 0 spacing.$spacing-05; border-radius: 0; }
+:root[data-design-system='carbon']:root:root body .welcome-progress button[aria-current] { font-weight: type.font-weight('semibold'); }
+:root[data-design-system='carbon']:root:root body .welcome-progress button span { width: 32px; height: 32px; @include type.type-style('label-01'); }
+:root[data-design-system='carbon']:root:root body .welcome-body { gap: spacing.$spacing-07; padding-block: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body .welcome-copy h1 { margin-block: spacing.$spacing-06; @include type.type-style('productive-heading-04'); font-weight: type.font-weight('semibold'); letter-spacing: 0; }
+:root[data-design-system='carbon']:root:root body .welcome-copy > p { @include type.type-style('body-02'); }
+:root[data-design-system='carbon']:root:root body .welcome-copy .welcome-tip { margin-top: spacing.$spacing-06; @include type.type-style('label-01'); color: var(--welcome-muted); }
+:root[data-design-system='carbon']:root:root body :is(.welcome-stage,.welcome-screenshot,.welcome-notes-guide) { padding: spacing.$spacing-06; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .welcome-stage { box-shadow: none; }
+:root[data-design-system='carbon']:root:root body .welcome-orbit > span:not(.welcome-emblem) { padding: spacing.$spacing-05; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .welcome-request { padding: spacing.$spacing-05; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .welcome-path strong { @include type.type-style('body-02'); font-weight: type.font-weight('semibold'); }
+:root[data-design-system='carbon']:root:root body .welcome-path p { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .welcome-tour .welcome-primary { background: var(--cds-interactive); border-color: var(--cds-interactive); box-shadow: none; font-weight: type.font-weight('regular'); }
+:root[data-design-system='carbon']:root:root body .welcome-tour .welcome-primary:hover:not(:disabled) { background: var(--cds-interactive-hover); }
+:root[data-design-system='carbon']:root:root body .welcome-tour :focus-visible { outline: 2px solid var(--cds-focus-inverse); outline-offset: 2px; }
+:root[data-design-system='carbon']:root:root body .welcome-tour :is(.welcome-screenshot,.welcome-notes-guide,.welcome-note-demo) :focus-visible { outline-color: var(--cds-focus); }
+:root[data-design-system='carbon']:root:root body .welcome-tour :is(.welcome-notes-replay,.welcome-notes-guide summary) { @include type.type-style('body-01'); }
+:root[data-design-system='carbon']:root:root body .welcome-notes-guide { gap: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body .welcome-bottom { gap: spacing.$spacing-05; padding-top: spacing.$spacing-06; }
+:root[data-design-system='carbon']:root:root body .welcome-bottom > div:not(.welcome-footer-brand) { gap: spacing.$spacing-03; }
+:root[data-design-system='carbon']:root:root body .approval-guide { padding: spacing.$spacing-06; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .approval-guide > strong { @include type.type-style('productive-heading-03'); font-weight: type.font-weight('semibold'); }
+:root[data-design-system='carbon']:root:root body .approval-guide button { min-height: 40px; padding: spacing.$spacing-03 spacing.$spacing-05; border-radius: var(--buddy-panel-radius); }
+:root[data-design-system='carbon']:root:root body .approval-guide .approval-guide-close { min-width: 32px; min-height: 32px; padding: spacing.$spacing-02; @include type.type-style('productive-heading-03'); }
+@include breakpoint.breakpoint-down(md) {
+  :root[data-design-system='carbon']:root:root body .welcome-tour { padding: spacing.$spacing-05; gap: spacing.$spacing-06; }
+  :root[data-design-system='carbon']:root:root body .welcome-top { gap: spacing.$spacing-05; padding-bottom: spacing.$spacing-05; }
+  :root[data-design-system='carbon']:root:root body .welcome-body { padding-block: 0; gap: spacing.$spacing-06; }
+  :root[data-design-system='carbon']:root:root body :is(.welcome-stage,.welcome-screenshot,.welcome-notes-guide) { padding: spacing.$spacing-05; }
+  :root[data-design-system='carbon']:root:root body .welcome-progress button { @include type.type-style('label-01'); }
+  :root[data-design-system='carbon']:root:root body .welcome-copy h1 { @include type.type-style('productive-heading-03'); }
+}
+@media (any-pointer: coarse) {
+  :root[data-design-system='carbon']:root:root body :is(.welcome-tour,.approval-guide) button { min-height: 44px; }
+}
+
+/* Restrained brand geometry using Carbon radius tokens. Floating surfaces are
+   rounded; connected toolbars and table structures keep straight joins. */
+:root[data-design-system='carbon']:root:root body :is(button,input,select,textarea,dialog,[role='dialog']):not(:where(
+  .cds--btn,[type='checkbox'],[type='radio'],[type='range'],[type='color'],[role='switch'],.mod-switch-input,.html-deck-stage *,.generated-code-preview *,[contenteditable],[contenteditable] *
+)) { border-radius: var(--buddy-control-radius) !important; }
+:root[data-design-system='carbon']:root:root body :is(
+  .composer,.bubble,.suggestion,.welcome-buddy-hero,.welcome-icon,
+  .chat-context-chip,.workspace-tools-panel,.sidebar-template-studio,.sidebar-filter-tabs,
+  .buddy-section-header,.buddy-section-header.is-compact,.feature-dialog,.feature-section,
+  .task-filters,.task-card,.task-detail,.artifact-workspace-panel,.artifact-editor,.artifact-view-tabs,
+  .artifact-editor-toolbar,.answer-context,.ai-task-state,.feedback-notice,.error-boundary-card,
+  .knowledge-hero,.knowledge-card,.knowledge-description-field,.knowledge-dropzone,.knowledge-filters,
+  .knowledge-document,.knowledge-library-card,.knowledge-upload-card,
+  .notes-workspace-hero,.notes-collections,.notes-view-tools,.notes-delete-confirm,.notes-links-panel,
+  .notes-editor-tabs,.notes-revision,.sticky-note,.sticky-note-copy,.welcome-note-demo,
+  .office-overlay,.office-suite,.office-create,.office-create>button,.office-storage,
+  .office-folder-browser,.office-folder-heading,.office-library-tools,.office-notice,.office-file-popup,
+  .office-editor-frame,.office-html-toolbar,.office-assistant,.office-assistant-panel,
+  .member-chat-panel,.member-chat-toast,.member-chat-tabs,.member-chat-search,
+  .member-chat-room,.member-chat-message,.member-chat-selection,.member-chat-compose,.people-inbox-filters,
+  .buddy-login-shell,.buddy-auth-card,.buddy-card-header,.buddy-error-banner,.buddy-loading-status,
+  .welcome-stage,.welcome-screenshot,.welcome-notes-guide,.welcome-request,.welcome-notes-toolbar,
+  .welcome-notes-target,.welcome-orbit>span:not(.welcome-emblem),
+  .research-hero,.research-sources,.research-list,.research-detail,.research-report-item,
+  .workflow-item,.format-picker,.template-modal-tabs,.template-picker-card,.template-studio-preview,
+  .directory-summary>button,.directory-section,.administration-table,.directory-table-wrap,.directory-empty,.access-details,
+  [role='tablist'],[role='tabpanel']
+):not(:where(.html-deck-stage *,.generated-code-preview *,[contenteditable],[contenteditable] *)) {
+  border-radius: var(--buddy-panel-radius) !important;
+}
+:root[data-design-system='carbon']:root:root body :is(.administration-page,.workflow-manager).buddy-surface>section,
+:root[data-design-system='carbon']:root:root body .workflow-manager.buddy-surface>form,
+:root[data-design-system='carbon']:root:root body .buddy-surface>nav {
+  border-radius: var(--buddy-panel-radius) !important;
+}
+
+:root[data-design-system='carbon']:root:root body :is(dialog,[role='dialog'],.notes-editor,.notes-library-filters) { border-radius: var(--buddy-panel-radius) !important; }
+:root[data-design-system='carbon']:root:root body :is(.toolbar-menu,.buddy-toolbar-menu,.office-file-popup,.office-reference-picker,.document-reference-picker,.note-reference-picker) { border-radius: var(--buddy-popover-radius) !important; }
+:root[data-design-system='carbon']:root:root body :is(.buddy-section-header,.buddy-card-header,.artifact-editor-toolbar,.office-html-toolbar,.office-folder-heading,.office-library-tools,.welcome-notes-toolbar,.administration-table,.directory-table-wrap,.buddy-surface>nav) { border-radius: 0 !important; }
+
+/* Measurements are viewport pixels; divide by CSS UI zoom exactly once. */
+:root[data-design-system='carbon']:root:root body .member-chat-launcher {
+  bottom: calc(var(--member-chat-bottom, 22px) / var(--ui-scale, 1));
+}
+:root[data-design-system='carbon']:root:root body :is(.member-chat-panel,.member-chat-toast-stack) {
+  bottom: calc(var(--member-chat-panel-bottom, 94px) / var(--ui-scale, 1));
+  max-height: calc(var(--member-chat-panel-space, 600px) / var(--ui-scale, 1));
+}
+:root[data-design-system='carbon']:root:root body .member-chat-panel {
+  height: min(600px, calc(var(--member-chat-panel-space, 600px) / var(--ui-scale, 1)));
+}
+@media (any-pointer: coarse) and (max-width: #{map.get(grid.$grid-breakpoints, lg, width)}) {
+  :root[data-design-system='carbon']:root:root body :is(.member-chat-panel,.member-chat-panel.is-expanded) {
+    bottom: auto;
+    height: calc((var(--visible-height, 100dvh) - 16px) / var(--ui-scale));
+    max-height: calc((var(--visible-height, 100dvh) - 16px) / var(--ui-scale));
+  }
+  :root[data-design-system='carbon']:root:root body .member-chat-toast-stack { bottom: auto; max-height: min(180px, calc(var(--visible-height, 100dvh) / 3)); }
+}
+
+/* Member chat is a circular floating launcher; it is intentionally outside the
+   control geometry above. The badge reflects server unread counts. */
+:root[data-design-system='carbon']:root:root body .member-chat-widget .member-chat-launcher {
+  width: 48px; min-width: 48px; max-width: 48px;
+  height: 48px; min-height: 48px; max-height: 48px;
+  padding: 0; gap: 0;
+  border-radius: 50% !important;
+}
+:root[data-design-system='carbon']:root:root body .member-chat-launcher .member-chat-unread {
+  position: absolute; top: -4px; right: -4px;
+  min-width: 20px; height: 20px; padding: 0 spacing.$spacing-02;
+  border: 2px solid var(--workspace-accent, var(--brand-accent, #{map.get(themes.$white, interactive)}));
+  border-radius: 999px;
+  background: var(--cds-layer); color: var(--brand-accent-hover, #{map.get(button-tokens.$button-primary-hover, white-theme)});
+  @include type.type-style('label-01'); font-weight: type.font-weight('semibold');
+}
+
+/* Follow-up cards share the same modest surface radius. */
+:root[data-design-system='carbon']:root:root body :is(
+  .clarification-card,.clarification-header-row,.clarification-brand-icon,.clarification-status,
+  .clarification-step-num,.clarification-option-tile,.clarification-custom-tile,
+  .clarification-custom-answer,.clarification-footer,
+  .quiz-card,.quiz-results,.quiz-card fieldset,.quiz-options label,
+  .quiz-review-question,.quiz-score-track,
+  .intelligent-answer,.ia-comparison>article,.ia-steps>li,.ia-calculator,.ia-calculator output,
+  .ia-action-form,.ia-fields,.answer-quality,form,fieldset
+):not(:where(.html-deck-stage *,.generated-code-preview *,[contenteditable],[contenteditable] *)) {
+  border-radius: var(--buddy-panel-radius) !important;
+}
+
+/* Official components own their internal styles even inside legacy surfaces. */
+:root[data-design-system='carbon']:root:root body {
+  @include button.button;
+  @include text-input.text-input;
+  @include notification.inline-notification;
+  @include inline-loading.inline-loading;
+}
+
+:root[data-design-system='carbon']:root:root body .buddy-login-shell {
+  color: var(--cds-text-primary);
+  --cds-focus: var(--brand-accent, #{map.get(themes.$white, focus)});
+}
+:root[data-design-system='carbon']:root:root body .buddy-auth-form {
+  display: block;
+  margin-block-start: spacing.$spacing-06;
+}
+:root[data-design-system='carbon']:root:root body .buddy-auth-form .cds--form-item {
+  min-inline-size: 0;
+  inline-size: 100%;
+}
+:root[data-design-system='carbon']:root:root body .buddy-account-actions {
+  @include type.type-style('body-01');
+  margin-block-start: spacing.$spacing-05;
+}
+:root[data-design-system='carbon']:root:root body .buddy-login-shell .cds--btn {
+  max-inline-size: 100%;
+}
+:root[data-design-system='carbon']:root:root body .buddy-login-shell .buddy-submit-button {
+  inline-size: 100%;
+}
+:root[data-design-system='carbon']:root:root body :is(.feedback-notice,.buddy-error-banner,.buddy-auth-unconfigured).cds--inline-notification {
+  min-inline-size: 0;
+  max-inline-size: 100%;
+  padding: 0;
+  pointer-events: auto;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root:root body :is(.feedback-notice,.buddy-error-banner).cds--inline-notification {
+  animation: none;
+  .cds--inline-notification__subtitle {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+}
+:root[data-design-system='carbon']:root:root body .app-dialog {
+  padding: spacing.$spacing-06;
+  background: var(--cds-layer);
+  color: var(--cds-text-primary);
+  border-color: var(--cds-border-subtle);
+}
+:root[data-design-system='carbon']:root:root body .app-dialog::before { content: none; }
+:root[data-design-system='carbon']:root:root body .app-dialog-actions {
+  gap: 0;
+  margin-block-start: spacing.$spacing-06;
+}
+:root[data-design-system='carbon']:root:root body .chat-view-container:not([hidden]) { display: contents; }
+:root[data-design-system='carbon']:root:root body .chat-view-container[hidden] { display: none; }
+/* The chat input uses soft corners and one keyboard-only focus indicator. */
+:root[data-design-system='carbon']:root:root body .shell .main .composer,
+:root[data-design-system='carbon']:root:root body .shell .main .composer:focus-within {
+  border-radius: border-radius.$border-radius-16 !important;
+  border-color: var(--brand-line, var(--cds-border-subtle));
+  outline: none;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root:root body .shell .main .composer textarea:focus-visible {
+  outline: none !important;
+}
+:root[data-design-system='carbon']:root:root:not([data-input-modality='pointer']) body .shell .main .composer:has(textarea:focus-visible) {
+  outline: 2px solid var(--cds-focus);
+  outline-offset: 2px;
+}
+@media (forced-colors: active) {
+  :root[data-design-system='carbon']:root:root:not([data-input-modality='pointer']) body .shell .main .composer:has(textarea:focus-visible) {
+    outline-color: Highlight;
+  }
+}
+
+/* A single theme surface keeps storage status legible in every appearance. */
+:root[data-design-system='carbon']:root:root body .office-suite .office-storage {
+  background: var(--cds-layer);
+  border-color: var(--cds-border-subtle);
+  color: var(--cds-text-primary);
+}
+:root[data-design-system='carbon']:root:root body .office-suite .office-storage :is(p,strong,span) {
+  color: var(--cds-text-primary);
+}
+
+/* Color choices remain distinguishable inside the shared toolbar skin. */
+:root[data-design-system='carbon']:root:root body .notes-workspace .notes-color-filters .notes-color-dot[data-note-color],
+:root[data-design-system='carbon']:root:root body .notes-workspace .buddy-toolbar.notes-toolbar .notes-color-filters .notes-color-dot[data-note-color] {
+  background: var(--paper, #{colors.$yellow-20});
+  border-color: var(--cds-border-strong);
+  color: var(--cds-text-primary);
+}
+@for $level from 1 through 6 {
+  .notes-outline [data-heading-level='#{$level}'] {
+    padding-inline-start: spacing.$spacing-03 + ($level - 1) * spacing.$spacing-04;
+  }
+}
+/* Keep mobile form text readable without browser focus zoom. */
+@media (any-pointer: coarse) {
+  :root[data-design-system='carbon']:root:root body .buddy-auth-form .cds--text-input {
+    font-size: max(#{map.get(type.$body-02, font-size)}, calc(#{map.get(type.$body-02, font-size)} / var(--ui-scale, 1)));
+  }
+}
+
+/* Legacy per-screen focus resets must not hide keyboard position. */
+:root[data-design-system='carbon']:root:root body :is(button,a,input,textarea,select,[tabindex]):not(:where(.composer textarea)):focus-visible {
+  outline: 2px solid var(--cds-focus) !important;
+  outline-offset: 2px;
+}
+:root[data-design-system='carbon']:not([data-ui-theme='copilotkit']) body .sidebar :focus-visible,
+:root[data-design-system='carbon'] body .buddy-brand-showcase :focus-visible {
+  outline-color: var(--cds-focus-inverse) !important;
+}
+@media (forced-colors: active) {
+  :root[data-design-system='carbon']:root:root body :is(button,a,input,textarea,select,[tabindex]):not(:where(.composer textarea)):focus-visible {
+    outline-color: Highlight !important;
+  }
+}
+
+/* Small sidebar labels must retain normal text contrast after opacity layers. */
+:root[data-design-system='carbon'][data-ui-theme='copilotkit']:root body .sidebar :is(
+  .sidebar-template-studio > small,
+  .sidebar-width-label,
+  .filter-tab:not(.active):not([aria-selected='true'])
+) {
+  color: var(--cds-text-secondary);
+  opacity: 1;
+}
+:root[data-design-system='carbon']:root:root body .office-suite .office-create .office-type.pdf {
+  color: colors.$red-70;
+}
+
+/* Long document names and preparation errors must wrap on narrow composers. */
+:root[data-design-system='carbon']:root:root body .composer .attached-chip { border-radius: var(--buddy-panel-radius); align-items: flex-start; }
+:root[data-design-system='carbon']:root:root body .composer .attached-chip-info { flex: 1; flex-wrap: wrap; min-width: 0; overflow: visible; overflow-wrap: anywhere; }
+:root[data-design-system='carbon']:root:root body .composer .attached-chip-name { max-width: 100%; }
+:root[data-design-system='carbon']:root:root body .composer .attached-chip-info > span[role='alert'],
+:root[data-design-system='carbon']:root:root body .composer .attached-chip-info > span[role='status']:not(.attached-chip-badge) { flex-basis: 100%; }
+
+/* Shape hierarchy: circles identify standalone icon actions; pills identify
+   search and compact metadata. Connected controls retain their existing joins.
+   Carbon radius tokens customize the brand; icon targets stay at least 44px. */
+:root[data-design-system='carbon']:root:root:root body {
+  --buddy-pill-radius: #{border-radius.$border-radius-max};
+}
+:root[data-design-system='carbon']:root:root:root body .shell .main .topbar :is(.mobile-menu,.topbar-notifications),
+:root[data-design-system='carbon']:root:root:root body .shell .main .composer :is(.composer-clip-btn,.attached-chip-remove),
+:root[data-design-system='carbon']:root:root:root body :is(.dialog-close,.shortcuts-close-btn,.approval-guide-close),
+:root[data-design-system='carbon']:root:root:root body .member-chat-panel-actions > button {
+  border-radius: var(--buddy-pill-radius) !important;
+  inline-size: 44px !important; min-inline-size: 44px !important; max-inline-size: 44px !important;
+  block-size: 44px !important; min-block-size: 44px !important; max-block-size: 44px !important;
+  padding: spacing.$spacing-03;
+  flex-shrink: 0;
+  align-items: center; justify-content: center;
+}
+:root[data-design-system='carbon']:root:root:root body :is(
+  input[type='search'],.notes-search,.notes-search input,.hook-search-input,.member-chat-search,
+  .member-chat-search input,.installed-apps-search input
+) { border-radius: var(--buddy-pill-radius) !important; }
+:root[data-design-system='carbon']:root:root:root body :is(
+  .notes-filter-buttons button,.notes-card-tags button,.attached-chip-badge,
+  .directory-badge,.suggestion-tag,.template-row-tag,.template-brand-tag,
+  .format-feature-tag,.member-chat-selected button,.topbar-token-pill,.topbar-pill
+) { border-radius: var(--buddy-pill-radius) !important; }
+:root[data-design-system='carbon']:root:root:root body .shell .sidebar .conversation-row .mode-item,
+:root[data-design-system='carbon']:root:root:root body :is(
+  .message-attachment,.attached-chip,.knowledge-dropzone,.knowledge-dropzone-trigger,.office-dropzone,
+  .suggestion
+) { border-radius: var(--buddy-panel-radius) !important; }
+/* Legacy toolbar skins have extra specificity; search remains a distinct pill. */
+:root[data-design-system='carbon']:root:root:root body .buddy-toolbar.buddy-toolbar input[type='search'],
+:root[data-design-system='carbon']:root:root:root body .notes-workspace .notes-toolbar .notes-search input {
+  border-radius: var(--buddy-pill-radius) !important;
+}
+
+/* Guidance is a text action, alongside the separate circular Stop control. */
+:root[data-design-system='carbon']:root:root:root body .shell .main .composer .guidance-send-button {
+  display: inline-flex; align-items: center; justify-content: center; gap: spacing.$spacing-03;
+  width: auto; min-width: max-content; min-height: 44px; height: auto;
+  padding: spacing.$spacing-03 spacing.$spacing-05;
+  border-radius: var(--buddy-panel-radius) !important;
+  white-space: nowrap;
+}
+:root[data-design-system='carbon']:root:root body .guidance-send-button .step-spinner {
+  width: 16px; height: 16px; flex: none; border-color: currentColor;
+  border-top-color: transparent; border-width: 2px;
+}
+:root[data-design-system='carbon']:root:root body .shell .chat-guidance .chat-guidance-heading {
+  display: flex; flex-wrap: wrap; align-items: center; gap: spacing.$spacing-03;
+  opacity: 1; color: var(--cds-text-on-color);
+}
+:root[data-design-system='carbon']:root:root body .shell .chat-guidance .chat-guidance-status {
+  display: inline-block; padding: spacing.$spacing-01 spacing.$spacing-03;
+  border-radius: var(--buddy-pill-radius); background: transparent;
+  border: 1px solid currentColor;
+  color: var(--cds-text-on-color); font-weight: var(--cds-weight-semibold);
+}
+:root[data-design-system='carbon']:root:root body .shell .composer .guidance-status {
+  color: var(--cds-text-secondary); overflow-wrap: anywhere;
+}
+:root[data-design-system='carbon']:root:root body .shell .composer .guidance-status.error { color: var(--cds-text-error); }
+@media (max-width: 600px) {
+  :root[data-design-system='carbon']:root:root body .shell .composer-row:has(.guidance-send-button) { flex-wrap: wrap; }
+  :root[data-design-system='carbon']:root:root body .shell .composer-row:has(.guidance-send-button) textarea { order: 1; flex: 1 1 calc(100% - 60px); }
+  :root[data-design-system='carbon']:root:root body .shell .composer-row .guidance-send-button { order: 2; flex: 1 1 auto; }
+  :root[data-design-system='carbon']:root:root body .shell .composer-row:has(.guidance-send-button) .stop-button { order: 3; }
+}
+
+:root[data-design-system='carbon']:root:root body .shell .message.user.chat-guidance .bubble {
+  background: var(--cds-interactive); border-color: var(--cds-interactive); color: var(--cds-text-on-color);
+}
+:root[data-design-system='carbon']:root:root body .shell .message.user.chat-guidance .bubble :is(p,small,span) { color: var(--cds-text-on-color); }
+
+/* ==========================================================================
+   Carbon Design System Standards: Tags
+   ========================================================================== */
+.cds--tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--cds-spacing-02, 4px);
+  padding: 0 var(--cds-spacing-03, 8px);
+  min-height: 1.5rem;
+  height: 1.5rem;
+  max-width: 100%;
+  border-radius: 0.75rem;
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.33333;
+  letter-spacing: 0.32px;
+  border: 1px solid transparent;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  box-sizing: border-box;
+  background-color: var(--cds-tag-background-gray, #e0e0e0);
+  color: var(--cds-tag-color-gray, #393939);
+  border-color: var(--cds-tag-border-gray, #c6c6c6);
+  transition: background-color var(--motion-standard) var(--motion-ease), border-color var(--motion-standard) var(--motion-ease), color var(--motion-standard) var(--motion-ease);
+}
+
+.cds--tag--red {
+  background-color: var(--cds-tag-background-red, #ffd7d9);
+  color: var(--cds-tag-color-red, #750e13);
+  border-color: var(--cds-tag-border-red, #ffb3b8);
+}
+
+.cds--tag--magenta {
+  background-color: var(--cds-tag-background-magenta, #ffd6e8);
+  color: var(--cds-tag-color-magenta, #740937);
+  border-color: var(--cds-tag-border-magenta, #ffafd2);
+}
+
+.cds--tag--purple {
+  background-color: var(--cds-tag-background-purple, #e8daff);
+  color: var(--cds-tag-color-purple, #491d8b);
+  border-color: var(--cds-tag-border-purple, #d4bbff);
+}
+
+.cds--tag--blue {
+  background-color: var(--cds-tag-background-blue, #edf5ff);
+  color: var(--cds-tag-color-blue, #0043ce);
+  border-color: var(--cds-tag-border-blue, #d0e2ff);
+}
+
+.cds--tag--cyan {
+  background-color: var(--cds-tag-background-cyan, #e5f6ff);
+  color: var(--cds-tag-color-cyan, #00539a);
+  border-color: var(--cds-tag-border-cyan, #bae6ff);
+}
+
+.cds--tag--teal {
+  background-color: var(--cds-tag-background-teal, #d9fbfb);
+  color: var(--cds-tag-color-teal, #005d5d);
+  border-color: var(--cds-tag-border-teal, #9ef0f0);
+}
+
+.cds--tag--green {
+  background-color: var(--cds-tag-background-green, #defbe6);
+  color: var(--cds-tag-color-green, #0e6027);
+  border-color: var(--cds-tag-border-green, #a7f0ba);
+}
+
+.cds--tag--cool-gray,
+.cds--tag--gray {
+  background-color: var(--cds-tag-background-cool-gray, #dde1e6);
+  color: var(--cds-tag-color-cool-gray, #121619);
+  border-color: var(--cds-tag-border-cool-gray, #a2a9b0);
+}
+
+.cds--tag--warm-gray {
+  background-color: var(--cds-tag-background-warm-gray, #f7f1e5);
+  color: var(--cds-tag-color-warm-gray, #684e00);
+  border-color: var(--cds-tag-border-warm-gray, #e5d7ba);
+}
+
+.cds--tag--high-contrast {
+  background-color: var(--cds-text-primary, #161616);
+  color: var(--cds-text-on-color, #ffffff);
+  border-color: var(--cds-text-primary, #161616);
+}
+
+.cds--tag--outline {
+  background-color: transparent;
+  border-color: currentColor;
+}
+
+
+/* Readable workspace scale. Keep authored documents at their own type sizes.
+ * Component rules include lazy-loaded answers; specificity resolves legacy scales.
+ */
+:root[data-design-system='carbon']:root:root body {
+  :is(.intelligent-answer,.clarification-card) {
+    @include type.type-style('body-02');
+  }
+  :is(.intelligent-answer,.clarification-card) :is(
+    .ia-description,.ia-item-body,.ia-grid-card-body,.ia-step-name,
+    .ia-fact-value,.ia-input-label,.ia-number-input,
+    .clarification-question-text,.clarification-legend,.clarification-option-text,
+    .clarification-custom-textarea
+  ) {
+    @include type.type-style('body-02');
+    @include carbon-type-important('body-02');
+  }
+  :is(.intelligent-answer,.clarification-card) :is(
+    button,.ia-tab-label,.ia-progress-meta,
+    .ia-fact-label,.ia-presets-label,.ia-split-kpi-label,
+    .ia-split-formula,.ia-actions-title,.ia-pending-content,
+    .ia-pending-content strong,.ia-pending-content small,
+    .clarification-context-pill,.clarification-completion
+  ) {
+    @include carbon-type-important('body-01');
+  }
+  :is(.intelligent-answer,.clarification-card) :is(input,select,textarea) {
+    @include carbon-type-important('body-02');
+  }
+  :is(.intelligent-answer,.clarification-card) :is(
+    .ia-badge-primary,.ia-badge-mode,.ia-badge-count,.ia-header-status,
+    .ia-header-status small,.ia-selected-pill,.ia-done-badge,
+    .ia-grid-card-num,.ia-card-index,.ia-tab-index,.ia-step-num-badge,
+    .clarification-status,.clarification-selection-badge,.clarification-option-hint
+  ) {
+    @include carbon-type-important('label-01');
+    height: auto;
+    white-space: normal;
+  }
+  .intelligent-answer :is(.ia-grid-card-title,.ia-card-title) {
+    @include carbon-type-important('heading-03');
+  }
+  :is(.intelligent-answer .ia-title,.clarification-card .clarification-title) {
+    @include carbon-type-important('heading-03');
+  }
+  .intelligent-answer .ia-header-badges { flex-wrap: wrap; }
+  .intelligent-answer .ia-search-wrap { min-width: 0; flex-wrap: wrap; }
+  .clarification-card .clarification-step-num { width: 1.5rem; height: 1.5rem; font-size: .75rem; }
+}
+
+
+/* Light response surfaces; purple identifies actions rather than large banners. */
+:root[data-design-system='carbon']:root:root:root body {
+  :is(.intelligent-answer,.clarification-card) {
+    background: var(--cds-background);
+    border-color: var(--cds-border-subtle-01);
+  }
+  :is(.intelligent-answer > header,.clarification-card .clarification-header-row) {
+    background: var(--cds-background) !important;
+    color: var(--cds-text-primary) !important;
+    border-bottom: 1px solid var(--cds-border-subtle-01);
+  }
+  :is(.intelligent-answer > header,.clarification-card .clarification-header-row) :is(h3,.ia-title,.clarification-title,.answer-frame-brand) {
+    color: var(--cds-text-primary) !important;
+  }
+  .intelligent-answer > header :is(p,.ia-description,.ia-header-status,.ia-header-status small) {
+    color: var(--cds-text-secondary) !important;
+  }
+}
+
+
+/* Carbon foundations with conversational card patterns from OpenAI UI guidance.
+ * Neutral structure, one accent for actions, and quiet secondary information.
+ */
+:root[data-design-system='carbon']:root:root:root body {
+  .intelligent-answer {
+    --ia-bg: var(--cds-background);
+    --ia-bg-secondary: var(--cds-layer-01);
+    --ia-border: var(--cds-border-subtle-01);
+    --ia-text: var(--cds-text-primary);
+    --ia-text-secondary: var(--cds-text-secondary);
+  }
+  .intelligent-answer :is(.ia-badge-mode,.ia-badge-count) {
+    background: transparent !important;
+    color: var(--cds-text-secondary) !important;
+    border: 0 !important;
+    padding: 0 !important;
+    text-transform: none;
+    letter-spacing: 0;
+  }
+  .intelligent-answer .ia-badge-count { border-left: 1px solid var(--cds-border-subtle-01) !important; padding-left: spacing.$spacing-03 !important; }
+  .intelligent-answer .ia-explore-toolbar { background: var(--cds-background); }
+  .intelligent-answer .ia-search-input { padding-inline: 2.25rem 2.5rem !important; }
+  .intelligent-answer .ia-search-clear { min-width: 2rem; min-height: 2rem; }
+  .intelligent-answer .ia-view-btn[aria-pressed='true'] {
+    background: var(--cds-layer-selected-01);
+    color: var(--cds-text-primary);
+    border-bottom: 2px solid var(--cds-interactive);
+    box-shadow: none;
+  }
+  .intelligent-answer :is(.ia-grid-card,.ia-comparison-card) { background: var(--cds-background); box-shadow: none; }
+  .intelligent-answer .ia-comparison-card.is-selected {
+    background: var(--cds-background);
+    border-color: var(--cds-interactive);
+    box-shadow: inset 0 0 0 1px var(--cds-interactive);
+  }
+  .intelligent-answer .ia-fact-card { background: var(--cds-layer-01); border: 0; }
+  .intelligent-answer .ia-fact-label { text-transform: none; letter-spacing: 0; }
+  .intelligent-answer .ia-action-form { background: var(--cds-background); }
+  .clarification-card .clarification-option-tile {
+    background: var(--cds-background);
+  }
+  .clarification-card .clarification-option-tile.is-selected {
+    background: var(--cds-layer-selected-01) !important;
+  }
+  .clarification-card .clarification-selection-badge {
+    background: transparent;
+    color: var(--cds-text-primary);
+    border: 0;
+  }
+  .clarification-card .clarification-step-num {
+    background: var(--cds-layer-01);
+    color: var(--cds-text-secondary);
+  }
+  .next-question-suggestions button {
+    @include type.type-style('body-01');
+    min-height: 2.75rem;
+    background: var(--cds-background);
+    color: var(--cds-text-primary);
+    border-color: var(--cds-border-subtle-01);
+  }
+  .next-question-suggestions button:hover:not(:disabled) { background: var(--cds-layer-hover-01); }
+  :is(.intelligent-answer,.clarification-card,.next-question-suggestions) button:focus-visible {
+    outline: 2px solid var(--cds-focus);
+    outline-offset: 2px;
+  }
+}
+
+/* Larger primary navigation retains Carbon's type scale and secondary hierarchy. */
+:root[data-design-system='carbon']:root:root:root body .shell .sidebar {
+  :is(.tasks-nav,.mode-item,.new-chat,.sidebar-template-studio,.skill-item-name) {
+    @include type.type-style('body-compact-02');
+  }
+  :is(.tasks-nav,.mode-item,.new-chat,.sidebar-template-studio) {
+    min-height: spacing.$spacing-09;
+  }
+}
+
+:root[data-design-system='carbon']:root:root:root body .shell .sidebar .sidebar-files-heading { cursor: default; }
+
+/* Sidebar category filters share one quiet baseline instead of nested frames. */
+:root[data-design-system='carbon']:root:root:root body .shell .sidebar {
+  .sidebar-filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: spacing.$spacing-02;
+    padding: 0 0 spacing.$spacing-03;
+    margin-inline: spacing.$spacing-04;
+    border: 0;
+    border-bottom: 1px solid var(--sidebar-border);
+    background: transparent;
+    box-shadow: none;
+    border-radius: 0 !important;
+  }
+  .sidebar-filter-tabs .filter-tab {
+    @include type.type-style('body-compact-01');
+    flex: 1 0 auto;
+    min-width: 0;
+    min-height: spacing.$spacing-08;
+    padding: spacing.$spacing-03;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--sidebar-secondary);
+    border-radius: 0 !important;
+  }
+  .sidebar-filter-tabs .filter-tab:hover {
+    background: var(--sidebar-card-background);
+    color: var(--sidebar-text);
+  }
+  .sidebar-filter-tabs .filter-tab.active {
+    background: var(--sidebar-card-background);
+    color: var(--sidebar-text);
+    font-weight: type.font-weight('semibold');
+    box-shadow: inset 0 -2px 0 var(--cds-focus-inverse);
+  }
+  :is(.mode-item,.tasks-nav) { border-color: transparent; }
+  :is(.mode-item,.tasks-nav):hover { border-color: transparent; }
+  :is(.mode-item.active,.tasks-nav.active) { border-color: transparent; }
+}
+
+/* People chat: fixed compact chrome around one generous message viewport. */
+:root[data-design-system='carbon']:root:root:root body .member-chat-panel {
+  --chat-line: var(--toolbar-border);
+  --chat-surface: var(--cds-layer);
+  --chat-muted: var(--cds-text-secondary);
+  width: min(460px, calc((100vw - 32px) / var(--ui-scale, 1)));
+  height: min(780px, calc(var(--member-chat-panel-space, 600px) / var(--ui-scale, 1)));
+  color: var(--cds-text-primary);
+  border-color: var(--toolbar-border);
+  .member-chat-panel-header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+    --toolbar-background: #e8e5e1;
+    --toolbar-text: #302e2b;
+    min-height: 48px;
+    padding: spacing.$spacing-03 spacing.$spacing-05;
+    .member-chat-brand > svg { width: 20px; height: 20px; padding: 0; background: transparent; }
+    .member-chat-brand small { display: none; }
+    button { width: 32px; min-width: 32px; height: 32px; min-height: 32px; color: var(--toolbar-text); background: var(--toolbar-control); border-color: var(--toolbar-border); }
+  }
+  .member-chat-brand h2 { @include type.type-style('heading-compact-01'); }
+  .member-chat-panel-body,.member-chat-workspace,.member-chat-conversation { overflow: hidden; }
+  .member-chat-conversation { position: relative; }
+  .member-chat-sidebar { gap: spacing.$spacing-03; padding: spacing.$spacing-04; background: var(--workspace-canvas); }
+  .member-chat-search.member-chat-search { min-height: 36px; input { min-height: 34px; } }
+  .member-chat-room { padding: spacing.$spacing-03; }
+  .member-chat-room-copy strong { @include type.type-style('heading-compact-01'); }
+  .member-chat-room-copy small { @include type.type-style('label-01'); }
+  .member-chat-conversation-header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    min-height: 48px;
+    gap: spacing.$spacing-03;
+    padding: spacing.$spacing-03 spacing.$spacing-04;
+    h2 { @include type.type-style('heading-compact-01'); }
+    p { @include type.type-style('label-01'); margin: 0; }
+    .member-chat-avatar { width: 28px; height: 28px; }
+  }
+  .people-room-shortcuts.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    gap: spacing.$spacing-02;
+    min-height: 36px;
+    padding: spacing.$spacing-02 spacing.$spacing-04;
+    background: var(--cds-layer);
+    button { @include type.type-style('label-01'); min-height: 28px; padding: spacing.$spacing-02 spacing.$spacing-03; border: 0; background: transparent; color: var(--cds-text-secondary); }
+    button[aria-pressed='true'] { color: var(--cds-text-primary); box-shadow: inset 0 -2px var(--cds-interactive); }
+  }
+  .member-chat-messages {
+    flex: 1 1 0;
+    gap: spacing.$spacing-03;
+    padding: spacing.$spacing-04;
+    background: var(--workspace-canvas);
+    scrollbar-gutter: stable;
+    overflow-anchor: auto;
+  }
+  .member-chat-message {
+    flex-shrink: 0;
+    max-width: 94%;
+    padding: spacing.$spacing-03 spacing.$spacing-04;
+    background: var(--cds-layer);
+    border: 1px solid var(--cds-border-subtle);
+    box-shadow: none;
+    p { @include type.type-style('body-01'); margin-top: spacing.$spacing-02; }
+  }
+  .member-chat-message.is-own { background: var(--toolbar-background); color: var(--cds-text-primary); border-color: var(--toolbar-border); }
+  .member-chat-message-meta { @include type.type-style('label-01'); gap: spacing.$spacing-03; color: var(--cds-text-secondary); }
+  .member-chat-message.is-own .member-chat-message-meta,.member-chat-message.is-own time,.member-chat-receipt,.member-chat-receipt.is-seen { color: var(--cds-text-secondary); }
+  .member-chat-message.is-continuation { margin-top: -4px; }
+  // Keep sender names visible on consecutive messages, including group conversations.
+  .member-chat-receipt { margin-top: spacing.$spacing-02; @include type.type-style('label-01'); }
+  .people-date-separator { flex-shrink: 0; margin: spacing.$spacing-02 0; @include type.type-style('label-01'); time { padding: spacing.$spacing-02 spacing.$spacing-03; background: transparent; border: 0; } }
+  .member-chat-composer { flex-shrink: 0; padding: spacing.$spacing-03 spacing.$spacing-04; background: var(--cds-layer); }
+  .member-chat-composer textarea { @include type.type-style('body-01'); min-height: 40px; max-height: 96px; resize: vertical; padding: spacing.$spacing-03; background: var(--cds-field); border-color: var(--toolbar-border); }
+  .member-chat-compose-actions { margin-top: spacing.$spacing-02; gap: spacing.$spacing-02; }
+  .member-chat-compose-actions button { @include type.type-style('label-01'); min-height: 32px; padding: spacing.$spacing-02 spacing.$spacing-03; }
+  .member-chat-compose-actions > div { flex-wrap: wrap; min-width: 0; }
+  .member-chat-send { flex-shrink: 0; background: var(--cds-interactive); }
+  .people-jump-latest { position: absolute; bottom: 112px; left: 50%; transform: translateX(-50%); z-index: 2; margin: 0; white-space: nowrap; background: var(--cds-layer); border-color: var(--toolbar-border); color: var(--cds-text-primary); }
+  .people-conversation-menu { max-height: 45%; overflow-y: auto; flex-shrink: 0; }
+  .member-chat-audience { max-height: 25%; overflow-y: auto; flex-shrink: 0; }
+  .people-draft-hint.sr-only,.member-chat-sharing-hint.sr-only { padding: 0; margin: 0; }
+}
+:root[data-design-system='carbon']:root:root:root body .member-chat-panel.is-expanded {
+  width: min(1080px, calc((100vw - 32px) / var(--ui-scale, 1)));
+  .member-chat-workspace { grid-template-columns: 240px minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  :root[data-design-system='carbon']:root:root:root body .member-chat-panel.is-expanded .member-chat-workspace { grid-template-columns: minmax(0, 1fr); }
+  :root[data-design-system='carbon']:root:root:root body .member-chat-panel .member-chat-composer textarea { font-size: 16px; }
+}
+@media (any-pointer: coarse) and (max-width: 1056px) {
+  :root[data-design-system='carbon']:root:root:root body :is(.member-chat-panel,.member-chat-panel.is-expanded) {
+    bottom: auto;
+    height: calc((var(--visible-height, 100dvh) - 16px) / var(--ui-scale));
+    max-height: calc((var(--visible-height, 100dvh) - 16px) / var(--ui-scale));
+  }
+}
+
+/* Office shares the chat reading rhythm while preserving document space. */
+:root[data-design-system='carbon']:root:root:root body .office-assistant.office-assistant {
+  position: relative;
+  width: clamp(320px, 29vw, 420px);
+  flex-basis: clamp(320px, 29vw, 420px);
+  background: var(--cds-layer);
+  color: var(--cds-text-primary);
+  border-color: var(--toolbar-border);
+  @include type.type-style('body-01');
+  > header.office-assistant-header {
+    --toolbar-background: #e8e5e1;
+    --toolbar-text: #302e2b;
+    --toolbar-border: #ccc7c0;
+    flex-shrink: 0;
+    flex-wrap: nowrap;
+    min-height: 48px;
+    padding: spacing.$spacing-03 spacing.$spacing-04;
+    gap: spacing.$spacing-03;
+    .buddy-section-brand { @include type.type-style('heading-compact-01'); margin: 0; }
+    small { @include type.type-style('label-01'); color: var(--cds-text-secondary); }
+    .office-assistant-connection { @include type.type-style('label-01'); padding: spacing.$spacing-02; color: var(--cds-text-secondary); background: transparent; border: 0; }
+    .office-assistant-connection.is-ready { color: var(--cds-support-success); }
+  }
+  .office-assistant-log { flex: 1 1 0; padding: spacing.$spacing-04; background: var(--workspace-canvas); }
+  .office-assistant-intro { padding: spacing.$spacing-03 0; > span { @include type.type-style('heading-compact-02'); color: var(--cds-text-primary); } p { @include type.type-style('body-01'); margin: spacing.$spacing-03 0 spacing.$spacing-04; } }
+  .office-assistant-chips { gap: spacing.$spacing-03; }
+  .office-assistant-chips > button { padding: spacing.$spacing-03 !important; @include carbon-type-important('body-01'); background: var(--cds-layer) !important; color: var(--cds-text-primary) !important; border-color: var(--toolbar-border) !important; box-shadow: none; }
+  .office-assistant-turn { margin-bottom: spacing.$spacing-05; }
+  .office-assistant-user { padding: spacing.$spacing-03 spacing.$spacing-04; margin: 0 0 spacing.$spacing-04 spacing.$spacing-05; background: var(--toolbar-background); color: var(--cds-text-primary); border-color: var(--toolbar-border); @include type.type-style('body-01'); }
+  .office-assistant-reply > strong { @include type.type-style('label-01'); color: var(--cds-text-secondary); }
+  .office-assistant-text .markdown-body { @include type.type-style('body-01'); p { margin-bottom: spacing.$spacing-03; } }
+  .office-assistant-actions { margin-top: spacing.$spacing-03; gap: spacing.$spacing-03; }
+  :is(.office-assistant-actions button,.office-assistant-composer button,.office-assistant-context select) { min-height: 32px; padding: spacing.$spacing-03 spacing.$spacing-04 !important; @include carbon-type-important('body-01'); }
+  .office-assistant-composer { padding: spacing.$spacing-03 spacing.$spacing-04; border-color: var(--toolbar-border); background: var(--cds-layer); }
+  .office-assistant-context { @include type.type-style('label-01'); margin-bottom: spacing.$spacing-03; }
+  .office-assistant-composer textarea { @include type.type-style('body-01'); min-height: 48px; max-height: 120px; padding: spacing.$spacing-03; background: var(--cds-field); color: var(--cds-text-primary); border-color: var(--toolbar-border); resize: vertical; }
+  .office-assistant-composer > div { margin-top: spacing.$spacing-03; }
+  .office-assistant-composer small { @include type.type-style('label-01'); }
+  button.feature-primary { background: var(--cds-interactive); border-color: var(--cds-interactive); }
+  .office-assistant-latest { position: absolute; bottom: 176px; left: 50%; transform: translateX(-50%); z-index: 2; padding: spacing.$spacing-03; background: var(--cds-layer); color: var(--cds-text-primary); border: 1px solid var(--toolbar-border); white-space: nowrap; @include type.type-style('label-01'); }
+}
+@media (max-width: 600px) {
+  :root[data-design-system='carbon']:root:root:root body .office-assistant.office-assistant {
+    width: 100%; flex-basis: auto;
+    .office-assistant-composer textarea { font-size: 16px; }
+  }
+}
+
+/* Common reading scale across the main workspace and its side assistants. */
+:root[data-design-system='carbon']:root:root:root body {
+  .member-chat-panel .member-chat-message p,
+  .office-assistant.office-assistant .office-assistant-text .markdown-body,
+  .office-assistant.office-assistant .office-assistant-user {
+    @include type.type-style('body-02');
+  }
+  .projects-workspace {
+    font-family: var(--cds-font-family);
+    @include type.type-style('body-01');
+    :is(button,input,select,textarea,th,td) { font-family: inherit; @include type.type-style('body-01'); }
+    :is(.projects-hint,.projects-empty,.projects-card p,.projects-project-card p) { @include type.type-style('body-01'); }
+  }
+  .project-gantt {
+    @include type.type-style('body-01');
+    .gantt-project-row .gantt-track { height: 104px; }
+    .gantt-work-row .gantt-track { height: 72px; }
+    .gantt-project-row .gantt-name-column { padding-block: spacing.$spacing-05; }
+    .gantt-project-row .gantt-item-title { @include type.type-style('heading-compact-02'); }
+    .gantt-work-row .gantt-item-title { @include type.type-style('heading-compact-01'); }
+    .gantt-bar-project { height: 38px; top: 33px; }
+    .gantt-work-row .gantt-bar { height: 30px; top: 21px; }
+    .gantt-bar-label { @include type.type-style('body-compact-01'); }
+    :is(.gantt-schedule-text,.gantt-status-tag,.gantt-metric-badge span,.gantt-flow-badge,.gantt-axis > span:not(.gantt-sr-only)) { @include type.type-style('label-01'); }
+    .gantt-row-actions button { min-height: 28px !important; font-size: map.get(type.$label-01,font-size) !important; line-height: map.get(type.$label-01,line-height) !important; }
+    .gantt-work-row .gantt-marker { top: 28px; }
+  }
+}
+
+:root[data-design-system='carbon']:root:root:root body .member-chat-panel {
+  .member-chat-conversation-header.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar :is(h2,p) { color: var(--toolbar-text) !important; }
+  .member-chat-message.is-continuation { border-top-left-radius: 4px; }
+  .member-chat-message.is-own.is-continuation { border-top-right-radius: 4px; }
+}
+
+:root[data-design-system='carbon']:root:root:root body .member-chat-panel {
+  .member-chat-panel-header .member-chat-brand { flex: 1 1 auto; border: 0; box-shadow: none; background: transparent; }
+  .member-chat-panel-header .member-chat-brand > div { border: 0; background: transparent; }
+  .member-chat-list-heading { flex-wrap: wrap; gap: spacing.$spacing-02; }
+  .member-chat-list-heading h3 { flex: 1 0 100%; @include type.type-style('label-01'); }
+  .member-chat-list-heading button { white-space: nowrap; min-height: 28px; padding: spacing.$spacing-02; }
+  :is(.member-chat-tabs button,.people-inbox-filters button) { @include type.type-style('body-compact-01'); padding: spacing.$spacing-03; }
+  .people-inbox-filters { padding: 0; gap: spacing.$spacing-02; }
+}
+:root[data-design-system='carbon']:root:root:root body .projects-workspace .projects-project-name { @include type.type-style('heading-compact-02'); }
+
+/* Project Buddy follows the same Carbon reading hierarchy as the other chats. */
+:root[data-design-system='carbon']:root:root:root body .projects-workspace .projects-widget-panel {
+  font-family: type.font-family('sans');
+  @include type.type-style('body-01');
+  .projects-widget-title-wrap h4 { @include type.type-style('heading-compact-02'); }
+  :is(.projects-bob-message .markdown-body,.projects-widget-empty p,.projects-widget-input-row textarea) { @include type.type-style('body-02'); }
+  :is(button,.projects-widget-suggestion,.projects-widget-subhead,.projects-widget-status,.projects-widget-error) { @include type.type-style('body-compact-01'); }
+  :is(.projects-bob-message-header,.projects-widget-focus-tag,.projects-widget-form-footer,.projects-badge) { @include type.type-style('label-01'); }
+  .projects-bob-message .markdown-body :is(p,li) { font-size: inherit; line-height: inherit; }
+  .projects-bob-message .markdown-body :is(h1,h2,h3,h4) { @include type.type-style('heading-03'); }
+}
+
+/* Carbon accents keep the project assistant identifiable when collapsed or open. */
+:root[data-design-system='carbon']:root:root:root body .projects-workspace {
+  .projects-widget-launcher-round {
+    background: colors.$purple-60;
+    color: colors.$white;
+    border: 2px solid colors.$purple-30;
+    box-shadow: 0 6px 20px rgba(colors.$purple-60, .28);
+    &:hover { background: colors.$purple-70; box-shadow: 0 8px 24px rgba(colors.$purple-60, .36); }
+    &:active { background: colors.$purple-80; }
+    &:focus-visible { outline: 3px solid colors.$purple-60; outline-offset: 4px; }
+    .projects-widget-launcher-indicator { background: colors.$teal-40; border-color: colors.$white; }
+  }
+  .projects-widget-avatar {
+    display: grid; place-items: center; width: 40px; height: 40px; border-radius: 10px;
+    background: colors.$purple-60; color: colors.$white;
+    box-shadow: inset 0 0 0 1px rgba(colors.$white, .16);
+  }
+}
+
+/* Office and Project Buddy share neutral cards and a Carbon purple identity. */
+:root[data-design-system='carbon']:root:root:root body .office-assistant.office-assistant {
+  background: colors.$white; color: colors.$gray-100;
+  border: 1px solid colors.$gray-30; border-radius: 16px;
+  > header.office-assistant-header {
+    --toolbar-background: #{colors.$gray-10}; --toolbar-text: #{colors.$gray-100}; --toolbar-border: #{colors.$gray-30};
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    background: colors.$gray-10; color: colors.$gray-100; border-bottom: 1px solid colors.$gray-30;
+    min-height: 80px; padding: spacing.$spacing-04 spacing.$spacing-05; gap: spacing.$spacing-04;
+    .office-assistant-brand { min-width: 0; gap: spacing.$spacing-04; }
+    .office-assistant-brand > div { min-width: 0; }
+    .office-assistant-title { display: block; margin: 0; @include type.type-style('heading-compact-02'); color: colors.$gray-100; }
+    .office-assistant-subtitle { display: block; margin-top: spacing.$spacing-02; @include type.type-style('body-01'); color: colors.$gray-80; }
+    .office-assistant-avatar {
+      display: grid; place-items: center; flex: 0 0 40px; width: 40px; height: 40px;
+      border-radius: 10px; background: colors.$purple-60; color: colors.$white;
+      svg { width: 24px; height: 24px; color: inherit; }
+    }
+    .office-assistant-connection { @include type.type-style('label-01'); color: colors.$gray-70; }
+    .office-assistant-connection.is-ready { color: colors.$green-80; background: colors.$green-10; border: 1px solid colors.$green-30; border-radius: 6px; padding: spacing.$spacing-02 spacing.$spacing-03; }
+  }
+  .office-assistant-log { padding: spacing.$spacing-04; background: colors.$gray-10; }
+  .office-assistant-intro { color: colors.$gray-70; }
+  .office-assistant-intro > span { color: colors.$gray-100; }
+  .office-assistant-intro p { @include type.type-style('body-01'); }
+  .office-assistant-chips > button {
+    background: colors.$white !important; color: colors.$gray-100 !important;
+    border-color: colors.$gray-30 !important; border-radius: 8px !important;
+    &:hover:not(:disabled) { background: colors.$purple-10 !important; border-color: colors.$purple-40 !important; }
+  }
+  .office-assistant-user { background: colors.$gray-10; color: colors.$gray-100; border: 1px solid colors.$gray-30; border-left: 3px solid colors.$purple-60; border-radius: 10px; padding: spacing.$spacing-04 spacing.$spacing-05; }
+  .office-assistant-reply {
+    padding: spacing.$spacing-04 spacing.$spacing-05; background: colors.$white; border: 1px solid colors.$gray-30;
+    border-radius: 10px; box-shadow: 0 1px 4px rgba(colors.$black, .03);
+    > strong { color: colors.$gray-100; @include type.type-style('label-01'); margin-bottom: spacing.$spacing-03; }
+  }
+  .office-assistant-text .markdown-body { color: colors.$gray-100; }
+  .office-assistant-composer {
+    background: colors.$white; padding: spacing.$spacing-04; border-color: colors.$gray-30;
+    textarea {
+      background: colors.$gray-10; color: colors.$gray-100; border: 1px solid colors.$gray-50;
+      border-radius: 8px !important; min-height: 80px; padding: spacing.$spacing-03 spacing.$spacing-04; @include type.type-style('body-02');
+      &::placeholder { color: colors.$gray-60; }
+      &:focus-visible { outline: 2px solid colors.$purple-60; outline-offset: 1px; }
+    }
+    small { color: colors.$gray-70; @include type.type-style('label-01'); }
+  }
+  .office-assistant-context { color: colors.$gray-70; }
+  .office-assistant-context select { color: colors.$gray-100; background: colors.$gray-10; border-color: colors.$gray-50; }
+  :is(.office-assistant-actions button,.office-assistant-composer button,.office-assistant-context select) { min-height: 40px; @include carbon-type-important('body-01'); }
+  button.feature-primary {
+    background: colors.$purple-60; border-color: colors.$purple-60; color: colors.$white;
+    &:hover:not(:disabled) { background: colors.$purple-70; border-color: colors.$purple-70; }
+    &:disabled { background: colors.$gray-20; border-color: colors.$gray-20; color: colors.$gray-60; }
+  }
+  :is(button,select):focus-visible { outline: 2px solid colors.$purple-60; outline-offset: 2px; }
+}
+
+
+// People identity labels must remain readable across the saved workspace themes.
+:root[data-design-system='carbon']:root body .member-chat-panel.member-chat-panel {
+  .member-chat-room-copy strong { color: #161616; @include type.type-style('body-01'); }
+  .member-chat-conversation-header.buddy-toolbar {
+    --toolbar-text: #161616;
+    h2 { color: #161616 !important; @include type.type-style('heading-compact-02'); }
+    p { color: #525252 !important; }
+  }
+  .member-chat-message .member-chat-message-meta strong {
+    color: #161616;
+    @include type.type-style('heading-compact-01');
+  }
+}
+
+:root[data-design-system='carbon']:root body .member-chat-panel.member-chat-panel .member-chat-message.is-own {
+  background: #f6f2ff;
+  color: #161616;
+  .member-chat-message-meta, .member-chat-message-meta time { color: #525252; }
+}
+
+// Normalize remaining assistant chrome; authored document previews keep their styles.
+:root[data-design-system='carbon']:root:root:root body .office-assistant.office-assistant {
+  .office-assistant-chips > button { @include carbon-type-important('body-01'); }
+  :is(.office-assistant-preview,.office-assistant-plan-content) {
+    @include type.type-style('body-01');
+    padding: spacing.$spacing-04;
+    margin-top: spacing.$spacing-04;
+  }
+  .office-assistant-preview > span:first-child { @include type.type-style('heading-compact-01'); }
+  .office-assistant-preview ul { @include type.type-style('body-01'); padding-left: spacing.$spacing-05; margin: spacing.$spacing-03 0 spacing.$spacing-04; }
+  .office-assistant-preview li { margin-block: spacing.$spacing-02; }
+  .office-assistant-preview details { @include type.type-style('body-01'); margin-block: spacing.$spacing-04; }
+  :is(.office-assistant-replace-warning,.office-assistant-error) { @include type.type-style('body-01'); padding: spacing.$spacing-03; }
+  :is(.office-assistant-progress,.office-assistant-applied) { @include type.type-style('label-01'); }
+  .office-assistant-actions { margin-top: spacing.$spacing-04; }
+  .office-assistant-error,.office-assistant-applied { margin-top: spacing.$spacing-03; }
+  .office-assistant-text { line-height: inherit; padding: 0; }
+  .office-assistant-intro p { margin: spacing.$spacing-03 0 spacing.$spacing-05; }
+  .office-assistant-composer > div { gap: spacing.$spacing-03; }
+}
+
+// App-wide accessibility guard, including lazy workspaces and portal surfaces.
+// Embedded documents and generated previews retain their own motion controls.
+@media (prefers-reduced-motion: reduce) {
+  :root[data-design-system='carbon'] body,
+  :root[data-design-system='carbon'] body *:not(:where(.html-deck-stage *, .generated-code-preview *, [contenteditable] *)),
+  :root[data-design-system='carbon'] body *::before,
+  :root[data-design-system='carbon'] body *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+// Streaming containers must never restart smooth scrolling on every text update.
+:root[data-design-system='carbon'] body :is(.conversation,.member-chat-messages,.office-assistant-log,.projects-widget-messages) {
+  scroll-behavior: auto;
+}
+
+// Use the preferred desktop scale while retaining Carbon type and spacing tokens.
+// Manual display preferences still override this automatic default.
+@include breakpoint.breakpoint(lg) {
+  :root { --default-ui-scale: .90; }
+}

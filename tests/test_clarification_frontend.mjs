@@ -1,0 +1,10 @@
+import { runClarificationChecks } from './contracts/clarification.mjs';
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(new URL('../web/package.json', import.meta.url));
+const ts = require('typescript');
+const code = ts.transpileModule(fs.readFileSync(new URL('../web/src/lib/clarification.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.CommonJS } }).outputText;
+const exports = {};
+new Function('exports', code)(exports);
+runClarificationChecks(exports);

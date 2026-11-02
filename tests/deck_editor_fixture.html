@@ -1,0 +1,14 @@
+<html><body><div id="root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {SlideViewer} from '/src/components/SlideViewer.tsx';
+import '/src/styles.css';
+import {AppDialog} from '/src/components/AppDialog.tsx';
+const deck = {title:'Editor QA',slides:[{elements:[
+{type:'text',id:'title',x:.5,y:.5,w:10,h:.8,text:'Original title',fontSize:28},
+{type:'text',id:'body',x:.5,y:2,w:4,h:2,text:'Original body',fontSize:18},
+{type:'chart',id:'chart',x:6,y:2,w:5,h:3,data:[{label:'First',value:10},{label:'Second',value:20}]},
+{type:'table',id:'table',x:.5,y:5,w:5,h:1.5,rows:[['Item','Value'],['A','10']]}
+]},{elements:[{type:'text',x:.5,y:1,w:10,h:1,text:'Second slide',fontSize:24}]}]};
+createRoot(document.getElementById('root')).render(React.createElement(React.Fragment,null,React.createElement(SlideViewer,{deckData:deck,sessionId:'qa-session'}),React.createElement(AppDialog)));
+</script></body></html>

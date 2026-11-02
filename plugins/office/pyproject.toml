@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "buddy-office"
+version = "1.1.0"
+requires-python = ">=3.11"
+description = "Buddy office service, using the versioned Buddy runtime SDK"
+
+[tool.setuptools.packages.find]
+include = ["buddy_office*"]
+
+[tool.setuptools.package-data]
+buddy_office = ["static/**/*", "static/*"]

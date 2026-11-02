@@ -1,0 +1,79 @@
+/* Shared workspace surfaces; layout and existing control contracts stay intact. */
+:root {
+  --workspace-ink: #292333;
+  --workspace-muted: #746c80;
+  --workspace-line: #e7e2ec;
+  --workspace-accent: var(--brand-accent, #735e83);
+  --workspace-accent-hover: var(--brand-accent-hover, #624e72);
+  --workspace-content-width: 1050px;
+  --workspace-gutter: clamp(16px, 2.4vw, 32px);
+  --workspace-radius: 12px;
+  --workspace-shadow: 0 2px 4px #30203f03, 0 8px 24px #30203f06;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.main { background: var(--workspace-canvas,#fcfaff); }
+.sidebar { background: var(--brand-surface-background); }
+.sidebar .section-heading { letter-spacing: .09em; }
+.topbar { background: #ffffffed; border-bottom-color: var(--workspace-line); box-shadow: none; }
+.workspace-hub { border-bottom-color: var(--workspace-line); }
+.chat-context-bar { border-color: var(--workspace-line); background: #fffffff0; }
+.welcome { max-width: 840px; }
+.welcome-icon { border: 1px solid #dfd2ee; background: linear-gradient(145deg,#fff,#eee3fa); box-shadow: 0 8px 24px #68409a0c; border-radius: 20px; color: var(--workspace-accent); }
+.welcome h2 { font-weight: 550; letter-spacing: -.045em; }
+.welcome > p { color: var(--workspace-muted); }
+.intelligence-starters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 22px 0 8px; }
+.intelligence-starters button { display: flex; align-items: center; gap: 12px; padding: 9px 14px; border: 1px solid #dfd7e9; border-radius: 999px; background: #fff; color: #655374; font-size: 12px; transition: background var(--motion-standard),border-color var(--motion-standard); }
+.intelligence-starters button:hover { border-color: #b69acb; background: #f2ebf9; }
+.intelligence-starters button span { color: #5f5a70; }
+.suggestion { border-color: var(--workspace-line); box-shadow: 0 2px 8px #30203f03; border-radius: 16px; background: #fff; }
+.suggestion:hover { box-shadow: 0 6px 20px #30203f08; border-color: #c7b5d9; }
+.suggestion-tag { background: #f2edf7; color: #795395; }
+.suggestion-icon { background: #f5f1f9; }
+.message.assistant .bubble { border-color: var(--workspace-line); box-shadow: var(--workspace-shadow); }
+.message.assistant .bubble :is(h1,h2,h3,h4) { color: #30223e; }
+.composer { border: 1px solid #d8cce3; box-shadow: var(--workspace-shadow); }
+.composer:focus-within { border-color: #a68aba; box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand-accent, #735e83) 3.922%, transparent), var(--workspace-shadow); }
+.shell :is(button,a,input,textarea,select):focus-visible { outline: 2px solid #9567b7; outline-offset: 3px; }
+/* The composer border marks focus; avoid a second border around the text area. */
+.shell .composer textarea:focus-visible { outline: none; }
+@media (max-width: 540px) { .intelligence-starters { gap: 6px; } .intelligence-starters button { padding: 9px 11px; font-size: 11px; } }
+@media (prefers-reduced-motion: reduce) { .intelligence-starters button, .suggestion { transition: none; } }
+/* Give in-chat diagrams the available answer width instead of a narrow text column. */
+.message.assistant:has(.structured-diagram) .message-body { width: 100%; max-width: 1100px; }
+.message.assistant:has(.structured-diagram) .bubble { width: 100%; }
+
+/* Shared chat rhythm. Keep rich artifacts free to use their existing wider layouts. */
+.messages { max-width: var(--workspace-content-width); }
+.messages:has(.has-deck-message, .structured-diagram) { max-width: 1400px; }
+.message-label { color: var(--workspace-muted); font-size: 12px; font-weight: 600; line-height: 1.4; }
+.bubble { color: var(--workspace-ink); line-height: 1.7; }
+.composer { max-width: var(--workspace-content-width); }
+.composer textarea { color: var(--workspace-ink); line-height: 1.5; }
+.composer textarea::placeholder { color: #5f5a70; }
+.shell :is(.send-button, .guidance-send-button) { background: var(--workspace-accent); }
+.shell :is(.send-button, .guidance-send-button):hover:not(:disabled) { background: var(--workspace-accent-hover); }
+.shell :is(.send-button, .guidance-send-button):disabled { cursor: not-allowed; }
+
+@media (min-width: 701px) {
+  .shell .main > .topbar { padding-inline: var(--workspace-gutter); border-bottom-color: var(--workspace-line); }
+  .shell .conversation { padding: 24px var(--workspace-gutter); }
+  .shell .composer-wrap { padding: 0 var(--workspace-gutter) max(16px, env(safe-area-inset-bottom)); }
+  .shell .messages { gap: 24px; }
+  .shell .composer { padding: 12px 16px; border-radius: 16px; }
+  .composer-header { gap: 12px; margin-bottom: 8px; }
+  .composer-row { gap: 12px; }
+  .message .bubble { padding: 16px 20px; border-radius: 4px 16px 16px 16px; }
+  .message.user .bubble { border-radius: 16px 4px 16px 16px; background: var(--workspace-accent); border-color: var(--workspace-accent); color: #fff; box-shadow: none; }
+  .shell .send-button { width: 36px; height: 36px; flex-shrink: 0; border-radius: 10px; }
+  .workspace-menu-trigger { border-radius: var(--workspace-radius); }
+  .shell .sidebar .section-heading { font-size: 11px; font-weight: 600; letter-spacing: .07em; }
+  .shell .sidebar .brand-name { font-size: 16px; line-height: 1.3; }
+  .shell .sidebar .brand-subtitle { font-size: 11px; line-height: 1.5; }
+  .shell .sidebar .new-chat { min-height: 40px; border-color: #ffffff26; background: #ffffff10; border-radius: var(--workspace-radius); font-size: 13px; }
+  .shell .sidebar .new-chat:hover { background: #ffffff1c; border-color: #ffffff40; }
+  .shell .sidebar .mode-item { min-height: 36px; font-size: 12px; border-radius: 8px; }
+  .conversation { scrollbar-color: #c7bdcf transparent; }
+  .conversation::-webkit-scrollbar-thumb { background: #c7bdcf; }
+  .conversation::-webkit-scrollbar-thumb:hover { background: #a99ab6; }
+}

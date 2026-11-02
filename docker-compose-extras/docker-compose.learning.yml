@@ -1,0 +1,14 @@
+# Learning library and private assessments use existing Keycloak login and storage.
+services:
+  bob-agent:
+    environment:
+      BUDDY_LEARNING_ENABLED: "1"
+      BUDDY_LEARNING_PLUGIN_URL: http://learning-plugin:8080
+  bob-gateway:
+    environment:
+      BUDDY_LEARNING_ENABLED: "1"
+      BUDDY_LEARNING_PLUGIN_URL: http://learning-plugin:8080
+  bob-worker:
+    environment:
+      BUDDY_LEARNING_ENABLED: "1"
+      BUDDY_LEARNING_PLUGIN_URL: http://learning-plugin:8080

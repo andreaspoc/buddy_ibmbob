@@ -1,0 +1,35 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+:root[data-design-system='carbon']:root:root:root body dialog.skills-manager {
+  width: min(48rem,calc(100vw / var(--ui-scale,1) - 2rem));
+  max-height: calc(90dvh / var(--ui-scale,1)); overflow: auto;
+  padding: spacing.$spacing-06; border: 1px solid var(--cds-border-subtle-01);
+  border-radius: var(--buddy-panel-radius); background: var(--cds-background); color: var(--cds-text-primary);
+  &::backdrop { background: #16161666; }
+  header { display: flex; align-items: start; justify-content: space-between; gap: spacing.$spacing-05; padding-bottom: spacing.$spacing-05; border-bottom: 1px solid var(--cds-border-subtle-01); margin-bottom: spacing.$spacing-05; }
+  h2 { margin: 0; @include type.type-style('heading-03'); }
+  h3 { margin: 0; @include type.type-style('heading-02'); }
+  p { @include type.type-style('body-02'); line-height: 1.5; color: var(--cds-text-secondary); margin: spacing.$spacing-03 0; }
+  label { display: grid; gap: spacing.$spacing-03; @include type.type-style('body-01'); }
+  fieldset { border: 0; margin: 0; padding: 0; display: grid; gap: spacing.$spacing-05; min-width: 0; }
+  input,textarea { min-width: 0; width: 100%; box-sizing: border-box; background: var(--cds-field-01); color: var(--cds-text-primary); border: 0; border-bottom: 1px solid var(--cds-border-strong-01); padding: spacing.$spacing-04; @include type.type-style('body-02'); }
+  textarea { resize: vertical; }
+  button { display: inline-flex; align-items: center; justify-content: center; gap: spacing.$spacing-03; min-height: 2.75rem; padding: spacing.$spacing-03 spacing.$spacing-05; background: var(--cds-background); color: var(--cds-text-primary); border: 1px solid var(--cds-border-subtle-01); border-radius: var(--buddy-control-radius); @include type.type-style('body-01'); cursor: pointer; }
+  button:hover:not(:disabled) { background: var(--cds-layer-hover-01); }
+  button:disabled { cursor: default; opacity: .5; }
+  :is(button,input,textarea):focus-visible { outline: 2px solid var(--cds-focus); outline-offset: 2px; }
+  .skills-manager-tools { display: flex; align-items: end; flex-wrap: wrap; gap: spacing.$spacing-05; }
+  .skills-manager-tools label { flex: 1; min-width: min(100%,12rem); }
+  .skills-manager-list { list-style: none; padding: 0; margin: spacing.$spacing-05 0 0; }
+  li { display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: spacing.$spacing-05; padding: spacing.$spacing-05 0; border-bottom: 1px solid var(--cds-border-subtle-01); }
+  li > div:first-child { flex: 1; min-width: min(100%,14rem); overflow-wrap: anywhere; }
+  .skills-manager-row-actions,.skills-manager-footer { display: flex; flex-wrap: wrap; gap: spacing.$spacing-03; }
+  .skills-manager-footer { justify-content: end; margin-top: spacing.$spacing-06; padding-top: spacing.$spacing-05; border-top: 1px solid var(--cds-border-subtle-01); }
+  .skills-manager-primary { background: var(--cds-button-primary); color: var(--cds-text-on-color); border-color: transparent; }
+  .skills-manager-primary:hover:not(:disabled) { background: var(--cds-button-primary-hover); }
+  .skills-manager-danger { background: var(--cds-support-error); color: var(--cds-text-on-color); border-color: transparent; }
+  .skills-manager-danger:hover:not(:disabled) { background: #a2191f; }
+  .skills-manager-delete-link,.skills-manager-error { color: var(--cds-support-error); }
+  .skills-manager-notice,.skills-manager-error { padding: spacing.$spacing-04; border-left: 3px solid currentColor; background: var(--cds-layer-01); }
+  .skills-manager-icon { padding: spacing.$spacing-03; }
+}

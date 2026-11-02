@@ -1,0 +1,24 @@
+.agent-catalog { max-width: 1000px; }
+.agent-catalog-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin: 14px 0; }
+.agent-catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 16px; }
+.agent-catalog-card { border: 1px solid var(--border-color, #e8e2ed); border-radius: 16px; padding: 20px; min-width: 0; background: var(--bg-secondary, #fff); }
+.agent-catalog-card-heading { display: flex; align-items: center; gap: 12px; }
+.agent-catalog-card h3, .agent-catalog-form h3 { margin: 0 0 5px; font-size: 18px; }
+.agent-catalog-icon { width: 44px; height: 44px; display: grid; place-items: center; border-radius: 12px; background: color-mix(in srgb, var(--brand-accent, #735e83) 6.667%, transparent); color: var(--brand-accent, #735e83); font-size: 26px; flex-shrink: 0; }
+.agent-catalog-icon img { max-width: 36px; max-height: 36px; object-fit: contain; }
+.agent-catalog-status, .agent-catalog-hint { color: var(--text-secondary, #766980); font-size: 12px; line-height: 1.6; }
+.agent-catalog-card p { line-height: 1.6; overflow-wrap: anywhere; }
+.agent-catalog-card dl { display: grid; grid-template-columns: auto 1fr; font-size: 12px; gap: 8px 12px; }
+.agent-catalog-card dt { color: var(--text-secondary, #766980); }
+.agent-catalog-card dd { margin: 0; overflow-wrap: anywhere; }
+.agent-catalog-capabilities { display: flex; flex-wrap: wrap; gap: 6px; }
+.agent-catalog-capabilities span { border-radius: 8px; padding: 5px 8px; background: color-mix(in srgb, var(--brand-accent, #735e83) 6.275%, transparent); color: var(--brand-accent, #735e83); font-size: 12px; }
+.agent-catalog-form { border: 1px solid var(--border-color, #e8e2ed); padding: 20px; border-radius: 14px; margin: 18px 0; }
+.agent-catalog-form > label { display: grid; gap: 7px; margin: 12px 0; font-size: 13px; font-weight: 600; }
+.agent-catalog-form :is(input:not([type=checkbox]), textarea, select) { box-sizing: border-box; width: 100%; min-height: 42px; border: 1px solid var(--border-color, #e8e2ed); border-radius: 9px; background: var(--bg-primary, #fff); color: inherit; padding: 10px 12px; font: inherit; }
+.agent-catalog-form select[multiple] { min-height: 120px; }
+.agent-catalog-form fieldset { border: 1px solid var(--border-color, #e8e2ed); border-radius: 9px; padding: 12px; }
+.agent-catalog-form .agent-catalog-check { display: flex; align-items: center; gap: 8px; margin: 9px 0; }
+.agent-catalog details { margin: 12px 0; font-size: 13px; }
+.agent-catalog details summary { cursor: pointer; }
+.agent-catalog details ul { padding-left: 20px; }

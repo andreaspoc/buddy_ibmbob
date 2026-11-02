@@ -1,0 +1,2 @@
+# Install with the same interpreter used to run scripts/sonar_python_coverage.py.
+coverage>=7,<8

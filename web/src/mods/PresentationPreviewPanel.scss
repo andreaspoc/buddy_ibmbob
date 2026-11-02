@@ -1,0 +1,243 @@
+@use '@carbon/styles/scss/spacing';
+@use '@carbon/styles/scss/type';
+@use '@carbon/layout/scss/generated/size';
+@use '@carbon/grid/scss/config' as grid;
+@use 'sass:map';
+
+/* Studio chrome is separate from the slide canvas and its document theme. */
+:root body .presentation-mod-panel.presentation-studio {
+  --studio-surface: var(--cds-layer);
+  --studio-canvas: var(--workspace-canvas, var(--cds-background));
+  --studio-text: var(--cds-text-primary);
+  --studio-secondary: var(--cds-text-secondary);
+  --studio-border: var(--cds-border-subtle);
+  --studio-accent: var(--cds-interactive);
+  background: var(--studio-canvas);
+  color: var(--studio-text);
+  min-width: 0;
+  container-type: inline-size;
+}
+:root body .presentation-studio.presentation-studio.presentation-studio .mod-panel-header {
+  height: auto;
+  min-height: size.$size-xl;
+  padding: spacing.$spacing-05 spacing.$spacing-06;
+  background: var(--studio-surface) !important;
+  border-bottom: 1px solid var(--studio-border);
+  color: var(--studio-text) !important;
+}
+:root:root[data-design-system] body .presentation-mod-panel.presentation-studio.presentation-studio.presentation-studio .mod-panel-header .mod-panel-title {
+  margin: 0;
+  color: var(--studio-text) !important;
+  letter-spacing: normal;
+}
+:root body .presentation-studio.presentation-studio .mod-panel-subtitle {
+  margin-top: spacing.$spacing-02;
+  color: var(--studio-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.presentation-studio .studio-mark,
+.presentation-studio .studio-empty-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  color: var(--studio-accent);
+  background: var(--brand-soft);
+  border-radius: var(--buddy-control-radius);
+  width: size.$size-md;
+  height: size.$size-md;
+}
+.presentation-studio .studio-file-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacing.$spacing-04;
+  padding: spacing.$spacing-05 spacing.$spacing-06;
+  border-bottom: 1px solid var(--studio-border);
+  background: var(--studio-surface);
+}
+.presentation-studio .studio-file-context { display: flex; flex-direction: column; gap: spacing.$spacing-02; }
+.presentation-studio .studio-file-label { color: var(--studio-text); }
+.presentation-studio .studio-save-state { color: var(--studio-secondary); }
+.presentation-studio .studio-file-actions { display: flex; flex-wrap: wrap; gap: spacing.$spacing-03; min-width: 0; }
+:root body .presentation-studio.presentation-studio :is(.mod-panel-header,.studio-file-toolbar,.mod-viewer-wrap > .mod-panel-actions) button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: size.$size-md;
+  min-height: size.$size-md;
+  padding: spacing.$spacing-05 spacing.$spacing-06;
+  border: 1px solid var(--studio-border);
+  border-radius: var(--buddy-control-radius);
+  background: var(--studio-surface);
+  color: var(--studio-text);
+}
+:root body .presentation-studio.presentation-studio .studio-file-actions > button:first-child:not(:disabled) {
+  background: var(--studio-accent);
+  border-color: var(--studio-accent);
+  color: var(--cds-layer);
+}
+:root body .presentation-studio.presentation-studio :is(button,select):focus-visible {
+  outline: spacing.$spacing-02 solid var(--studio-accent);
+  outline-offset: spacing.$spacing-02;
+}
+:root body .presentation-studio.presentation-studio :is(.mod-panel-header,.studio-file-toolbar) button:hover:not(:disabled) { background: var(--brand-soft); color: var(--cds-interactive-hover); }
+:root body .presentation-studio.presentation-studio :is(.mod-panel-header,.studio-file-toolbar) button:disabled { color: var(--cds-text-disabled); background: var(--cds-layer-hover); opacity: 1; cursor: not-allowed; }
+.presentation-studio .mod-deck-select { max-width: size.$size-xl * 3; min-width: 0; min-height: size.$size-md; color: var(--studio-text); background: var(--cds-layer-hover); border: 1px solid var(--studio-border); border-radius: var(--buddy-control-radius); padding: spacing.$spacing-03; }
+:root body .presentation-studio.presentation-studio .mod-panel-body { background: var(--studio-canvas); }
+:root body .presentation-studio.presentation-studio :is(.mod-empty-state,.mod-generating-state) { padding: spacing.$spacing-07 spacing.$spacing-06; }
+:root body .presentation-studio.presentation-studio .mod-generating-card {
+  width: 100%;
+  max-width: size.$size-xl * 8;
+  box-sizing: border-box;
+  border: 1px solid var(--studio-border);
+  border-radius: var(--buddy-control-radius);
+  padding: spacing.$spacing-07;
+  background: var(--studio-surface);
+  box-shadow: none;
+  text-align: left;
+}
+.presentation-studio .studio-empty-icon { width: size.$size-xl; height: size.$size-xl; margin-bottom: spacing.$spacing-07; }
+:root body .presentation-studio.presentation-studio .mod-generating-card h3 { color: var(--studio-text); margin: 0 0 spacing.$spacing-04; }
+:root body .presentation-studio.presentation-studio .mod-generating-card p { color: var(--studio-secondary); max-width: none; margin: 0; }
+.presentation-studio .studio-empty-steps { margin: spacing.$spacing-07 0 0; padding: spacing.$spacing-06 0 0 spacing.$spacing-07; border-top: 1px solid var(--studio-border); color: var(--studio-text); }
+.presentation-studio .studio-empty-steps li + li { margin-top: spacing.$spacing-04; }
+.presentation-studio .mod-progress-track { margin-top: spacing.$spacing-07; background: var(--brand-soft); }
+.presentation-studio .mod-progress-bar { background: var(--studio-accent); }
+/* The generated slide document lives in an iframe and retains its own palette. */
+:root body .presentation-studio .bobdeck-viewer { background: var(--studio-surface) !important; border-color: var(--studio-border) !important; box-shadow: none !important; margin: 0 !important; border-radius: 0 !important; }
+:root body .presentation-studio .bobdeck-header { background: var(--studio-surface) !important; border-bottom: 1px solid var(--studio-border) !important; }
+:root body .presentation-studio .bobdeck-header :is(strong,span,label) { color: var(--studio-text) !important; }
+:root body .presentation-studio .bobdeck-header > div > span:first-child { background: var(--cds-layer-hover) !important; border-color: var(--studio-border) !important; }
+:root body .presentation-studio .html-deck-stage { background: var(--studio-canvas) !important; }
+@container (max-width: #{map.get(grid.$grid-breakpoints, md, width)}) {
+  :root body .presentation-studio.presentation-studio.presentation-studio .mod-panel-header { padding: spacing.$spacing-04; }
+  :root:root[data-design-system] body .presentation-mod-panel.presentation-studio.presentation-studio.presentation-studio .mod-panel-header  .mod-panel-title { @include type.type-style('heading-03'); }
+  .presentation-studio .studio-file-toolbar { padding: spacing.$spacing-04; }
+  .presentation-studio .studio-file-context { width: 100%; }
+  .presentation-studio .studio-file-actions { width: 100%; }
+  .presentation-studio .mod-deck-select { flex: 1 1 size.$size-xl; max-width: 100%; }
+  :root body .presentation-studio.presentation-studio .mod-generating-card { padding: spacing.$spacing-07; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .presentation-studio .mod-progress-bar { animation: none; width: 100%; opacity: 0.65; }
+}
+/* Keep the viewer's editing tools reachable in the narrow chat-side panel. */
+:root body .presentation-studio .bobdeck-header {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: stretch !important;
+  flex-wrap: nowrap !important;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: spacing.$spacing-04 spacing.$spacing-05 !important;
+}
+:root body .presentation-studio .bobdeck-header > div {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  flex-wrap: wrap !important;
+  box-sizing: border-box;
+}
+:root body .presentation-studio .bobdeck-header button {
+  min-height: size.$size-md;
+  background: var(--cds-layer-hover) !important;
+  border: 1px solid var(--cds-border-strong) !important;
+  color: var(--studio-text) !important;
+  box-shadow: none !important;
+}
+:root body .presentation-studio .bobdeck-header button:disabled { color: var(--cds-text-disabled) !important; background: var(--cds-layer-hover) !important; }
+:root body .presentation-studio .bobdeck-header button:disabled span { color: var(--cds-text-disabled) !important; }
+:root body .presentation-studio .bobdeck-header button[aria-pressed='true'] { border-color: var(--studio-accent) !important; background: var(--brand-soft) !important; }
+:root body .presentation-studio .bobdeck-header .artifact-change-request { flex-basis: 100%; min-width: 0; }
+:root body .presentation-studio .bobdeck-header .artifact-change-request :is(textarea,input) { max-width: 100%; box-sizing: border-box; }
+:root body .presentation-studio .bobdeck-header { flex: 0 0 auto !important; height: auto !important; max-height: none !important; }
+:root body .presentation-studio .bobdeck-header > div { flex: 0 0 auto; }
+/* Preserve the studio's reading scale against the legacy dense-card cascade. */
+:root:root[data-design-system] body .presentation-mod-panel.presentation-studio.presentation-studio.presentation-studio .mod-generating-card h3 {
+  color: var(--studio-text) !important;
+}
+:root:root[data-design-system] body .presentation-mod-panel.presentation-studio.presentation-studio.presentation-studio .mod-generating-card p {
+  color: var(--studio-secondary) !important;
+}
+
+/* Small colored marks identify the studio without tinting the workspace. */
+:root body .presentation-studio .studio-mark { color: var(--cds-interactive); background: var(--brand-soft); }
+:root body .presentation-studio .studio-empty-icon { color: var(--cds-interactive); background: var(--brand-soft); }
+
+/* Scoped theme boundary prevents legacy document chrome from leaking in. */
+:root:root[data-design-system] body .presentation-mod-panel.presentation-studio.presentation-studio.presentation-studio {
+  font-family: var(--cds-font-family);
+  @include type.type-style('body-02');
+  .mod-panel-title { @include type.type-style('heading-03'); white-space: normal; }
+  .mod-generating-card h3 { @include type.type-style('heading-03'); }
+  .mod-generating-card p { @include type.type-style('body-02'); }
+  :is(.mod-panel-subtitle,.studio-save-state,.studio-empty-steps,.studio-file-label) {
+    @include type.type-style('body-01');
+    color: var(--cds-text-secondary);
+  }
+  :is(button,select,input,textarea) { font-family: inherit; @include type.type-style('body-01'); }
+  .studio-file-label { color: var(--cds-text-primary); font-weight: var(--cds-weight-semibold); }
+  .mod-panel-title-group { flex: 1; min-width: 0; }
+  .mod-panel-actions { flex-wrap: wrap; }
+  .studio-file-actions { flex: 0 1 auto; }
+  .mod-icon-btn { padding: spacing.$spacing-03; flex: none; }
+  .studio-file-actions > button:first-child:not(:disabled) {
+    background: var(--cds-layer); color: var(--cds-text-primary); border-color: var(--cds-border-subtle);
+  }
+  :is(.mod-panel-header,.studio-file-toolbar) button:hover:not(:disabled) {
+    background: var(--cds-layer-hover); color: var(--cds-text-primary);
+  }
+  :is(.mod-panel-header,.studio-file-toolbar,.bobdeck-header) svg { color: inherit; flex: none; }
+  .mod-panel-header .mod-panel-subtitle { color: var(--cds-text-secondary); }
+  .bobdeck-header button { border-radius: var(--buddy-control-radius); }
+  .bobdeck-header button:hover:not(:disabled) { background: var(--cds-layer-hover) !important; }
+  :is(.artifact-change-request,.artifact-change-form) :is(textarea,input) {
+    background: var(--cds-field); color: var(--cds-text-primary); border-color: var(--cds-border-strong);
+    border-radius: var(--buddy-control-radius);
+  }
+  .artifact-change-request textarea::placeholder { color: var(--cds-text-placeholder); }
+  .artifact-change-request p { color: var(--cds-text-secondary); }
+}
+
+/* Saved viewers carry inline styling; keep their tools on the shared type scale. */
+:root:root[data-design-system] body .presentation-mod-panel.presentation-studio .bobdeck-header {
+  :is(button,select,input,textarea,label,strong,span) {
+    font-family: var(--cds-font-family) !important;
+    font-size: map.get(type.$body-01, font-size) !important;
+    line-height: map.get(type.$body-01, line-height) !important;
+    letter-spacing: normal !important;
+  }
+  button { padding: spacing.$spacing-03 spacing.$spacing-04 !important; }
+}
+
+/* Shared stone chrome matches the other workspace editors. */
+:root:root[data-design-system] body .presentation-mod-panel.presentation-studio.presentation-studio.presentation-studio {
+  --studio-surface: var(--toolbar-background);
+  --studio-text: var(--toolbar-text);
+  --studio-border: var(--toolbar-border);
+  .mod-panel-header { padding: spacing.$spacing-04 spacing.$spacing-05; }
+  .mod-panel-title { @include type.type-style('heading-compact-01'); }
+  .studio-mark { width: 32px; height: 32px; background: var(--toolbar-control); color: var(--toolbar-text); }
+  .studio-file-toolbar { padding: spacing.$spacing-04 spacing.$spacing-05; background: var(--workspace-canvas); }
+  .studio-file-context { gap: spacing.$spacing-01; }
+  :is(.mod-panel-header,.studio-file-toolbar) button, .mod-deck-select {
+    min-height: var(--toolbar-control-height, 32px);
+    border-radius: 0;
+    padding: spacing.$spacing-03 spacing.$spacing-04;
+    background: var(--toolbar-control);
+    border-color: var(--toolbar-border);
+    color: var(--toolbar-text);
+  }
+  :is(.mod-panel-header,.studio-file-toolbar) button:hover:not(:disabled) { background: var(--toolbar-hover); }
+  .studio-file-actions > button:first-child:not(:disabled) { background: var(--toolbar-control); }
+  .mod-generating-card { background: var(--cds-layer); border: 1px solid var(--brand-line); border-radius: 8px; padding: spacing.$spacing-07; }
+  .studio-empty-icon { background: var(--workspace-canvas); color: var(--toolbar-text); border: 1px solid var(--brand-line); }
+  .studio-empty-steps { border-color: var(--brand-line); }
+  .bobdeck-header button { border-radius: 0; }
+  .bobdeck-header button:hover:not(:disabled) { background: var(--toolbar-hover) !important; }
+  .bobdeck-header button[aria-pressed='true'] { background: var(--toolbar-selected) !important; border-color: var(--toolbar-text) !important; }
+}

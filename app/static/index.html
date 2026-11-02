@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#30104d" />
+    <title>Buddy</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+    <script src="/static/renderer.bundle.js" defer></script>
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar" aria-label="Workspace sidebar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">C</div>
+          <div>
+            <div class="brand-name">Buddy <span>Buddy</span></div>
+            <div class="brand-subtitle">AI workspace</div>
+          </div>
+        </div>
+
+        <div class="account-row"><span id="signed-in-user">Not signed in</span><button id="sign-out" type="button">Sign out</button></div>
+
+        <button class="new-chat" id="new-chat" type="button">
+          <span aria-hidden="true">＋</span> New conversation
+        </button>
+
+        <div class="sidebar-sections">
+        <div class="section-heading"><span>PROJECTS</span><button class="add-item" id="new-project" aria-label="Create project">＋</button></div>
+        <label class="sr-only" for="project-select">Current project</label>
+        <select id="project-select" class="project-select"><option value="">Personal conversations</option></select>
+        <button type="button" class="project-open hidden" id="open-project">Files &amp; changes</button>
+        <div class="section-heading">
+          <span>CONVERSATIONS</span>
+          <button class="add-item hidden" id="add-user" type="button" aria-label="Add user">👤</button>
+        </div>
+        <div class="mode-list" id="session-list" aria-live="polite"></div>
+        <div class="section-heading">
+          <span>AVAILABLE SKILLS</span>
+          <span class="heading-actions"><span class="skill-count" id="skill-count">0</span><button class="add-item" id="add-skill" type="button" aria-label="Add skill">＋</button></span>
+        </div>
+        <div class="skill-list" id="skill-list" aria-live="polite">
+          <div class="muted-small">Loading skills…</div>
+        </div>
+
+        <div class="section-heading mode-heading">
+          <span>MODES</span>
+          <span class="heading-actions"><span class="skill-count" id="mode-count">0</span><button class="add-item" id="add-mode" type="button" aria-label="Add mode">＋</button></span>
+        </div>
+        <div class="mode-list" id="mode-list" aria-live="polite"></div>
+
+        <div class="section-heading mode-heading">
+          <span>MICROSOFT 365</span>
+        </div>
+        <div id="ms-status-box" style="padding: 4px 0;"></div>
+
+        <div class="section-heading mode-heading">
+          <span>MCP SERVERS</span>
+          <span class="heading-actions"><span class="skill-count" id="mcp-count">0</span><button class="add-item" id="add-mcp" type="button" aria-label="Add MCP server">＋</button></span>
+        </div>
+        <div class="mode-list" id="mcp-list" aria-live="polite"></div>
+
+        <div class="section-heading mode-heading">
+          <span>A2A AGENTS</span>
+          <span class="heading-actions"><span class="skill-count" id="agent-count">0</span><button class="add-item" id="add-agent" type="button" aria-label="Add A2A agent">＋</button></span>
+        </div>
+        <div class="mode-list" id="agent-list" aria-live="polite"></div>
+
+        <div class="section-heading mode-heading">
+          <span>WORKSPACE PAGES</span>
+          <button class="add-item" id="refresh-pages" type="button" aria-label="Refresh pages">↻</button>
+        </div>
+        <div class="mode-list" id="page-list" aria-live="polite"></div>
+        </div>
+
+        <div class="sidebar-bottom">
+          <span class="status-dot" id="sidebar-dot"></span>
+          <span id="sidebar-status">Checking connection…</span>
+        </div>
+      </aside>
+
+      <main class="main">
+        <header class="topbar">
+          <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Toggle skills">☰</button>
+          <div>
+            <h1>Buddy</h1>
+            <p>Live work log and presentation studio</p>
+          </div>
+          <div class="topbar-actions">
+            <div class="topbar-token-pill" id="token-pill" title="Buddy Tokens & Bobcoins consumed in this session">
+              <span class="token-icon">🪙</span>
+              <span id="session-tokens-display">0 tokens</span>
+              <span class="token-sep" id="token-cost-sep" style="display:none"></span>
+              <span id="session-cost-display" style="display:none">0 Bobcoins</span>
+            </div>
+            <div class="topbar-pill"><span class="live-dot"></span> <span id="active-mode">Agent mode</span></div>
+          </div>
+        </header>
+
+        <section class="conversation" id="conversation" aria-label="Conversation" aria-live="polite">
+          <div class="welcome" id="welcome">
+            <div class="welcome-icon">✦</div>
+            <div class="eyebrow">BUDDY</div>
+            <h2>What would you like to work on?</h2>
+            <p>Ask Buddy normally and follow its steps in the live work log. Use <strong>/</strong> for a specific skill, mode, or agent. Preview generated HTML pages from the sidebar.</p>
+            <div class="suggestions">
+              <button class="suggestion" type="button" data-prompt="Use the hello skill and introduce yourself to Alice.">
+                <span class="suggestion-icon">👋</span>
+                <span><strong>Try the hello skill</strong><small>See a skill activate live</small></span>
+                <span class="suggestion-arrow">↗</span>
+              </button>
+              <button class="suggestion" type="button" data-fill="Use the code-review-lite skill to review this code:\n\n">
+                <span class="suggestion-icon">⌘</span>
+                <span><strong>Review some code</strong><small>Paste a snippet to get feedback</small></span>
+                <span class="suggestion-arrow">↗</span>
+              </button>
+            </div>
+          </div>
+          <div class="messages" id="messages"></div>
+        </section>
+
+        <div class="composer-wrap">
+          <div class="slash-menu hidden" id="slash-menu" role="listbox" aria-label="Skills, modes, and agents"></div>
+          <div class="presentation-banner hidden" id="presentation-banner">
+            <div class="presentation-banner-info">
+              <span class="presentation-banner-icon">📊</span>
+              <div>
+                <div class="presentation-banner-title">Presentation Mode<strong id="current-template-title">Buddy Starter</strong></div>
+                <div class="presentation-banner-desc">Describe what presentation you would like. Buddy will generate the slides and export to PowerPoint.</div>
+              </div>
+            </div>
+            <button type="button" class="presentation-banner-btn" id="change-template-btn">Change template</button>
+          </div>
+          <form class="composer" id="chat-form">
+            <div class="prompt-row">
+              <button class="slash-button" id="slash-button" type="button" aria-label="Open skills, modes, and agents menu">/</button>
+              <label class="sr-only" for="prompt" id="prompt-label">Message Buddy</label>
+              <textarea id="prompt" rows="1" placeholder="Ask Buddy anything — no skill selection needed…" maxlength="20000"></textarea>
+            </div>
+            <div class="composer-actions">
+              <span>Enter to send · Shift+Enter for a new line</span>
+              <button class="send-button" id="send-button" type="submit" aria-label="Send message">➤</button>
+              <button class="stop-button hidden" id="stop-button" type="button">Stop</button>
+            </div>
+          </form>
+          <p class="composer-note" id="workspace-note">Personal conversations have separate files. Project conversations share their project's repository.</p>
+        </div>
+      </main>
+    </div>
+
+    <dialog class="create-dialog" id="create-dialog" aria-labelledby="dialog-title">
+      <form id="create-form">
+        <div class="dialog-top">
+          <div><div class="eyebrow">EXTEND BUDDY</div><h2 id="dialog-title">Add a skill</h2></div>
+          <button type="button" class="dialog-close" id="dialog-close" aria-label="Close">×</button>
+        </div>
+        <p class="dialog-intro" id="dialog-intro"></p>
+        <label>Slug <input name="slug" id="item-slug" required pattern="[a-z][a-z0-9-]{0,63}" placeholder="my-helper" maxlength="64" /></label>
+        <div id="skill-fields">
+          <label>Description <textarea name="skill_description" rows="2" placeholder="When should Buddy use this skill?"></textarea></label>
+          <label>Instructions <textarea name="skill_instructions" rows="7" placeholder="Tell Buddy what to do when this skill is activated."></textarea></label>
+        </div>
+        <div id="mode-fields" class="hidden">
+          <label>Display name <input name="mode_name" placeholder="My helper mode" /></label>
+          <label>Description <textarea name="mode_description" rows="2" placeholder="What is this mode for?"></textarea></label>
+          <label>Role definition <textarea name="role_definition" rows="4" placeholder="You are a specialist in…"></textarea></label>
+          <label>Custom instructions <textarea name="mode_instructions" rows="4" placeholder="Follow these guidelines…"></textarea></label>
+          <fieldset><legend>Allowed tools</legend>
+            <label><input type="checkbox" name="group" value="read" checked /> Read</label>
+            <label><input type="checkbox" name="group" value="skill" checked /> Skills</label>
+            <label><input type="checkbox" name="group" value="mode" checked /> Switch modes</label>
+            <label><input type="checkbox" name="group" value="edit" /> Edit files</label>
+            <label><input type="checkbox" name="group" value="execute" /> Run commands</label>
+            <label><input type="checkbox" name="group" value="browser" /> Browser</label>
+            <label><input type="checkbox" name="group" value="mcp" /> MCP</label>
+          </fieldset>
+        </div>
+        <div id="mcp-fields" class="hidden">
+          <label>Transport <select name="mcp_transport" id="mcp-transport"><option value="http">Streamable HTTP</option><option value="sse">SSE (legacy)</option><option value="stdio">Local command (stdio)</option></select></label>
+          <label id="mcp-url-field">MCP URL <input name="mcp_url" type="url" placeholder="https://example.com/mcp" /></label>
+          <div id="mcp-http-fields">
+            <label>URL parameters (JSON object) <textarea name="mcp_parameters" rows="2" placeholder='{"region":"cy"}'></textarea></label>
+            <label>Headers (JSON object) <textarea name="mcp_headers" rows="2" placeholder='{"X-Tenant":"buddy"}'></textarea></label>
+          </div>
+          <div id="mcp-stdio-fields" class="hidden">
+            <label>Command <input name="mcp_command" placeholder="npx" /></label>
+            <label>Arguments (JSON array) <textarea name="mcp_args" rows="2" placeholder='["-y","@example/server"]'></textarea></label>
+            <label>Environment parameters (JSON object) <textarea name="mcp_env" rows="2" placeholder='{"REGION":"cy"}'></textarea></label>
+          </div>
+          <label>API key (optional) <input name="mcp_api_key" type="password" autocomplete="off" placeholder="Paste a server key" /></label>
+          <label>Key name <input name="mcp_key_name" id="mcp-key-name" placeholder="Authorization" /></label>
+          <label id="mcp-key-prefix-field">Key prefix <input name="mcp_key_prefix" placeholder="Bearer " /></label>
+          <p class="dialog-intro">For HTTP/SSE, the key becomes a header. For stdio, it becomes an environment variable. Config is stored in a private local folder.</p>
+        </div>
+        <div id="agent-fields" class="hidden">
+          <label>Agent Card URL <input name="card_url" type="url" placeholder="https://example.com/.well-known/agent-card.json" /></label>
+          <label>Endpoint override (optional) <input name="endpoint_override" type="url" placeholder="https://host.docker.internal:9000/a2a" /></label>
+          <label>API Key (optional) <input name="agent_api_key" type="password" autocomplete="off" placeholder="Paste API key if required by agent" /></label>
+          <label>API Key Header Name <input name="agent_api_key_header" placeholder="x-api-key" /></label>
+          <p class="dialog-intro">The Agent Card must expose an A2A JSON-RPC endpoint reachable from this container.</p>
+        </div>
+        <div class="form-error" id="form-error" role="alert"></div>
+        <div class="dialog-actions"><button type="button" class="cancel-button" id="dialog-cancel">Cancel</button><button type="submit" class="save-button" id="save-item">Create</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="create-dialog" id="agent-edit-dialog" aria-labelledby="agent-edit-title">
+      <form id="agent-edit-form">
+        <div class="dialog-top">
+          <div><div class="eyebrow">A2A AGENT CONFIGURATION</div><h2 id="agent-edit-title">Edit A2A Agent</h2></div>
+          <button type="button" class="dialog-close" id="agent-edit-close" aria-label="Close">×</button>
+        </div>
+        <p class="dialog-intro">Update the endpoint URL, display settings, and API authentication for this agent.</p>
+        <label>Agent Identifier (Slug) <input name="slug" id="edit-agent-slug" readonly style="opacity: 0.7; cursor: not-allowed;" /></label>
+        <label>Display Name <input name="name" id="edit-agent-name" required placeholder="Kubernetes Guy" /></label>
+        <label>Description <textarea name="description" id="edit-agent-desc" rows="2" placeholder="What does this agent do?"></textarea></label>
+        <label>JSON-RPC Endpoint URL <input name="endpoint" id="edit-agent-endpoint" type="url" required placeholder="https://..." /></label>
+        <label>API Key (optional) <input name="api_key" id="edit-agent-api-key" type="password" autocomplete="off" placeholder="Paste API key (e.g. for Langflow)" /></label>
+        <label>API Key Header Name <input name="api_key_header" id="edit-agent-api-key-header" placeholder="x-api-key" /></label>
+        <label>Agent Card URL (optional) <input name="card_url" id="edit-agent-card-url" type="url" placeholder="https://..." /></label>
+        <div class="form-error" id="agent-edit-error" role="alert"></div>
+        <div class="dialog-actions">
+          <button type="button" class="cancel-button" id="agent-delete-btn" style="margin-right: auto; color: #ff7875; border-color: rgba(255, 120, 117, 0.4);">Delete</button>
+          <button type="button" class="cancel-button" id="agent-edit-cancel">Cancel</button>
+          <button type="submit" class="save-button" id="agent-edit-save">Save Changes</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="create-dialog" id="project-import-dialog" aria-labelledby="project-import-title">
+      <form id="project-import-form">
+        <div class="dialog-top"><div><div class="eyebrow">Buddy</div><h2 id="project-import-title">Create a project</h2></div><button type="button" class="dialog-close" id="project-import-close" aria-label="Close project import">×</button></div>
+        <p class="dialog-intro">Import a repository into your private workspace. Buddy can use its files in every conversation linked to this project.</p>
+        <label>Project name <input name="name" required maxlength="100" placeholder="My application"></label>
+        <label>Import from <select name="source" id="project-source"><option value="zip">ZIP archive</option><option value="git">Public Git repository</option><option value="empty">Empty project</option></select></label>
+        <label id="project-zip-field">ZIP archive <input name="archive" type="file" accept=".zip,application/zip"><small>Up to 50 MB compressed / 200 MB extracted. A single enclosing folder is removed automatically.</small></label>
+        <div id="project-git-fields" class="hidden"><label>Repository URL <input name="url" type="url" placeholder="https://github.com/owner/repository"></label><label>Branch (optional) <input name="branch" maxlength="200" placeholder="Default branch"></label><p class="dialog-intro">GitHub, GitLab, and Bitbucket HTTPS URLs. For private repositories, upload a ZIP without its .git folder.</p></div>
+        <p class="dialog-intro">Projects currently run in the shared Buddy service. Use trusted repositories; dedicated execution sandboxes are not enabled.</p>
+        <div class="form-error" id="project-import-error" role="alert"></div>
+        <div class="dialog-actions"><button type="submit" class="save-button" id="project-import-submit">Create project</button></div>
+      </form>
+    </dialog>
+
+    <dialog class="project-dialog" id="project-dialog" aria-labelledby="project-title">
+      <div class="dialog-top"><div><div class="eyebrow">Buddy</div><h2 id="project-title">Project</h2></div><button type="button" class="dialog-close" id="project-close" aria-label="Close project">×</button></div>
+      <div class="project-toolbar"><button id="project-files-tab" type="button">Files</button><button id="project-changes-tab" type="button">Changes</button><button id="project-refresh" type="button">Refresh</button><a id="project-download">Download ZIP</a></div>
+      <p class="dialog-intro">Conversations in this project share these files. Changes are compared with the imported Git revision. Buddy works on one conversation per project at a time.</p>
+      <div id="project-error" class="form-error" role="alert"></div>
+      <div class="project-explorer" id="project-explorer">
+        <div class="project-file-sidebar"><input id="project-file-search" placeholder="Find a file…" aria-label="Find a project file"><div id="project-file-list"></div></div>
+        <div class="project-editor"><div class="project-file-heading"><strong id="project-file-name">Select a file</strong><button type="button" id="project-save" disabled>Save</button><button type="button" id="project-ask" disabled>Ask Buddy about file</button></div><textarea id="project-file-content" spellcheck="false" aria-label="Project file contents" disabled></textarea></div>
+      </div>
+      <div id="project-diff" class="project-diff hidden"></div>
+    </dialog>
+    <script src="/static/projects.js" defer></script>
+
+    <dialog class="preview-dialog" id="preview-dialog" aria-labelledby="preview-title">
+      <div class="preview-head">
+        <div><div class="eyebrow">WORKSPACE PREVIEW</div><h2 id="preview-title">Page preview</h2></div>
+        <div class="preview-actions">
+          <button type="button" id="preview-source">View source</button>
+          <button type="button" id="preview-refresh">Refresh</button>
+          <button type="button" id="preview-close" aria-label="Close preview">×</button>
+        </div>
+      </div>
+      <iframe id="preview-frame" title="Generated page preview" sandbox=""></iframe>
+      <pre id="preview-code" class="hidden"></pre>
+    </dialog>
+
+    <div class="auth-overlay" id="auth-overlay">
+      <form class="auth-card" id="auth-form">
+        <div class="brand-mark" aria-hidden="true">C</div>
+        <div class="eyebrow">Buddy</div>
+        <h2 id="auth-title">Sign in to Buddy</h2>
+        <p id="auth-intro">Your everyday assistant at Buddy.</p>
+        <div class="form-error" id="auth-error" role="alert"></div>
+        <a id="auth-keycloak" href="/auth/keycloak/login" class="save-button hidden" style="display:block;text-align:center;text-decoration:none;">Sign in with Keycloak</a>
+        <div id="auth-local" class="hidden">
+          <label>Username <input name="username" autocomplete="username" required pattern="[a-z][a-z0-9-]{2,63}" maxlength="64" /></label>
+          <label>Password <input name="password" type="password" autocomplete="current-password" required maxlength="256" /></label>
+          <label id="auth-confirm-field" class="hidden">Confirm password <input name="confirm_password" type="password" autocomplete="new-password" maxlength="256" /></label>
+          <button type="submit" class="save-button" id="auth-submit">Continue</button>
+          <p class="auth-switch" id="auth-switch">New here? <a href="/register">Create an account</a></p>
+        </div>
+      </form>
+    </div>
+
+    <dialog class="presentation-dialog" id="presentation-dialog" aria-labelledby="presentation-dialog-title">
+      <div class="dialog-top">
+        <div>
+          <div class="eyebrow">Buddy PRESENTATION STUDIO · POWERPOINT ENGINE</div>
+          <h2 id="presentation-dialog-title">Choose a Presentation Template</h2>
+        </div>
+        <button type="button" class="dialog-close" id="presentation-dialog-close" aria-label="Close presentation templates">×</button>
+      </div>
+      <p class="dialog-intro">Select a design system for your deck. Buddy will craft executive slides with matching colors, typography, card shapes, charts, and 1-click PowerPoint (.pptx) download.</p>
+      <div class="template-grid" id="template-grid">
+        <div class="muted-small">Loading templates…</div>
+      </div>
+    </dialog>
+
+    <dialog class="create-dialog" id="user-dialog" aria-labelledby="user-dialog-title">
+      <form id="user-form">
+        <div class="dialog-top"><div><div class="eyebrow">ADMIN</div><h2 id="user-dialog-title">Add a user</h2></div><button type="button" class="dialog-close" id="user-dialog-close" aria-label="Close">×</button></div>
+        <p class="dialog-intro">The new user gets a separate workspace and can sign in with this password.</p>
+        <label>Username <input name="username" required pattern="[a-z][a-z0-9-]{2,63}" autocomplete="off" /></label>
+        <label>Password <input name="password" type="password" required minlength="12" autocomplete="new-password" /></label>
+        <div class="form-error" id="user-error" role="alert"></div>
+        <div class="dialog-actions"><button type="button" class="cancel-button" id="user-dialog-cancel">Cancel</button><button type="submit" class="save-button">Create user</button></div>
+      </form>
+    </dialog>
+
+    <!-- Import FAB -->
+    <button class="import-fab" id="import-fab" type="button" aria-label="Import repository or ZIP">⬆</button>
+    <div class="import-fab-tooltip" aria-hidden="true">Import repo / ZIP</div>
+
+    <!-- Drag-and-drop overlay -->
+    <div class="drop-overlay" id="drop-overlay" role="region" aria-label="Drop zone">
+      <div class="drop-zone" id="drop-zone">
+        <div class="drop-zone-icon">📂</div>
+        <h3>Drop your ZIP file here</h3>
+        <p>Release to import it as a new project.<br>Up to 50 MB compressed / 200 MB extracted.</p>
+      </div>
+    </div>
+
+    <script src="/static/import-fab.js" defer></script>
+  </body>
+</html>

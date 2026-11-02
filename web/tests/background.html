@@ -1,0 +1,71 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Background test fixture</title></head><body><div id="root"></div><script type="module">
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { App } from '/src/App.tsx';
+import '/src/styles.css';
+
+// Test-only transport: no requests reach Bob or a real account.
+const a='a'.repeat(32), b='b'.repeat(32), c='c'.repeat(32);
+const sessions=[{id:a,title:'Alpha chat',updated_at:1},{id:b,title:'Beta chat',updated_at:1},{id:c,title:'Project chat',updated_at:1,project_id:'project-one'}];
+const histories=new Map(sessions.map(s=>[s.id,[]]));
+const tasks=[];
+const requests=[];
+const notices=[];
+const guidance=[];
+window.testState={sessions,tasks,requests,notices,guidance,failGuidance:false,hidden:false,focused:true};
+Object.defineProperty(document,'hidden',{get:()=>window.testState.hidden});
+document.hasFocus=()=>window.testState.focused;
+window.Notification=class {
+ static permission='granted';
+ constructor(title,options){this.title=title;this.options=options;notices.push(this);}
+ close(){}
+};
+window.Notification.requestPermission=async ()=>'granted';
+sessionStorage.setItem('buddy-active-session:testuser',a);
+const json=data=>new Response(JSON.stringify(data),{headers:{'Content-Type':'application/json'}});
+let eventId=1;
+window.completeResponse=(index,text,status='completed')=>{
+ const request=requests[index];
+ const end=status==='completed'?{type:'done',session_id:'native-'+index}:{type:'error',message:'Test failure',cancelled:status==='stopped'};
+ const delta={type:'delta',text,replace:true};
+ histories.get(request.sessionId).push(delta,end);
+ request.task.status=status;request.task.terminal_event_id=++eventId;
+ request.controller.enqueue(request.encoder.encode(JSON.stringify(delta)+'\n'+JSON.stringify(end)+'\n'));
+ request.controller.close();
+};
+window.fetch=async (input,init={})=>{
+ const url=new URL(typeof input==='string'?input:input.url,location.origin);
+ const path=url.pathname;
+ if(path==='/chat/stream'){
+  const payload=JSON.parse(init.body),id='job-'+requests.length;
+  const task={id,session_id:payload.workspace_id,title:payload.prompt,kind:'chat',mode:'agent',status:'running',progress:'Working',guidance_supported:true,created_at:new Date().toISOString(),updated_at:new Date().toISOString()};
+  tasks.push(task);
+  const request={sessionId:payload.workspace_id,task,encoder:new TextEncoder(),signal:init.signal};
+  const stream=new ReadableStream({start(controller){request.controller=controller;controller.enqueue(request.encoder.encode(JSON.stringify({type:'start'})+'\n'));}});
+  requests.push(request);histories.get(request.sessionId).push({type:'request',prompt:payload.prompt});
+  return new Response(stream,{headers:{'X-Bob-Job-Id':id,'Content-Type':'application/x-ndjson'}});
+ }
+ const guide=path.match(/^\/jobs\/([^/]+)\/guidance$/);
+ if(guide){
+  const instruction=JSON.parse(init.body).instruction;
+  if(window.testState.failGuidance)return new Response(JSON.stringify({detail:'Guidance rejected for test'}),{status:409,headers:{'Content-Type':'application/json'}});
+  guidance.push({jobId:guide[1],instruction});
+  return json({accepted:true});
+ }
+ if(path==='/auth/status')return json({user:{username:'testuser',is_admin:true},keycloak_configured:false,local_login_enabled:true});
+ if(path==='/personalization/tutorials')return json({disabled:true});
+ if(path==='/projects')return json([{id:'project-one',name:'Project One'}]);
+ if(path==='/sessions')return json(sessions.filter(s=>(s.project_id||'')===(url.searchParams.get('project_id')||'')));
+ if(path==='/tasks')return json(tasks);
+ if(path.startsWith('/tasks/'))return json({...tasks.find(t=>t.id===path.split('/').pop()),result:''});
+ const history=path.match(/^\/sessions\/([^/]+)\/history$/);
+ if(history)return json(histories.get(history[1])||[]);
+ if(path==='/modes')return json([{slug:'agent',name:'Agent',kind:'built-in'}]);
+ if(path==='/auth/microsoft/status')return json({configured:false,connected:false});
+ if(path==='/workflows/capabilities')return json({web_search:false});
+ if(path.startsWith('/jobs/')&&path.endsWith('/events'))return new Response('',{headers:{'Content-Type':'application/x-ndjson'}});
+ if(path.includes('/cancel'))throw Error('Navigation must not cancel a job');
+ return json([]);
+};
+createRoot(document.getElementById('root')).render(React.createElement(App));
+</script></body></html>

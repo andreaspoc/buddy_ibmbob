@@ -1,0 +1,71 @@
+# Experimental Wolfi runtime. Production continues to use Dockerfile.runtime.
+ARG WOLFI_BASE_IMAGE=cgr.dev/chainguard/wolfi-base@sha256:0feab531471d2edfcca55f18883441cb7df598e724fa2dedf9985273f532eed7
+FROM ${WOLFI_BASE_IMAGE}
+
+ENV VIRTUAL_ENV=/usr/local/venv \
+    PATH="/usr/local/venv/bin:/usr/local/bin:/usr/bin:/bin" \
+    NPM_CONFIG_PREFIX=/usr/local \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    BOB_WORKSPACE="/workspace" \
+    PORT="8080"
+
+RUN apk upgrade --no-cache && apk add --no-cache \
+      ca-certificates-bundle curl python-3.11 py3.11-pip git chromium bubblewrap \
+      nodejs-24 npm bash font-noto \
+    && python3.11 -m venv /usr/local/venv \
+    && node -e 'if (process.versions.node.split(".")[0] !== "24") process.exit(1)'
+
+# Keep Monday startup independent of per-user npm caches. Releases with the ATP
+# runtime require isolated-vm 5, which does not build against Node 24.
+RUN npm install -g @mondaydotcomorg/monday-api-mcp@1.11.3 --no-audit --no-fund \
+      --fetch-retries=0 --fetch-timeout=20000 \
+    && command -v mcp-server-monday-api
+
+# Bob Shell is distributed as a versioned tarball, not on the public npm registry.
+# Preselect npm so IBM's installer never prompts for a package manager.
+RUN curl -fsSL --retry 3 https://bob.ibm.com/download/bobshell.sh -o /tmp/bobshell.sh \
+    && bash /tmp/bobshell.sh --pm npm --version 2.0.9 \
+    && rm /tmp/bobshell.sh \
+    && command -v bob \
+    && bob --version \
+    && node -e '\
+const fs = require("fs"); \
+const p = "/usr/local/lib/node_modules/@ibm/bob/dist/bob.js"; \
+let code = fs.readFileSync(p, "utf8"); \
+code = code.replaceAll("You are Bob, a highly skilled software engineer with extensive knowledge in many programming languages, frameworks, design patterns, and best practices.", \
+  "You are Buddy, an enterprise AI assistant. You assist employees across engineering, business operations, data analysis, presentations, document management, research, planning, automation, and general workplace tasks."); \
+code = code.replaceAll("You can write, modify, and refactor code in any programming language or framework. Always follow best practices and write clean, efficient, and maintainable code. Make sure to test your code thoroughly before submitting it. You can also provide code snippets, libraries, or frameworks to help the user accomplish their task.", \
+  "You are Buddy. Never introduce yourself as a software engineer or limit your scope to coding. You assist employees across engineering, business operations, data analysis, reports, presentations, documentation, automation, and general workplace tasks. Always be professional, helpful, accurate, and provide high-quality responses tailored to Buddy."); \
+code = code.replaceAll(", powered by IBM Bob", "").replaceAll("powered by IBM Bob", ""); \
+fs.writeFileSync(p, code, "utf8"); \
+'
+
+COPY requirements.txt /opt/bob-a2a/requirements.txt
+RUN pip3 install --break-system-packages --no-cache-dir -r /opt/bob-a2a/requirements.txt
+
+RUN node -e 'const fs = require("fs"); const p = "/usr/local/lib/node_modules/@ibm/bob/dist/bob.js"; const code = fs.readFileSync(p, "utf8"); fs.writeFileSync(p, code.replaceAll("You are Bob", "You are Buddy"), "utf8");'
+# Match the POSIX shell's access checks used by the existing isolation gate.
+# BusyBox test -w checks permission bits even for a read-only bind mount.
+RUN ln -sf bash /usr/bin/sh
+# Wolfi's unversioned chromium package is currently behind the security fixes.
+# Keep its required libraries, remove the old browser, and pin a verified upstream
+# stable browser archive. Revalidate the version/checksum when updating it.
+ARG CHROME_FOR_TESTING_VERSION=156.0.8078.47
+ARG CHROME_FOR_TESTING_SHA256=e6c94490f0b6b337225aeb2d2a5034858516b7017356980ba94f5176d8774a50
+RUN python3 -c 'import subprocess; deps=subprocess.check_output(["apk","info","-R","chromium"], text=True).splitlines()[1:]; subprocess.run(["apk","add","--no-cache",*[d.strip() for d in deps if d.strip()]], check=True)' \
+    && apk del --no-cache chromium \
+    && curl -fsSL --retry 3 "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_FOR_TESTING_VERSION}/linux64/chrome-linux64.zip" -o /tmp/buddy-chrome.zip \
+    && echo "${CHROME_FOR_TESTING_SHA256}  /tmp/buddy-chrome.zip" | sha256sum -c - \
+    && python3 -c 'from pathlib import Path; from zipfile import ZipFile; root=Path("/usr/lib/buddy-chrome"); z=ZipFile("/tmp/buddy-chrome.zip"); z.extractall(root); [(root/i.filename).chmod((i.external_attr >> 16) & 0o777 or 0o644) for i in z.infolist() if not i.is_dir()]' \
+    && ln -sf /usr/lib/buddy-chrome/chrome-linux64/chrome /usr/bin/chromium \
+    && rm /tmp/buddy-chrome.zip \
+    && chromium --version
+# Chat validates the browser's IANA timezone through Python zoneinfo.
+RUN apk add --no-cache tzdata \
+    && python3 -c 'from zoneinfo import ZoneInfo; [ZoneInfo(z) for z in ("UTC", "Europe/London", "Europe/Paris")]'
+COPY app /opt/bob-a2a/app
+RUN chmod +x /opt/bob-a2a/app/bin/a2a && ln -sf /opt/bob-a2a/app/bin/a2a /usr/local/bin/a2a
+WORKDIR /workspace
+ENV PYTHONPATH=/opt/bob-a2a BUDDY_RUNTIME_API=1
+EXPOSE 8080

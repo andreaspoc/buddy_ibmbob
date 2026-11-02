@@ -1,0 +1,19 @@
+# Add to either the local or remote base Compose file; use --profile plugins.
+services:
+  bob-agent:
+    environment:
+      BUDDY_OFFICE_ENABLED: "1"
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_OFFICE_PLUGIN_URL: http://office-plugin:8080
+      BUDDY_PEOPLE_PLUGIN_URL: http://people-plugin:8080
+    depends_on:
+      office-plugin:
+        condition: service_healthy
+      people-plugin:
+        condition: service_healthy
+  bob-worker:
+    environment:
+      BUDDY_OFFICE_ENABLED: "1"
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_OFFICE_PLUGIN_URL: http://office-plugin:8080
+      BUDDY_PEOPLE_PLUGIN_URL: http://people-plugin:8080

@@ -1,0 +1,36 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire(new URL('../web/package.json', import.meta.url));
+const ts = require('typescript');
+const code = ts.transpileModule(readFileSync(new URL('../web/src/lib/intelligentUi.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext } }).outputText;
+const { parseIntelligentSpec: parse, splitIntelligentMarkdown: split, splitAmount } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const spec = { kind: 'explore', title: 'Synthetic explanation', items: [{ title: 'First', body: 'First topic' }, { title: 'Second', body: 'Second topic' }] };
+const source = JSON.stringify(spec);
+assert.deepEqual(parse(source), spec);
+for (const patch of [{ kind: 'unknown' }, { items: [] }, { items: Array(13).fill(spec.items[0]) }, { title: 'x'.repeat(161) }, { items: [{ title: 'x', body: 'y', facts: [{ label: 'x', value: 42 }] }] }]) assert.equal(parse(JSON.stringify({ ...spec, ...patch })), undefined);
+assert.equal(parse('invalid'), undefined);
+assert.equal(parse('x'.repeat(40001)), undefined);
+assert.equal(parse(JSON.stringify({ kind: 'split', title: 'Bill', total: -1, people: 0, tip: 0 })), undefined);
+assert.equal(splitAmount(120, 4, 10), 33);
+assert.equal(splitAmount(0, 1, 0), 0);
+const full = 'Before\n\n```bobui\n' + source + '\n```\n\nAfter';
+assert.equal(split(full)[1].spec.kind, 'explore');
+assert.equal(split(full)[2].text, '\nAfter');
+for (let i = full.indexOf(source); i < full.indexOf('\n```', full.indexOf(source)); i++) {
+  const ui = split(full.slice(0, i), true).find(p => p.type === 'ui');
+  assert.ok(ui.pending);
+  assert.equal(ui.spec, undefined);
+}
+assert.equal(split('````text\n```bobui\n' + source + '\n```\n````').filter(p => p.type === 'ui').length, 0);
+assert.equal(split('~~~bobui\n' + source + '\n~~~')[1].spec.kind, 'explore');
+assert.equal(split('```bobui\nbad\n```')[1].pending, false);
+assert.equal(split('```bobui\nbad', false)[1].pending, false);
+console.log('PASS: validation, numeric bounds, deterministic calculation, all JSON chunk boundaries, nested code fences, malformed fallback');
+const action = { kind: 'action', operation: 'email_note', title: 'Review draft', body: '**Actual supplied text**' };
+assert.deepEqual(parse(JSON.stringify(action)), action);
+for (const patch of [{ operation: 'run_shell' }, { body: '' }, { body: 'x'.repeat(20001) }]) assert.equal(parse(JSON.stringify({ ...action, ...patch })), undefined);
+const analysis = { kind: 'analysis', title: 'Synthetic fixture only', headers: ['Label', 'Value'], rows: [['Missing', null], ['Zero', 0], ['Negative', -2]], source: 'Explicit test fixture' };
+assert.deepEqual(parse(JSON.stringify(analysis)), analysis);
+for (const patch of [{ headers: ['one'] }, { rows: [['ragged']] }, { rows: [['bad', {}]] }, { rows: Array(501).fill(['x', 1]) }, { source: 42 }]) assert.equal(parse(JSON.stringify({ ...analysis, ...patch })), undefined);
+console.log('PASS: reviewed actions are allowlisted; analysis preserves null/zero/negative values and rejects malformed datasets');

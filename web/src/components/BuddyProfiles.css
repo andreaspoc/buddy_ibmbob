@@ -1,0 +1,26 @@
+.buddy-profiles { max-width:1040px; }
+.buddy-profiles .buddy-profile-notice { padding:16px 20px;border:1px solid #e3d5ed;border-left:4px solid var(--brand-accent,#735e83);border-radius:10px;background:#faf7fc;margin-bottom:20px; }
+.buddy-profiles .buddy-profile-notice p { margin:6px 0 0; }
+.buddy-runtime-card { display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:20px;border:1px solid #e4d9ec;border-radius:12px;background:#fff; }
+.buddy-profiles .buddy-runtime-card>label:first-child { flex-direction:row;align-items:center; }
+.buddy-runtime-card>p { grid-column:1/-1;margin:0; }
+.buddy-saved-profiles { margin:28px 0; }
+.buddy-saved-profiles ul { list-style:none;padding:0;margin:0;display:grid;gap:10px; }
+.buddy-saved-profiles li { display:flex;align-items:center;gap:20px;padding:16px 18px;border:1px solid #e4d9ec;border-radius:10px;background:#fff; }
+.buddy-saved-profiles li>div { flex:1;min-width:0; }
+.buddy-saved-profiles code { overflow-wrap:anywhere; }
+.buddy-profile-badge { padding:4px 10px;border-radius:20px;background:#efe7f5;color:#634779;font-size:11px; }
+.buddy-profiles .buddy-profile-fields { display:grid;grid-template-columns:1fr 1fr;gap:20px;border:1px solid #e4d9ec;border-radius:12px;padding:24px;background:#fff;min-width:0; }
+.buddy-profile-fields>legend { padding:0 8px;font-weight:600;font-size:16px; }
+.buddy-form-description,.buddy-wide { grid-column:1/-1; }
+.buddy-form-description { margin:0; }
+.buddy-profiles input,.buddy-profiles select,.buddy-profiles textarea { width:100%;box-sizing:border-box; }
+.buddy-profiles input[type=checkbox] { width:16px;height:16px;flex-shrink:0;accent-color:var(--brand-accent,#735e83); }
+.buddy-profiles textarea { min-height:110px;resize:vertical;border:1px solid #dfcee9;border-radius:8px;padding:12px;font:inherit;color:inherit;background:#fff; }
+.buddy-profiles textarea:focus-visible { outline:2px solid #9333ea;outline-offset:2px; }
+.buddy-profiles .buddy-capabilities { display:flex;flex-wrap:wrap;gap:16px;border:0;padding:0;margin:0; }
+.buddy-capabilities legend { margin-bottom:12px;font-size:12px;font-weight:600; }
+.buddy-profiles .buddy-capabilities label { flex-direction:row;align-items:center;gap:8px; }
+.buddy-form-footer { display:flex;align-items:center;justify-content:space-between;gap:20px;border-top:1px solid #eee6f3;padding-top:20px; }
+.buddy-form-footer span { color:#78668a;font-size:12px; }
+@media(max-width:650px) { .buddy-runtime-card,.buddy-profiles .buddy-profile-fields { grid-template-columns:1fr;padding:16px; }.buddy-form-footer { align-items:stretch;flex-direction:column; }.buddy-saved-profiles li { flex-wrap:wrap;gap:10px; } }

@@ -1,0 +1,42 @@
+@use '@carbon/styles/scss/type';
+
+/* Own the entire setup dialog, including catalog cards previously styled dark. */
+:root:root:root body .presentation-modal-card.template-picker-card.buddy-surface {
+  background: var(--workspace-canvas, #f2f0ed) !important;
+  color: var(--cds-text-primary, #161616) !important;
+  border: 1px solid var(--toolbar-border, #ccc7c0) !important;
+  box-shadow: 0 16px 48px #302e2b26;
+  font-family: var(--cds-font-family, 'IBM Plex Sans', sans-serif);
+  @include type.type-style('body-01');
+
+  :is(button,input,select,textarea) { font-family: inherit; @include type.type-style('body-01'); }
+  :is(.buddy-section-title,.template-studio h3) { @include type.type-style('heading-03'); color: var(--cds-text-primary) !important; }
+  :is(.template-catalog-heading h3,.template-header strong,.template-title-preview) { @include type.type-style('heading-compact-01'); color: var(--cds-text-primary) !important; }
+  :is(.dialog-intro,.presentation-request-label,.slide-count-picker,legend,label,.template-studio p) { @include type.type-style('body-01'); color: var(--cds-text-primary); }
+  :is(small,.template-compat-row,.template-badge,.template-brand-tag,.template-selected-badge,.template-personal-badge,.buddy-section-eyebrow,.template-studio-hint) { @include type.type-style('label-01'); }
+  :is(.dialog-intro,.slide-count-picker small,.template-compat-row,.template-studio-hint) { color: var(--cds-text-secondary); }
+  .buddy-section-header { background: var(--toolbar-background); border-color: var(--toolbar-border); box-shadow: none; }
+  .buddy-section-eyebrow { color: var(--cds-text-secondary); letter-spacing: normal; }
+  :is(textarea,select,input:not([type=radio]):not([type=checkbox]):not([type=color]):not([type=range])) {
+    background: var(--cds-field, #fff); color: var(--cds-text-primary); border: 1px solid var(--toolbar-border);
+  }
+  :is(.presentation-output-format,.template-studio fieldset) { background: var(--cds-layer, #fff); border-color: var(--toolbar-border); }
+  :is(.dialog-close,.template-catalog-heading button,.presentation-setup-footer button) { background: var(--toolbar-control); color: var(--toolbar-text); border: 1px solid var(--toolbar-border); box-shadow: none; }
+  .template-grid { grid-template-columns: repeat(auto-fill,minmax(min(240px,100%),1fr)); padding: 4px; }
+  .template-card { background: var(--cds-layer, #fff); border: 1px solid var(--toolbar-border); box-shadow: none; color: var(--cds-text-primary); transition: background var(--motion-standard), border-color var(--motion-standard); }
+  .template-card:hover { background: var(--toolbar-control); border-color: var(--cds-border-strong); transform: none; box-shadow: none; }
+  .template-card.selected { border-color: var(--cds-interactive); box-shadow: inset 0 0 0 1px var(--cds-interactive); background: var(--cds-layer, #fff); }
+  .template-preview { background: var(--toolbar-control); border-bottom: 1px solid var(--toolbar-border); }
+  .template-preview::after { content: none; }
+  .template-preview .template-title-preview { color: inherit !important; text-shadow: none; }
+  :is(.template-info,.template-studio-preview) { background: var(--cds-layer, #fff); color: var(--cds-text-primary); }
+  :is(.template-brand-tag,.template-badge,.template-personal-badge) { background: var(--workspace-canvas); color: var(--cds-text-secondary) !important; border: 1px solid var(--toolbar-border); box-shadow: none; backdrop-filter: none; text-transform: none; letter-spacing: normal; }
+  .template-selected-badge { background: var(--cds-interactive); color: var(--cds-text-on-color, #fff); box-shadow: none; }
+  .template-swatch { border: 1px solid var(--toolbar-border); box-shadow: none; }
+  .presentation-setup-footer { background: transparent; border-color: var(--toolbar-border); color: var(--cds-text-secondary); }
+  .presentation-setup-footer button[type=submit] { background: var(--cds-interactive); color: var(--cds-text-on-color, #fff); border-color: transparent; }
+  .presentation-setup-footer button:disabled { background: var(--cds-button-disabled); color: var(--cds-text-on-color-disabled); }
+  .template-studio-preview [role=tablist] { background: var(--toolbar-control); border-color: var(--toolbar-border); }
+  .template-studio-preview [role=tab][aria-selected=true] { background: var(--toolbar-selected); color: var(--toolbar-text); border-color: var(--toolbar-border); }
+  :is(button,input,select,textarea):focus-visible { outline: 2px solid var(--cds-focus, #6929c4); outline-offset: 2px; }
+}

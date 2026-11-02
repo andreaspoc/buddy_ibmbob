@@ -1,0 +1,34 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+const require=createRequire(new URL('../web/package.json',import.meta.url));
+const ts=require('typescript');
+const exports={};
+new Function('exports',ts.transpileModule(fs.readFileSync('web/src/lib/missedCalls.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText)(exports);
+const call=(id,caller,room_id,occurred_at)=>({id,caller,room_id,occurred_at,title:`Missed call from ${caller}`});
+const calls=[call('a','Test Alice',1,'2026-10-23T10:00:00Z'),call('b','Test Bob',2,'2026-10-23T12:00:00Z'),call('c','Test Alice',1,'2026-10-23T13:00:00Z')];
+const groups=exports.groupMissedCalls(calls);
+assert.equal(groups.length,2);
+assert.equal(groups[0].calls.length,2);
+assert.equal(groups[0].latest.id,'c');
+assert.equal(exports.groupMissedCalls(calls.slice(0,1))[0].color,groups[0].color,'Color remains stable when more calls arrive');
+assert.equal(exports.groupMissedCalls(calls.filter(c=>c.caller!=='Test Alice'))[0].calls.length,1,'Removing one person preserves other calls');
+assert.equal(exports.groupMissedCalls([]).length,0);
+console.log('PASS: grouping by caller, latest call, stable colors, independent removal');
+
+const reminders=exports.groupMissedCalls([{id:'reminder:1',kind:'reminder',title:'Fixture reminder',room_id:null,session_id:'fixture',color:'butter',occurred_at:'2026-10-23T14:00:00Z'}, ...calls]);
+assert.equal(reminders.length,3,'Reminders remain separate from missed calls');
+assert.equal(reminders[0].color,'yellow');
+assert.equal(reminders[0].key,'reminder:1');
+
+const sameColorReminders=Array.from({length:12},(_,index)=>({id:`reminder:${index}`,kind:'reminder',title:'Synthetic palette fixture',room_id:null,color:'butter',occurred_at:`2026-10-23T14:${String(index).padStart(2,'0')}:00Z`}));
+const firstFive=exports.groupMissedCalls(sameColorReminders.slice(0,5));
+assert.equal(new Set(firstFive.map(group=>group.color)).size,5,'Five notes must use five distinct colors even if every reminder requested the default yellow');
+const initial=exports.groupMissedCalls(sameColorReminders.slice(0,3));
+const savedColors=Object.fromEntries(initial.map(group=>[group.key,group.color]));
+const grown=exports.groupMissedCalls(sameColorReminders.slice(0,5),savedColors);
+for(const group of initial)assert.equal(grown.find(item=>item.key===group.key).color,group.color,'Existing notes keep their colors as new notes arrive');
+const many=exports.groupMissedCalls(sameColorReminders);
+const usage=exports.missedCallColors.map(color=>many.filter(group=>group.color===color).length);
+assert.ok(Math.max(...usage)-Math.min(...usage)<=1,'Palette repeats evenly after five notes');
+console.log('PASS: distinct initial palette, stable existing colors and balanced repetition');

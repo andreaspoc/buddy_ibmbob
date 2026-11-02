@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+const require = createRequire(new URL('../web/package.json', import.meta.url));
+const ts = require('typescript');
+const code = ts.transpileModule(readFileSync(new URL('../web/src/lib/analysisData.ts', import.meta.url), 'utf8'), { compilerOptions: { module: ts.ModuleKind.ESNext } }).outputText;
+const { normalizeAnalysisData: normalize, hasIncompleteAnalysisValues: incomplete } = await import(`data:text/javascript;base64,${Buffer.from(code).toString('base64')}`);
+const input = { title: 'Measured', source: 'CSV', headers: ['Region', 'Value'], rows: [['East', 0], ['West', null], ['North', -4.5]] };
+assert.deepEqual(normalize(input), input);
+const result = normalize(input); result.rows[0][1] = 8; assert.equal(input.rows[0][1], 0);
+for (const rows of [[['East']], [['East', Infinity]], [['East', NaN]], [['East', {}]], [['East', true]]]) assert.equal(normalize({headers:['Region','Value'],rows}),null);
+for (const value of [null, {}, {headers:[''],rows:[[1]]}, {headers:['A','B'],rows:[]}]) assert.equal(normalize(value),null);
+assert.equal(normalize({headers:['A','B'],rows:Array(5001).fill(['x', 1])}),null);
+console.log('PASS: analysis preserves missing/zero/negative values, copies rows, rejects malformed data and bounds dataset size');
+
+assert.equal(incomplete(input), true);
+assert.equal(incomplete({headers:['Region','Value'],rows:[['A',0],['B',-1]]}), false);
+assert.equal(incomplete({headers:['Region','Value'],rows:[['A',1],['B',2],['C','N/A']]}), true);
+assert.equal(incomplete({headers:['Region','Value'],rows:[['A',1],['B','   ']]}), true);
+console.log('PASS: incomplete or mixed numeric columns never enter legacy zero conversion');

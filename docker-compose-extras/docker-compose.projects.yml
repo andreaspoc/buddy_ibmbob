@@ -1,0 +1,17 @@
+# Add portfolio management; includes only Keycloak users provisioned by platform login.
+services:
+  bob-agent:
+    environment:
+      BUDDY_PROJECTS_ENABLED: "1"
+      BUDDY_PROJECTS_PLUGIN_URL: http://projects-plugin:8080
+    depends_on:
+      projects-plugin:
+        condition: service_healthy
+  bob-gateway:
+    environment:
+      BUDDY_PROJECTS_ENABLED: "1"
+      BUDDY_PROJECTS_PLUGIN_URL: http://projects-plugin:8080
+  bob-worker:
+    environment:
+      BUDDY_PROJECTS_ENABLED: "1"
+      BUDDY_PROJECTS_PLUGIN_URL: http://projects-plugin:8080

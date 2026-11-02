@@ -1,0 +1,681 @@
+/* Final workspace layer: Purple-tinted surfaces and productive hierarchy.
+ * Scoped to Buddy's shell and Office chrome; document content owns its styles.
+ * Match the existing brand layer's specificity without escalating with !important.
+ */
+:root[data-design-system='carbon']:root {
+  /* ── Shell zone: Carbon Gray 100 inline theme ──────────────────────────────
+   * Carbon standard: apply a dark inline theme to the shell (header + left
+   * panel) and a light theme to the content canvas. This is how IBM Cloud,
+   * watsonx and Maximo are built. Buddy purple becomes the accent inside
+   * the dark shell — not the background itself.
+   *
+   * Gray 100 theme token values used here:
+   *   $background          #161616   header bg
+   *   $layer-01            #262626   left panel bg (one step lighter)
+   *   $layer-02            #393939   hover / depth
+   *   $border-subtle       #393939   dividers inside dark shell
+   *   $text-primary        #f4f4f4   nav labels, headings (white-ish)
+   *   $text-secondary      #c6c6c6   muted nav labels
+   *   $layer-selected      #525252   active nav item bg
+   *   $layer-hover         #333333   hover bg
+   *
+   * Buddy brand accent inside dark shell:
+   *   Purple 30 #be95ff — 8.4:1 contrast on #161616 ✓ WCAG AAA
+   *   (Purple 70 #6929c4 only gives 2.8:1 on dark bg — fails WCAG)
+   *
+   * ── Content canvas: Carbon White theme ─────────────────────────────────── */
+  --buddy-chrome-background: #161616;
+  --buddy-sidebar-background: #262626;
+  --buddy-input-background: #ffffff;
+  /* Shell text tokens (Gray 100 theme) */
+  --shell-text-primary: #f4f4f4;
+  --shell-text-secondary: #c6c6c6;
+  --shell-border: #393939;
+  --shell-layer-hover: #333333;
+  --shell-layer-selected: #525252;
+  /* Buddy brand accent — Purple 30, legible on dark shell */
+  --shell-accent: #be95ff;
+  --shell-accent-hover: #d4bbff;
+  /* Content canvas tokens (White/Purple 10 light theme) */
+  --brand-ink: #161616;
+  --brand-ink-muted: #525252;
+  --brand-line: #e8daff;
+  --brand-soft: #f6f2ff;
+  --workspace-ink: #161616;
+  --workspace-muted: #525252;
+  --workspace-line: #e0e0e0;
+  --workspace-canvas: #f6f2ff;
+  --chat-corner: 0px;
+  --chat-user-surface: #e8daff;
+  --chat-input-border: #8d8d8d;
+  --workspace-content-width: 880px;
+  --cds-text-primary: #161616;
+  --cds-text-secondary: #525252;
+  --cds-border-subtle: #e0e0e0;
+  --cds-layer: #ffffff;
+  --cds-field: #f6f2ff;
+}
+:root[data-design-system='carbon']:root body :is(.shell,.office-suite) {
+  color: var(--brand-ink);
+  background: var(--workspace-canvas);
+}
+
+:root[data-design-system='carbon']:root body .shell .main {
+  background: var(--workspace-canvas);
+}
+:root[data-design-system='carbon']:root body .shell :is(.chat-layout-main,.conversation,.chat-view) {
+  /* Content canvas: white lifts off the Purple 10 background */
+  background: #ffffff;
+}
+
+/* ── LEFT PANEL (SIDEBAR): Carbon Gray 100 $layer-01 = #262626 ─────────────── */
+:root[data-design-system='carbon']:root body .shell .sidebar {
+  background: var(--buddy-sidebar-background);
+  /* $border-subtle Gray 100 theme */
+  border-right-color: var(--shell-border);
+  /* Buddy purple top accent — brand presence in the dark shell */
+  box-shadow: inset 0 3px 0 var(--shell-accent);
+  color: var(--shell-text-primary);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.sidebar-bottom,.sidebar-library-label,.sidebar-width-controls) {
+  border-color: var(--shell-border);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.mode-item,.tasks-nav):hover {
+  /* $layer-hover Gray 100 = #333333 */
+  background: var(--shell-layer-hover);
+  color: var(--shell-text-primary);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.mode-item.active,.tasks-nav.active) {
+  /* $layer-selected Gray 100 = #525252; inset accent = Buddy Purple 30 */
+  background: var(--shell-layer-selected);
+  border-color: transparent;
+  color: var(--shell-text-primary);
+  box-shadow: inset 3px 0 var(--shell-accent);
+  font-weight: 600;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.skill-item,.mcp-connection-card,.sidebar-filter-tabs) {
+  /* One step lighter than panel: $layer-02 Gray 100 = #393939 */
+  background: #393939;
+  border-color: var(--shell-border);
+  box-shadow: none;
+  color: var(--shell-text-secondary);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .filter-tab.active {
+  /* Active tab: $layer-selected with Purple 30 accent text */
+  background: var(--shell-layer-selected);
+  border-color: var(--shell-accent);
+  color: var(--shell-accent);
+  box-shadow: none;
+}
+
+/* ── HEADER (TOPBAR): Carbon Gray 100 $background = #161616 ────────────────── */
+:root[data-design-system='carbon']:root body .shell .main > .topbar {
+  /* $background Gray 100 theme — darkest shell zone */
+  background: var(--buddy-chrome-background);
+  /* $border-subtle Gray 100 */
+  border-bottom: 1px solid var(--shell-border);
+  /* No decorative top accent on the header — Carbon standard */
+  box-shadow: none;
+  color: var(--shell-text-primary);
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar :is(h1,.topbar-heading h1,.topbar-brand-buddy,.workspace-menu-chevron,.token-icon,.token-sep,svg) {
+  /* $text-primary Gray 100 = #f4f4f4 */
+  color: var(--shell-text-primary);
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar :is(p,small,.muted-small) {
+  /* $text-secondary Gray 100 = #c6c6c6 */
+  color: var(--shell-text-secondary);
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar :is(button,select,.workspace-toolbar-language select,.topbar-token-pill,.topbar-pill) {
+  /* Header controls: $layer-01 Gray 100 = #262626, $border-subtle = #393939 */
+  background: #262626;
+  border-color: var(--shell-border);
+  color: var(--shell-text-primary);
+  color-scheme: dark;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar :is(button,select):hover:not(:disabled) {
+  /* $layer-hover Gray 100 = #333333 */
+  background: var(--shell-layer-hover);
+  border-color: #525252;
+  color: var(--shell-text-primary);
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar :is(button,select):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: -2px;
+}
+:root[data-design-system='carbon']:root body .shell :is(.workspace-hub,.chat-context-bar) {
+  background: #fff;
+  border-color: var(--brand-line);
+  box-shadow: none;
+}
+
+/* The empty state shares the composer's content column rather than a hero card. */
+:root[data-design-system='carbon']:root body .shell .conversation-new .welcome.welcome-buddy {
+  width: 100%;
+  max-width: var(--workspace-content-width);
+  margin: 32px auto;
+  text-align: left;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-buddy-hero {
+  padding: 24px 0 32px;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--brand-line);
+  box-shadow: none;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy-hero::after { display: none; }
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-icon {
+  background: transparent;
+  border: 0;
+  color: var(--brand-accent);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-top-row { margin-bottom: 24px; }
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .eyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-buddy-hero h2 {
+  max-width: 896px;
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: var(--brand-ink);
+  margin-bottom: 16px;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-buddy-hero p {
+  max-width: 640px;
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-buddy-hero p strong {
+  color: var(--brand-ink);
+  background: #e0e0e0;
+  border-color: #c6c6c6;
+}
+
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .intelligence-starters {
+  gap: 8px;
+  margin: 24px 0;
+}
+:root[data-design-system='carbon']:root body .shell :is(.suggestion,.intelligence-starters button) {
+  border-radius: 0 !important; /* Existing chat corner rules also use !important. */
+  border-color: var(--brand-line);
+  background: #fff;
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .intelligence-starters button {
+  min-height: 40px;
+  padding: 8px 16px;
+  font-size: 14px;
+  line-height: 20px;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .suggestions { gap: 16px; }
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .suggestion {
+  min-height: 88px;
+  padding: 16px;
+  align-items: flex-start;
+  height: 100%;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .suggestion-content strong {
+  color: var(--brand-ink);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy .suggestion-content small {
+  color: var(--brand-ink-muted);
+  font-size: 12px;
+  line-height: 16px;
+  margin-top: 8px;
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy :is(.suggestion-icon,.suggestion-tag) {
+  background: #f1ebf6;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .shell .welcome-buddy :is(button,a):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+:root[data-design-system='carbon']:root body .shell .composer {
+  background: var(--buddy-input-background);
+  border-radius: 8px !important; /* Outer chat container; controls retain their own geometry. */
+  border-bottom: 2px solid #8d8d8d;
+  padding: 16px;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .shell .composer:focus-within {
+  border-color: var(--brand-accent);
+  outline-offset: -2px;
+}
+:root[data-design-system='carbon']:root body .shell .composer textarea { font-size: 16px; line-height: 24px; }
+
+@media (max-width: 700px) {
+  :root[data-design-system='carbon']:root body .shell .conversation-new .welcome.welcome-buddy { margin: 8px auto 16px; }
+  :root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-buddy-hero { padding: 16px 0 24px; }
+  :root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-buddy-hero h2 { font-size: 32px; line-height: 40px; }
+  :root[data-design-system='carbon']:root body .shell .welcome-buddy .welcome-top-row { margin-bottom: 16px; }
+  :root[data-design-system='carbon']:root body .shell .composer { padding: 12px; }
+}
+
+/* Office shares the chat canvas, type hierarchy, and sidebar color. */
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface {
+  --bg-main: #f1ebf6;
+  background: var(--workspace-canvas);
+  color: var(--brand-ink);
+  border-color: var(--brand-line);
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-sidebar {
+  background: var(--buddy-sidebar-background);
+  border-right-color: var(--brand-line);
+  padding: 24px 16px;
+  gap: 8px;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface :is(.office-top,.office-editor-title,.office-editor-status) {
+  background: var(--buddy-chrome-background);
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-top { padding: 16px 24px; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-top :is(strong,.workspace-brand,.workspace-brand-name) { color: var(--brand-ink); }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface :is(.office-caption,.office-brand small,.office-heading p,.office-create small,.office-storage p) {
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-caption {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface button {
+  border-color: var(--brand-line);
+  background: #fff;
+  color: var(--brand-ink);
+  min-height: 40px;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface button:hover:not(:disabled) {
+  background: #e8e8e8;
+  border-color: #8d8d8d;
+  color: var(--brand-ink);
+  transform: none;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface :is(button,input,select):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: -2px;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-sidebar > button {
+  background: transparent;
+  border-color: transparent;
+  text-align: left;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-sidebar > button.active {
+  background: #fff;
+  color: var(--brand-ink);
+  box-shadow: inset 3px 0 var(--brand-accent);
+  font-weight: 600;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-primary {
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+  color: #fff;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-primary:hover:not(:disabled) {
+  background: var(--brand-accent-hover);
+  border-color: var(--brand-accent-hover);
+  color: #fff;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-heading { margin-bottom: 32px; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-heading h1 {
+  color: var(--brand-ink);
+  font-size: 32px;
+  line-height: 40px;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin: 8px 0 16px;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-content:not(.office-content-editing) { background: var(--workspace-canvas); padding: 24px 32px; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-create { gap: 16px; margin-bottom: 32px; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-create > button {
+  background: #fff;
+  padding: 24px;
+  border: 1px solid var(--brand-line);
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-create strong { font-size: 16px; line-height: 24px; font-weight: 600; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-create button > span { color: var(--brand-accent); }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-storage { background: #fff; border-color: var(--brand-line); box-shadow: none; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-file-table { background: #fff; color: var(--brand-ink); font-size: 14px; line-height: 20px; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-file-table th {
+  background: var(--buddy-chrome-background);
+  color: var(--brand-ink);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-file-table :is(th,td) { padding: 16px; border-color: var(--brand-line); }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-file-table tbody tr:hover { background: #e8e8e8; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-library-tools input {
+  min-height: 40px;
+  border: 0;
+  border-bottom: 1px solid #8d8d8d;
+  background: #fff;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-library-tools button.active {
+  background: #e8e0f3;
+  color: var(--brand-ink);
+  box-shadow: inset 0 -2px var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface :is(.office-folders,.office-folder-card,.office-upload) {
+  background: #fff;
+  border-color: var(--brand-line);
+  border-radius: 0;
+}
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-folders { padding: 16px; }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-folder-search-note { color: var(--brand-ink-muted); }
+:root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-top :is(button,select) {
+  background: #fff;
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+}
+@media (max-width: 1350px) {
+  :root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-create > button { padding: 16px; }
+  :root[data-design-system='carbon']:root body .office-suite.buddy-surface .office-content:not(.office-content-editing) { padding: 24px; }
+}
+
+/* Shared application chrome. Content previews, note paper, and status colors
+ * remain owned by their components; these rules style navigation and surfaces. */
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface,.notes-workspace,.notes-editor,.knowledge-page,.shared-knowledge,.member-chat-panel,.workspace-tools-panel,.app-dialog,.docmost-panel) {
+  --buddy-ink: #161616;
+  --buddy-line: #e0e0e0;
+  --bg-main: #f1ebf6;
+  --bg-panel: #fff;
+  --bg-primary: #fff;
+  --text-primary: #161616;
+  --text-secondary: #525252;
+  --border: #e0e0e0;
+  --border-color: #e0e0e0;
+  --chat-line: #e0e0e0;
+  --chat-surface: #fff;
+  --chat-muted: #525252;
+  background: #f1ebf6;
+  color: var(--brand-ink);
+  border-color: var(--brand-line);
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface .buddy-section-header,.notes-workspace .notes-workspace-hero,.knowledge-page .knowledge-hero,.member-chat-panel .member-chat-panel-header,.docmost-panel > header) {
+  background: var(--buddy-chrome-background);
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface .buddy-section-header,.notes-workspace .notes-workspace-hero,.knowledge-page .knowledge-hero,.member-chat-panel .member-chat-panel-header) :is(h1,h2,h3,.buddy-section-title,.buddy-section-brand,.buddy-section-brand > span) {
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface .buddy-section-header,.notes-workspace .notes-workspace-hero,.knowledge-page .knowledge-hero,.member-chat-panel .member-chat-panel-header) :is(p,small,.buddy-section-description,.buddy-section-eyebrow) {
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body :is(.notes-collections,.project-file-sidebar,.member-chat-panel .member-chat-sidebar) {
+  background: var(--buddy-sidebar-background);
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body :is(.task-detail,.task-card,.administration-card,.administration-table,.directory-toolbar,.knowledge-card,.knowledge-item,.installed-app-card,.mcp-connection-card,.agent-catalog-card,.notes-editor,.notes-empty,.notification-inbox,.template-studio.template-studio,.workspace-tools-panel,.app-dialog,.docmost-panel) {
+  background: #fff;
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body :is(.administration-tabs,.knowledge-filters,.task-filters,.template-tabs,.installed-apps-controls) {
+  background: #f1ebf6;
+  border-color: var(--brand-line);
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface nav,.task-filters,.knowledge-filters,.notes-collections) button:is([aria-selected='true'],[aria-pressed='true']),
+:root[data-design-system='carbon']:root body :is(.template-tab-btn.active,.task-card.selected,.member-chat-room.is-active) {
+  background: #e8e0f3;
+  color: var(--brand-ink);
+  border-color: var(--brand-line);
+  box-shadow: inset 3px 0 var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body :is(.installed-apps,.feature-dialog,.create-dialog,.notification-inbox,.notes-editor,.app-dialog,.docmost-panel) {
+  border-radius: 0;
+  border-color: var(--brand-line);
+}
+:root[data-design-system='carbon']:root body :is(.installed-apps,.feature-dialog,.create-dialog,.notes-editor,.administration-page,.shared-knowledge,.workspace-tools-panel) :is(input,select,textarea):not(:where([type='checkbox'],[type='radio'],[type='range'],[type='color'],[type='file'],.html-deck-stage *,[contenteditable] *)) {
+  background: #fff;
+  color: var(--brand-ink);
+  border-color: var(--brand-line);
+  border-bottom-color: #8d8d8d;
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface,.notes-workspace,.notes-editor,.member-chat-panel,.workspace-tools-panel,.docmost-panel) :is(button,a,input,select,textarea):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+}
+:root[data-design-system='carbon']:root body :is(.feature-primary,.notes-new,.member-chat-primary,.create-submit,.buddy-submit-button,.welcome-primary) {
+  background: var(--brand-accent);
+  border-color: var(--brand-accent);
+  color: #fff;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body :is(.feature-primary,.notes-new,.member-chat-primary,.create-submit,.buddy-submit-button,.welcome-primary):hover:not(:disabled) {
+  background: var(--brand-accent-hover);
+  border-color: var(--brand-accent-hover);
+  color: #fff;
+}
+/* Entry screens use the same neutral stage and white form surface. */
+/* Login viewport: Gray 100 dark bg (matches shell) — do not override to light */
+:root[data-design-system='carbon']:root body .buddy-login-viewport { background: #161616; color: #f4f4f4; }
+/* Welcome overlay keeps light bg */
+:root[data-design-system='carbon']:root body .welcome-overlay { background: #f6f2ff; color: var(--brand-ink); }
+/* Form card: white, no border, sharp corners */
+:root[data-design-system='carbon']:root body .buddy-login-viewport .buddy-login-shell { background: #ffffff; border: 0; border-radius: 0; box-shadow: 0 16px 48px rgba(0,0,0,0.5); }
+/* Input: Carbon $field #f4f4f4, $border-strong #8d8d8d */
+:root[data-design-system='carbon']:root body .buddy-login-viewport .buddy-input-field { border-color: #8d8d8d; border-radius: 0; background: #f4f4f4; }
+
+/* Cards use one surface and type scale, including catalogs and widget chrome. */
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface,.shell,.workspace-tools-panel) :is(.catalog-card,.agent-catalog-card,.mcp-connection-card,.mod-card,.workflow-item,.feature-row,.format-card,.notification-card,.progress-summary-card,.mod-generating-card) {
+  background: #fff;
+  border: 1px solid var(--brand-line);
+  border-radius: 0;
+  padding: 16px;
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface,.shell) :is(.catalog-card,.agent-catalog-card,.mod-card,.workflow-item,.format-card,.notification-card) :is(h3,.mod-card-name) {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body :is(.buddy-surface.buddy-surface,.shell) :is(.catalog-card,.agent-catalog-card,.mod-card,.workflow-item,.format-card,.notification-card) :is(p,.mod-card-description) {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body :is(.installed-app-card,.format-card):hover:not(:disabled) {
+  background: #e8e8e8;
+  border-color: #8d8d8d;
+  color: var(--brand-ink);
+  box-shadow: none;
+  transform: none;
+}
+:root[data-design-system='carbon']:root body :is(.installed-app-icon,.catalog-icon,.agent-catalog-icon,.mod-card-icon-area) {
+  background: #f1ebf6;
+  border-color: var(--brand-line);
+  color: var(--brand-accent);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-registry-toolbar,.mod-registry-tabs,.mod-card-footer) {
+  background: #f1ebf6;
+  border-color: var(--brand-line);
+}
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-card-author,.mod-card-category,.mod-footer-label,.mod-switch-text.disabled) { color: var(--brand-ink-muted); }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-card-version,.mod-cmd-tag,.mod-tab-btn) {
+  background: #f1ebf6;
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .mod-registry-dialog .mod-tab-btn.active {
+  background: #e8e0f3;
+  color: var(--brand-ink);
+  box-shadow: inset 0 -2px var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body .mod-registry-dialog .mod-switch-text.enabled { color: #0e6027; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog .mod-card.is-enabled { border-inline-start: 3px solid var(--brand-accent); }
+:root[data-design-system='carbon']:root body .mod-registry-dialog .mod-card.is-disabled { opacity: 1; }
+:root[data-design-system='carbon']:root body .knowledge-page :is(.knowledge-heading,.knowledge-upload-review,.knowledge-dropzone) {
+  background: #fff;
+  border-color: var(--brand-line);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .knowledge-page :is(.knowledge-hero-brand,.knowledge-hero-brand > span,.feature-eyebrow) { color: var(--brand-accent); }
+:root[data-design-system='carbon']:root body .notes-workspace :is(.notes-hero-copy h1,.notes-hero-copy h2) { color: var(--brand-ink); }
+:root[data-design-system='carbon']:root body .notes-workspace :is(.notes-eyebrow,.notes-back,.notes-collections-heading) { color: var(--brand-ink-muted); }
+:root[data-design-system='carbon']:root body :is(.knowledge-hero,.notes-workspace-hero,.knowledge-panel,.notes-empty,.member-chat-panel,.template-studio.template-studio) { border-radius: 0; }
+
+/* Menus and submenus, including popovers mounted outside the app shell. */
+:root[data-design-system='carbon']:root body :is(.workspace-tools-panel,.slash-menu,.approval-settings-menu,.note-options-menu,.office-item-menu,.people-conversation-menu,.people-message-menu) {
+  background: #fff;
+  border: 1px solid var(--brand-line);
+  border-radius: 0;
+  color: var(--brand-ink);
+  box-shadow: 0 4px 12px #00000026;
+  font-family: var(--cds-font-family);
+  font-size: 14px;
+  line-height: 20px;
+}
+:root[data-design-system='carbon']:root body :is(.workspace-tools-panel,.slash-menu,.approval-settings-menu,.note-options-menu,.office-item-menu,.people-conversation-menu,.people-message-menu) :is(button,[role='option'],[role='menuitem']) {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  color: var(--brand-ink);
+  min-height: 40px;
+  font-size: 14px;
+  line-height: 20px;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body :is(.workspace-tools-panel,.slash-menu,.approval-settings-menu,.note-options-menu,.office-item-menu,.people-conversation-menu,.people-message-menu) :is(button,[role='option'],[role='menuitem']):hover:not(:disabled) {
+  background: #e8e8e8;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body :is(.workspace-tools-panel,.slash-menu,.approval-settings-menu,.note-options-menu,.office-item-menu,.people-conversation-menu,.people-message-menu) :is(button,[role='option'],[role='menuitem']):is([aria-selected='true'],[aria-checked='true'],[aria-pressed='true'],.active,.selected) {
+  background: #e8e0f3;
+  box-shadow: inset 3px 0 var(--brand-accent);
+}
+:root[data-design-system='carbon']:root body :is(.workspace-tools-panel,.slash-menu,.approval-settings-menu,.note-options-menu,.office-item-menu) :is(h3,.slash-menu-heading,.note-options-title,label,small) {
+  color: var(--brand-ink-muted);
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: 0;
+}
+:root[data-design-system='carbon']:root body :is(.workspace-tools-panel,.slash-menu,.approval-settings-menu,.note-options-menu,.office-item-menu) :is(button,input,select,textarea,[role='option']):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: -2px;
+}
+:root[data-design-system='carbon']:root body :is(.note-options-menu,.office-item-menu,.people-message-menu) button.danger { color: #da1e28; }
+:root[data-design-system='carbon']:root body :is(.note-options-menu,.office-item-menu,.people-message-menu) button.danger:hover:not(:disabled) { background: #fff1f1; color: #a2191f; }
+:root[data-design-system='carbon']:root body :is(.knowledge-page .knowledge-empty,.knowledge-search,.notification-empty) { background: #fff; border-color: var(--brand-line); color: var(--brand-ink-muted); border-radius: 0; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-registry-footer,.hook-card,.hook-edit-form) {
+  background: #fff;
+  border-color: var(--brand-line);
+  color: var(--brand-ink);
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body .mod-registry-dialog { border-radius: 0; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-footer-hint,.mod-feat-pill,.hook-form-hint,.hook-card-description,.hook-card-command) { color: var(--brand-ink-muted); }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-features-group,.mod-commands-group) { flex-wrap: wrap; min-width: 0; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog .mod-feat-pill { overflow-wrap: anywhere; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-tab-badge,.mod-tab-badge-accent,.mod-active-count-badge) { background: #e8e0f3; color: #5325a8; border-color: var(--brand-line); }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.mod-done-btn,.hook-btn-primary) { background: var(--brand-accent); border-color: var(--brand-accent); color: #fff; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.hook-btn-secondary,.hook-btn-cancel,.hook-input,.hook-select,.hook-script-editor,.hook-search-input) { background: #fff; color: var(--brand-ink); border-color: var(--brand-line); }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.hook-card-title,.hook-form-header,.hook-form-group label) { color: var(--brand-ink); }
+:root[data-design-system='carbon']:root body :is(.answer-quality-metrics > div,.directory-summary > button,.access-libraries > li) { background: #fff; border-color: var(--brand-line); color: var(--brand-ink); box-shadow: none; }
+:root[data-design-system='carbon']:root body .mod-registry-dialog :is(.hook-empty-state,.hook-empty-state h3,.hook-empty-state p,.hook-card-desc,.hook-card-meta) { color: var(--brand-ink-muted); }
+
+/* Widget branding follows the same neutral header surface as the file grid. */
+:root[data-design-system='carbon']:root body :is(.shell,.office-suite.buddy-surface,.member-chat-panel,.artifact-workspace-panel) :is(.intelligent-answer > header,.clarification-header-row,.quiz-header,.thinking-drawer-header,.mod-panel-header,.member-chat-conversation-header,.artifact-workspace-header) {
+  background: var(--buddy-chrome-background);
+  border-color: #393939;
+  color: #ffffff !important;
+  box-shadow: none;
+}
+:root[data-design-system='carbon']:root body :is(.shell,.office-suite.buddy-surface,.member-chat-panel,.artifact-workspace-panel) :is(.intelligent-answer > header,.clarification-header-row,.quiz-header,.thinking-drawer-header,.mod-panel-header,.member-chat-conversation-header) :is(h2,h3,.buddy-section-brand,.answer-frame-brand,.answer-frame-brand > span,.buddy-section-brand > span,.ia-title,.clarification-title) {
+  color: #ffffff !important;
+  font-family: var(--cds-font-family);
+  font-weight: 600;
+}
+:root[data-design-system='carbon']:root body :is(.shell,.office-suite.buddy-surface,.member-chat-panel) :is(.intelligent-answer > header,.clarification-header-row,.quiz-header,.thinking-drawer-header,.mod-panel-header,.member-chat-conversation-header) :is(p,small,.ia-eyebrow,.clarification-intro,.ia-description) {
+  color: #d0d0d0 !important;
+}
+:root[data-design-system='carbon']:root body :is(.installed-app-icon,.catalog-icon,.agent-catalog-icon,.mod-card-icon-area) { background: var(--buddy-chrome-background); }
+
+/* Carbon geometry is component-specific. Detached popovers use 2px;
+ * toolbar-attached menus keep their straight shared-toolbar edges. */
+:root[data-design-system='carbon']:root body :is(.citation-preview,.import-fab-tooltip,.member-chat-emoji-picker) {
+  border-radius: 2px;
+}
+/* Identity and category markers must remain distinct from action buttons. */
+:root[data-design-system='carbon']:root body .shell .message.assistant .avatar {
+  border-radius: 50% !important;
+}
+:root[data-design-system='carbon']:root body :is(.directory-badge,.suggestion-tag,.template-row-tag,.template-brand-tag,.format-feature-tag,.attached-chip-badge,.notes-card-tags button,.member-chat-selected button) {
+  border-radius: 16px !important;
+}
+
+/* One switch treatment for Mods and Hooks. The native input stays focusable
+ * and owns checked/disabled state; its visible sibling displays that state. */
+:root[data-design-system='carbon']:root body :is(.mod-switch-wrapper,.mod-switch) {
+  display: inline-block;
+  position: relative;
+  width: 48px;
+  height: 24px;
+  flex-shrink: 0;
+}
+:root[data-design-system='carbon']:root body :is(.mod-switch-input,.mod-switch > input) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+:root[data-design-system='carbon']:root body :is(.mod-switch-slider,.mod-slider) {
+  display: block;
+  position: absolute;
+  inset: 0;
+  border: 0;
+  border-radius: 16px;
+  background: #8d8d8d;
+  pointer-events: none;
+  transition: background-color var(--motion-fast);
+}
+:root[data-design-system='carbon']:root body :is(.mod-switch-slider,.mod-slider)::before {
+  content: '';
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 3px;
+  left: 3px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform var(--motion-fast);
+}
+:root[data-design-system='carbon']:root body input:checked + :is(.mod-switch-slider,.mod-slider) { background: #198038; }
+:root[data-design-system='carbon']:root body input:checked + :is(.mod-switch-slider,.mod-slider)::before { transform: translateX(24px); }
+:root[data-design-system='carbon']:root body input:focus-visible + :is(.mod-switch-slider,.mod-slider) { outline: 2px solid var(--brand-accent); outline-offset: 3px; }
+:root[data-design-system='carbon']:root body input:disabled + :is(.mod-switch-slider,.mod-slider) { opacity: .5; }
+@media (prefers-reduced-motion: reduce) {
+  :root[data-design-system='carbon']:root body :is(.mod-switch-slider,.mod-slider),
+  :root[data-design-system='carbon']:root body :is(.mod-switch-slider,.mod-slider)::before { transition: none; }
+}

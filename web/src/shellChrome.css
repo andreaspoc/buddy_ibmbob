@@ -1,0 +1,249 @@
+/* Quiet workspace chrome; the sidebar carries the primary brand. */
+:root body .shell .main > .topbar {
+  --toolbar-background: #e8e5e1;
+  --toolbar-text: #302e2b;
+  --toolbar-border: #ccc7c0;
+  --toolbar-control: #f4f2ef;
+  --toolbar-hover: #ddd8d1;
+  --toolbar-selected: #d4cec5;
+}
+:root[data-design-system='carbon']:root body .shell .main > .topbar .workspace-navigation {
+  flex: 1 1 auto;
+  justify-content: flex-start;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .brand-home {
+  gap: 12px;
+  padding-block: 18px;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .brand-mark {
+  flex: 0 0 44px;
+  width: 44px;
+  height: 44px;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .brand-mark img {
+  width: 40px;
+  height: 40px;
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .brand-name {
+  font-size: 23px;
+  line-height: 30px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+/* Shared neutral canvas for app screens; content retains its own paper colors. */
+:root[data-design-system='carbon']:root,
+:root[data-design-system='carbon'][data-ui-theme]:root {
+  --toolbar-background: #e8e5e1;
+  --toolbar-text: #302e2b;
+  --toolbar-border: #ccc7c0;
+  --toolbar-control: #f4f2ef;
+  --toolbar-hover: #ddd8d1;
+  --toolbar-selected: #d4cec5;
+  --workspace-canvas: #f2f0ed;
+  --bg-main: #f2f0ed;
+  --brand-soft: #f2f0ed;
+  --brand-line: #d8d3cc;
+  --ck-canvas: #f2f0ed;
+  --ck-line: #d8d3cc;
+  --ck-muted: #e8e5e1;
+  --ck-hover: #e5e0d9;
+}
+:root[data-design-system='carbon']:root body :is(.shell .main,.shell .conversation,.shell .chat-view,.buddy-surface:not(.mod-registry-dialog),.notes-workspace,.office-library,.artifact-workspace-panel,.artifact-editor) {
+  background-color: var(--workspace-canvas);
+  --bg-main: var(--workspace-canvas);
+}
+:root[data-design-system='carbon']:root body .welcome-buddy .welcome-buddy-hero {
+  background: linear-gradient(135deg, #fff, var(--workspace-canvas));
+}
+:root[data-design-system='carbon']:root body :is(.artifact-comparison,.artifact-comparison-column h4,.artifact-resize-handle) {
+  background: #e8e5e1;
+  border-color: #ccc7c0;
+  color: #302e2b;
+}
+/* Authentication uses the same canvas and toolbar as the signed-in workspace. */
+:root[data-design-system='carbon']:root body .buddy-login-viewport {
+  background: #f2f0ed;
+}
+:root[data-design-system='carbon']:root body .buddy-login-viewport .buddy-login-shell {
+  background: #faf9f7;
+  border: 1px solid #d8d3cc;
+  box-shadow: 0 12px 40px #302e2b18;
+}
+:root[data-design-system='carbon']:root body .buddy-login-viewport :is(.buddy-input-field,.buddy-login-header .language-selector select) {
+  background: #f4f2ef;
+  border-color: #ccc7c0;
+  color: #302e2b;
+}
+:root[data-design-system='carbon']:root body .buddy-login-viewport .buddy-sso-button:not(.cds--btn):hover {
+  background: #e8e5e1;
+  border-color: #a9a198;
+}
+/* Screen-specific themes must not repaint shared toolbar surfaces. */
+@media screen {
+  :root[data-design-system='carbon']:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-embedded),
+  :root[data-design-system='carbon'][data-ui-theme]:root body .buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar:not(.buddy-toolbar-embedded) {
+    background: var(--toolbar-background);
+    color: var(--toolbar-text);
+    border-color: var(--toolbar-border);
+  }
+}
+/* Brand copy remains legible on the neutral authentication canvas. */
+:root[data-design-system='carbon']:root body .buddy-login-viewport :is(.buddy-brand-signature,.buddy-brand-message h1) {
+  color: #302e2b;
+}
+:root[data-design-system='carbon']:root body .buddy-login-viewport .buddy-brand-message h1 span {
+  background: none;
+  color: #415a65;
+  -webkit-text-fill-color: #415a65;
+}
+:root[data-design-system='carbon']:root body .buddy-login-viewport :is(.buddy-brand-message p,.buddy-brand-bottom,.buddy-brand-eyebrow,.buddy-sso-icon,.buddy-sso-icon svg) {
+  color: #625a52;
+}
+:root[data-design-system='carbon']:root body .office-suite .office-storage {
+  background: #e8e5e1;
+  border-color: #ccc7c0;
+  color: #302e2b;
+}
+:root[data-design-system='carbon']:root body .office-suite .office-storage :is(p,strong,span) {
+  color: #4f4942;
+}
+/* Slash commands are a scrollable list, rather than a row of toolbar controls. */
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 10px;
+  box-shadow: 0 8px 28px #302e2b26;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+}
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-menu-heading {
+  flex: none;
+  padding: 10px 10px 4px;
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  color: #625a52;
+}
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-option {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  flex: none;
+  width: 100%;
+  min-height: 48px;
+  padding: 10px;
+  gap: 12px;
+  text-align: left;
+  justify-content: stretch;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: transparent;
+}
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-option > div { min-width: 0; }
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-option strong {
+  display: block;
+  font-size: 14px;
+  line-height: 20px;
+  overflow-wrap: anywhere;
+}
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-option small {
+  display: block;
+  margin-top: 3px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-size: 12px;
+  line-height: 18px;
+  color: #625a52;
+}
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-option-kind {
+  align-self: start;
+  margin: 2px 0 0;
+  font-size: 10px;
+  line-height: 16px;
+  color: #625a52;
+}
+:root[data-design-system='carbon']:root body .slash-menu.buddy-toolbar.buddy-toolbar.buddy-toolbar.buddy-toolbar .slash-option:is(:hover,:focus-visible) {
+  background: var(--toolbar-hover);
+  border-color: var(--toolbar-border);
+}
+/* Integration badges need their own foreground and surface in both themes. */
+:root[data-design-system='carbon']:root body .catalog-icon.catalog-icon {
+  background: #e3e8ea;
+  color: #415a65;
+  border: 1px solid #c4cfd3;
+}
+:root[data-design-system='carbon']:root body .catalog-icon.catalog-icon :is(svg,path,span) {
+  color: inherit;
+}
+/* App launcher follows the shared menu palette and readable card layout. */
+:root[data-design-system='carbon']:root body .installed-apps.installed-apps {
+  background: var(--workspace-canvas);
+  color: #302e2b;
+  border: 1px solid var(--toolbar-border);
+  border-radius: 12px;
+  padding: 20px;
+  overscroll-behavior: contain;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-apps-grid { align-items: stretch; }
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-card {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) auto;
+  align-items: center;
+  justify-content: stretch;
+  gap: 12px;
+  padding: 16px;
+  text-align: left;
+  background: #faf9f7;
+  color: #302e2b;
+  border: 1px solid #d8d3cc;
+  border-radius: 10px;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-card:hover:not(:disabled) {
+  background: #e8e5e1;
+  border-color: #a9a198;
+}
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-icon {
+  width: 44px;
+  height: 44px;
+  background: #e3e8ea;
+  color: #415a65;
+  border: 1px solid #c4cfd3;
+  border-radius: 8px;
+}
+:root[data-design-system='carbon']:root body .installed-apps :is(.installed-app-card small,.installed-app-arrow,h3,.installed-apps-empty) { color: #625a52; }
+:root[data-design-system='carbon']:root body .installed-apps h3::after { background: #d8d3cc; }
+:root[data-design-system='carbon']:root body .installed-apps .installed-apps-empty { background: #faf9f7; border-color: #ccc7c0; }
+:root[data-design-system='carbon']:root body .installed-apps .installed-app-card:disabled { opacity: .55; cursor: not-allowed; }
+@media (max-width: 600px) {
+  :root[data-design-system='carbon']:root body .installed-apps.installed-apps { padding: 12px; }
+  :root[data-design-system='carbon']:root body .installed-apps .installed-app-card { padding: 12px; }
+}
+/* Save panels use neutral chrome and slate accents, without pink fills. */
+:root[data-design-system='carbon']:root body .save-office-dialog.save-office-dialog {
+  background: #f2f0ed;
+  border-color: #ccc7c0;
+  color: #302e2b;
+}
+:root[data-design-system='carbon']:root body .save-office-dialog .save-office-header {
+  background: #e8e5e1;
+  border-color: #ccc7c0;
+  color: #302e2b;
+}
+:root[data-design-system='carbon']:root body .save-office-dialog :is(.save-office-header small,.save-office-header strong,.answer-frame-brand,.answer-frame-brand span,label,small) { color: #4f4942; }
+:root[data-design-system='carbon']:root body .save-office-dialog :is(input,select) {
+  background: #faf9f7;
+  color: #302e2b;
+  border: 1px solid #ccc7c0;
+}
+:root[data-design-system='carbon']:root body .save-office-dialog button:not(.feature-primary):not(:last-child) {
+  background: #e3e8ea;
+  color: #415a65;
+  border-color: #c4cfd3;
+}

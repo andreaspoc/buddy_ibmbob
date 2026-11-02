@@ -1,0 +1,104 @@
+/* A full-width filter shelf replaces the second navigation sidebar. */
+:root[data-design-system='carbon']:root body .notes-workspace.notes-workspace .notes-library-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+:root[data-design-system='carbon']:root body .notes-library-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px 24px;
+  padding: 18px;
+  background: #ffffff;
+  border: 1px solid #e2d9ea;
+  border-radius: var(--buddy-control-radius);
+  box-shadow: 0 2px 10px #34204308;
+}
+.notes-filter-group { display: flex; flex-direction: column; gap: 8px; min-width: 0; max-width: 100%; }
+.notes-filter-label { padding-inline: 10px; font-size: 11px; line-height: 16px; font-weight: 600; letter-spacing: .06em; color: #75677f; }
+.notes-filter-buttons { display: flex; flex-wrap: wrap; gap: 8px; min-width: 0; }
+:root[data-design-system='carbon']:root body .notes-library-filters .notes-filter-buttons button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  max-width: 100%;
+  min-height: 42px;
+  padding: 7px 12px 7px 16px;
+  border: 1px solid #e2d9ea;
+  border-radius: var(--buddy-control-radius) !important;
+  background: #ffffff;
+  color: #583877;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.notes-filter-buttons button > span { min-width: 0; overflow-wrap: anywhere; }
+:root[data-design-system='carbon']:root body .notes-library-filters .notes-filter-buttons button small {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  min-width: 26px;
+  height: 26px;
+  padding-inline: 6px;
+  border-radius: var(--buddy-control-radius);
+  background: #f0eaf6;
+  color: #583877;
+  font-size: 11px;
+  font-weight: 600;
+}
+:root[data-design-system='carbon']:root body .notes-library-filters .notes-filter-buttons button:hover {
+  background: #f8f5fc;
+  border-color: #b39cc8;
+}
+:root[data-design-system='carbon']:root body .notes-library-filters .notes-filter-buttons button[aria-pressed='true'] {
+  background: #583877;
+  color: #ffffff;
+  border-color: #583877;
+  box-shadow: 0 2px 6px #58387720;
+}
+:root[data-design-system='carbon']:root body .notes-library-filters .notes-filter-buttons button[aria-pressed='true'] small {
+  background: #ffffff24;
+  color: #ffffff;
+}
+.notes-filter-buttons button:focus-visible { outline: 2px solid #70518a; outline-offset: 3px; }
+@media (max-width: 600px) {
+  :root[data-design-system='carbon']:root body .notes-library-filters { padding: 12px; gap: 16px; }
+  .notes-filter-group { width: 100%; }
+}
+/* Decorative pushpin replaces the white tape on saved and generated notes. */
+.sticky-note-pin {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 24px;
+  height: 32px;
+  transform: translateX(-50%) rotate(-12deg);
+  pointer-events: none;
+}
+.sticky-note-pin::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #583877;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 26%, #d3b8ed, #80549e 50%, #583877 85%);
+  box-shadow: 1px 3px 4px #34204340, inset 0 1px 2px #ffffff70;
+}
+.sticky-note-pin::after {
+  content: '';
+  position: absolute;
+  top: 16px;
+  left: 11px;
+  width: 2px;
+  height: 14px;
+  background: linear-gradient(90deg, #a79caa, #584e60);
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+  box-shadow: 1px 1px 2px #34204330;
+}

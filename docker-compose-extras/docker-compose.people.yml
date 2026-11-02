@@ -1,0 +1,17 @@
+# Add people chat to a core-only install; use --profile people.
+services:
+  bob-agent:
+    environment:
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_PEOPLE_PLUGIN_URL: http://people-plugin:8080
+    depends_on:
+      people-plugin:
+        condition: service_healthy
+  bob-gateway:
+    environment:
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_PEOPLE_PLUGIN_URL: http://people-plugin:8080
+  bob-worker:
+    environment:
+      BUDDY_PEOPLE_ENABLED: "1"
+      BUDDY_PEOPLE_PLUGIN_URL: http://people-plugin:8080

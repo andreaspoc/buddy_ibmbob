@@ -1,0 +1,46 @@
+// Carbon typography and spacing utilities shared by editor, simulator and audit panels.
+@use '@carbon/react/scss/spacing' as spacing;
+@use '@carbon/react/scss/type' as type;
+
+.decisions-gap-01 { gap: spacing.$spacing-01; }
+.decisions-gap-03 { gap: spacing.$spacing-03; }
+.decisions-gap-04 { gap: spacing.$spacing-04; }
+.decisions-gap-05 { gap: spacing.$spacing-05; }
+.decisions-gap-06 { gap: spacing.$spacing-06; }
+.decisions-m-00 { margin: 0; }
+.decisions-m-00-00-03-00 { margin: 0 0 spacing.$spacing-03 0; }
+.decisions-m-02-00-00-00 { margin: spacing.$spacing-02 0 0 0; }
+.decisions-mb-02 { margin-bottom: spacing.$spacing-02; }
+.decisions-mb-03 { margin-bottom: spacing.$spacing-03; }
+.decisions-mb-04 { margin-bottom: spacing.$spacing-04; }
+.decisions-mb-05 { margin-bottom: spacing.$spacing-05; }
+.decisions-mb-06 { margin-bottom: spacing.$spacing-06; }
+.decisions-mt-03 { margin-top: spacing.$spacing-03; }
+.decisions-mt-05 { margin-top: spacing.$spacing-05; }
+.decisions-mt-06 { margin-top: spacing.$spacing-06; }
+.decisions-p-02 { padding: spacing.$spacing-02; }
+.decisions-p-02-03 { padding: spacing.$spacing-02 spacing.$spacing-03; }
+.decisions-p-03 { padding: spacing.$spacing-03; }
+.decisions-p-03-03 { padding: spacing.$spacing-03 spacing.$spacing-03; }
+.decisions-p-03-04 { padding: spacing.$spacing-03 spacing.$spacing-04; }
+.decisions-p-03-05 { padding: spacing.$spacing-03 spacing.$spacing-05; }
+.decisions-p-04 { padding: spacing.$spacing-04; }
+.decisions-p-04-04 { padding: spacing.$spacing-04 spacing.$spacing-04; }
+.decisions-p-04-05 { padding: spacing.$spacing-04 spacing.$spacing-05; }
+.decisions-p-05 { padding: spacing.$spacing-05; }
+.decisions-p-07-05 { padding: spacing.$spacing-07 spacing.$spacing-05; }
+.decisions-p-09-05 { padding: spacing.$spacing-09 spacing.$spacing-05; }
+.decisions-pl-06 { padding-left: spacing.$spacing-06; }
+.decisions-type-body-compact-01 { @include type.type-style('body-compact-01'); }
+.decisions-type-code-01 { @include type.type-style('code-01'); font-family: type.font-family('mono'); }
+.decisions-type-heading-01 { @include type.type-style('heading-01'); }
+.decisions-type-heading-02 { @include type.type-style('heading-02'); }
+.decisions-type-heading-03 { @include type.type-style('heading-03'); }
+.decisions-type-label-01 { @include type.type-style('label-01'); }
+.decisions-gap-02 { gap: spacing.$spacing-02; }
+.decisions-mt-02 { margin-top: spacing.$spacing-02; }
+.decisions-node-eyebrow { font-size: var(--cds-label-01-font-size, 0.75rem); font-weight: 600; letter-spacing: var(--cds-label-01-letter-spacing, 0.32px); line-height: var(--cds-label-01-line-height, 1.33333); text-transform: uppercase; }
+.decisions-node-header { padding: spacing.$spacing-03 spacing.$spacing-04; }
+.decisions-node-body { padding: spacing.$spacing-04; }
+.decisions-node-branches { padding: spacing.$spacing-02 spacing.$spacing-04; }
+.decisions-node-action { padding: 0; }

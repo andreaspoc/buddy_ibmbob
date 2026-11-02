@@ -1,0 +1,34 @@
+.message.user .bubble,
+.office-assistant-user { position: relative; padding-right: 34px; }
+.message.user .bubble > .question-delete-icon,
+.office-assistant-user > .question-delete-icon {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  opacity: .45;
+  cursor: pointer;
+}
+.question-delete-icon:hover:not(:disabled),
+.question-delete-icon:focus-visible { opacity: 1 !important; background: #a4415814 !important; }
+.question-delete-icon:focus-visible { outline: 2px solid currentColor; outline-offset: 1px; }
+.question-delete-icon:disabled { cursor: default; opacity: .2; }
+@media (hover: hover) and (pointer: fine) {
+  .message.user .bubble > .question-delete-icon,
+  .office-assistant-user > .question-delete-icon { opacity: 0; }
+  .message.user .bubble:hover > .question-delete-icon,
+  .message.user .bubble:focus-within > .question-delete-icon,
+  .office-assistant-user:hover > .question-delete-icon,
+  .office-assistant-user:focus-within > .question-delete-icon { opacity: .6; }
+}

@@ -1,0 +1,62 @@
+/* Final detail pass for application chrome. Authored documents, charts and
+ * embedded editors retain their own typography and presentation. Toolbar.css
+ * follows this sheet and remains the single owner of purple toolbar controls. */
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.sidebar-group-label,.section-heading,.sidebar-width-label) {
+  font-size: 12px;
+  line-height: 16px;
+  letter-spacing: .32px;
+  font-weight: 600;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(.account-row,.sidebar-bottom,.sidebar-empty,.sidebar-hint) {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar .section-heading:hover {
+  background: #f0f0f0;
+  color: var(--brand-ink);
+}
+:root[data-design-system='carbon']:root body .shell .sidebar :is(button,a,select):focus-visible {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: -2px;
+}
+:root[data-design-system='carbon']:root body :is(.composer-note,.task-card time,.notes-card-collection,.notes-saved-date,.mod-card-author,.mod-card-version,.mod-footer-label,.mod-feat-pill,.mod-footer-hint,.notification-time) {
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--brand-ink-muted);
+}
+:root[data-design-system='carbon']:root body .mod-features-group {
+  flex-wrap: wrap;
+  row-gap: 4px;
+}
+:root[data-design-system='carbon']:root body .mod-card-footer { gap: 12px; }
+:root[data-design-system='carbon']:root body .shell .composer:focus-within {
+  outline: 2px solid var(--brand-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+/* Stable targets reduce visual distraction while browsing dense card lists. */
+:root[data-design-system='carbon']:root body :is(.suggestion,.task-card,.sticky-note,.office-file-card,.notes-card,.app-card,.installed-app-card,.integration-card):hover {
+  translate: none;
+}
+:root[data-design-system='carbon']:root body :is(.shell,.buddy-surface,.feature-dialog,.notes-editor,.workspace-tools-panel) :is(button,[role='button']):active:not(:disabled) { scale: 1; }
+/* One neutral scrim instead of mixed dark purple and blurred backdrops.
+ * Transparent artifact side panels deliberately remain transparent. */
+:root[data-design-system='carbon']:root body :is(.modal-backdrop,.feature-overlay:not(.artifact-live-overlay),.office-modal-backdrop) {
+  background: #16161666;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+:root[data-design-system='carbon']:root body dialog::backdrop {
+  background: #16161666;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+/* Busy indicators still communicate state without animated movement when
+ * the operating system requests reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  :root[data-design-system='carbon']:root body :is(.notes-loading > span,.member-chat-typing i,.upload-pending .upload-complete-mark,.avatar-spark) {
+    animation: none;
+  }
+}

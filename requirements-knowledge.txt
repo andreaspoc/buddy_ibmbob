@@ -1,0 +1,6 @@
+docling>=2.60,<3
+pypdf>=6.21.2,<7
+httpx>=0.28,<1
+psycopg[binary]>=3.2,<4
+openpyxl>=3.1,<4
+boto3>=1.35,<2

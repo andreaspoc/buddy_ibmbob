@@ -1,0 +1,19 @@
+.conversation-document { display:flex; flex-direction:column; min-width:0; height:100%; padding:20px; gap:16px; overflow:auto; }
+.conversation-document-header { display:flex; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid var(--border-color, #d8dce4); padding-bottom:16px; }
+.conversation-document-header > div { flex:1; min-width:140px; overflow-wrap:anywhere; }
+.conversation-document-header small { display:block; margin-top:4px; opacity:.7; }
+.conversation-document button, .conversation-document-header a { padding:8px 12px; border:1px solid var(--border-color, #d8dce4); border-radius:8px; color:inherit; background:transparent; cursor:pointer; font:inherit; }
+.conversation-document button:disabled { opacity:.5; cursor:default; }
+.conversation-document button:focus-visible, .conversation-document input:focus-visible, .conversation-document a:focus-visible { outline:2px solid #5669da; outline-offset:3px; }
+.conversation-document-content { flex:1; min-height:200px; overflow:auto; overflow-wrap:anywhere; }
+.conversation-document-content iframe { width:100%; height:65vh; min-height:300px; border:0; border-radius:8px; background:#f5f6fa; }
+.conversation-document-ask { display:flex; flex-direction:column; gap:10px; }
+.conversation-document-ask > div { display:flex; gap:8px; }
+.conversation-document-ask input { flex:1; min-width:0; padding:10px; background:transparent; color:inherit; border:1px solid var(--border-color, #d8dce4); border-radius:8px; font:inherit; }
+.conversation-document-ask > button { align-self:flex-start; }
+@media(max-width:600px) { .conversation-document { padding:12px; } .conversation-document-ask > div { flex-wrap:wrap; } .conversation-document-ask input { flex-basis:100%; } }
+
+.conversation-document-dialog { width: min(1080px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); padding: 0; overflow: auto; }
+.conversation-document-extracted { min-width: 0; overflow-wrap: anywhere; }
+.conversation-document-extracted summary { cursor: pointer; font-weight: 600; color: #5b2679; }
+.conversation-document-extracted .markdown-body { padding-top: 12px; }

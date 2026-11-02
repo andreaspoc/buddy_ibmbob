@@ -1,0 +1,61 @@
+/** Synthetic transport only; no real account, model calls, or file writes. */
+import {createRequire} from 'node:module';
+const require=createRequire(import.meta.url);
+const {chromium}=require(process.env.PLAYWRIGHT_PACKAGE||'playwright');
+const base=process.env.BUDDY_UI_URL||'http://127.0.0.1:3045';
+const browser=await chromium.launch({headless:true,args:['--no-sandbox']});
+const page=await browser.newPage();
+const errors=[];page.on('pageerror',e=>{errors.push(String(e));console.error(String(e));});
+try {
+ await page.goto(base+'/tests/background.html');
+ await page.getByRole('button',{name:'Alpha chat',exact:true}).click();
+ const input=page.getByRole('textbox',{name:'Message',exact:true});
+ await input.fill('First answer');await input.press('Enter');
+ await page.waitForFunction(()=>window.testState.requests.length===1);
+ await page.evaluate(()=>{
+   const r=window.testState.requests[0];
+   for(const e of [{type:'delta',text:'Finished response'}, {type:'delivery_state',state:'saving',timestamp:new Date().toISOString()}])r.controller.enqueue(r.encoder.encode(JSON.stringify(e)+'\n'));
+ });
+ await page.waitForFunction(()=>!document.querySelector('.avatar.is-generating'));
+ await input.waitFor({state:'visible'});
+ if(await input.isDisabled())throw Error('Composer remains disabled during background save');
+ if(await page.getByRole('button',{name:'Stop generation',exact:true}).count())throw Error('Stop remains visible');
+ await page.locator('.answer-details summary').last().click();
+ await page.getByText('Completed',{exact:true}).first().waitFor();
+ if(await page.getByText('Saving files',{exact:true}).count())throw Error('Saving status remains visible');
+ await input.fill('Next question');await input.press('Enter');
+ await page.waitForTimeout(250);
+ if(await page.evaluate(()=>window.testState.requests.length)!==1)throw Error('New turn raced the background writer');
+ await page.evaluate(()=>window.completeResponse(0,'Finished response'));
+ await page.waitForFunction(()=>window.testState.requests.length===2);
+ await page.getByRole('button',{name:'Stop generation',exact:true}).waitFor();
+ await page.evaluate(()=>window.completeResponse(1,'Second response'));
+ await page.getByText('Second response',{exact:true}).waitFor();
+ await page.waitForFunction(()=>!document.querySelector('button.stop-button'));
+ await input.fill('Third answer');await input.press('Enter');
+ await page.waitForFunction(()=>window.testState.requests.length===3);
+ await page.evaluate(()=>{
+   const r=window.testState.requests[2];
+   for(const e of [{type:'delta',text:'Answer before a failed save'}, {type:'delivery_state',state:'saving',timestamp:new Date().toISOString()}])r.controller.enqueue(r.encoder.encode(JSON.stringify(e)+'\n'));
+ });
+ await page.waitForFunction(()=>!document.querySelector('.avatar.is-generating'));
+ await page.evaluate(()=>window.completeResponse(2,'Answer before a failed save','failed'));
+ await page.getByText('Failed',{exact:true}).first().waitFor();
+ if(errors.length)throw Error(errors.join('\n'));
+ console.log('PASS answer visibly finishes, composer unlocked, no saving status, next turn serialized, old completion cannot stop new response');
+ await page.goto(base+'/tests/lesson-board.html');
+ await page.getByRole('button',{name:'Explore the concept'}).click();
+ await page.getByRole('heading',{name:'Core concept'}).waitFor();
+ await page.getByText('More context',{exact:true}).click();
+ await page.getByText('Human-written detail',{exact:true}).waitFor();
+ if(await page.locator('.lesson-rich-content script,.lesson-rich-content img,[href^="javascript:"]').count())throw Error('Unsafe HTML survived sanitization');
+ if(await page.evaluate(()=>window.lessonScriptRan))throw Error('Lesson HTML executed');
+ await page.evaluate(()=>window.renderBoard('path'));
+ await page.getByRole('button',{name:'Consider the outcome'}).click();
+ await page.getByRole('table').waitFor();
+ await page.getByRole('button',{name:'Go back'}).click();
+ await page.getByRole('heading',{name:'Explore the concept',exact:true}).waitFor();
+ await page.setViewportSize({width:390,height:844});
+ await page.screenshot({path:'/tmp/buddy-lesson-board-mobile.png',fullPage:true});
+ console.log('PASS board cards, branching paths, Markdown tables, safe HTML details, script/URL sanitization and mobile rendering');
+} finally {await browser.close();}

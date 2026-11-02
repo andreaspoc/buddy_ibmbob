@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {transpile} from './frontend_transpile.mjs';
+const source = transpile(readFileSync(new URL('../web/src/lib/sourcePreview.ts',import.meta.url),'utf8'));
+const {sourceMetadata,attachSourceMetadata,sourcePopupPosition}=await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
+globalThis.window={location:{origin:'https://app.example'}};
+const link={textContent:'Original document title',dataset:{},getAttribute:name=>({href:'/knowledge/11111111-1111-1111-1111-111111111111/file',title:'Supporting source quote'})[name]||null};
+const metadata=sourceMetadata(link,'document','/knowledge/11111111-1111-1111-1111-111111111111/preview');attachSourceMetadata(link,metadata);link.textContent='[1]';
+assert.equal(link.dataset.sourceTitle,'Original document title');assert.equal(link.dataset.sourceQuote,'Supporting source quote');assert.ok(link.dataset.citationPreview.endsWith('/preview'));
+const listLink={dataset:{}};attachSourceMetadata(listLink,metadata);assert.deepEqual(listLink.dataset,link.dataset,'Sources list must receive the same preview metadata as inline citation');
+const numeric={textContent:'[12]',getAttribute:name=>name==='href'?'https://publisher.example/article':null};assert.equal(sourceMetadata(numeric,'web').title,'publisher.example');
+const below=sourcePopupPosition({left:1100,top:30,bottom:50},{width:1200,height:800});assert.ok(below.left+below.width<=1188);assert.equal(below.top,58);
+const above=sourcePopupPosition({left:20,top:650,bottom:670},{width:1200,height:700});assert.ok(above.bottom>0);assert.ok(!('top' in above));
+const narrow=sourcePopupPosition({left:0,top:50,bottom:70},{width:320,height:150});assert.ok(narrow.width<=296);assert.ok(narrow.maxHeight<=80,'Preview must fit available space rather than enforcing overflowing minimum');
+console.log('Source titles, quotes, list metadata, and viewport positioning checks passed.');

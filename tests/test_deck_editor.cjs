@@ -1,0 +1,64 @@
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE || 'playwright');
+(async()=>{
+const fs = require('fs'), path = require('path');
+const fixturePath = path.join(__dirname, '../web/deck-editor-check.html');
+fs.writeFileSync(fixturePath, fs.readFileSync(path.join(__dirname, 'deck_editor_fixture.html')));
+const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
+try{
+const page=await browser.newPage({viewport:{width:1350,height:1000}});
+page.setDefaultTimeout(6000);
+const errors=[];page.on('pageerror',e=>errors.push(e.message));
+let saved=null,failSave=false,savedPath=null;
+await page.route('**/presentation/deck?**',route=>route.fulfill({status:saved?200:404,contentType:'application/json',body:JSON.stringify(saved||{})}));
+await page.route('**/sessions/qa-session/file',async route=>{
+ const body=route.request().postDataJSON();
+ if(failSave) return route.fulfill({status:500,body:'Save failed'});
+ saved=JSON.parse(body.content);savedPath=body.path;
+ await route.fulfill({status:200,contentType:'application/json',body:'{"ok":true}'});
+});
+await page.route('**/workspace/page?**',route=>route.fulfill({status:500,body:'Save failed'}));
+await page.goto((process.env.BOB_TEST_URL || 'http://127.0.0.1:3001') + '/deck-editor-check.html');
+await page.getByRole('button',{name:'✏️ Edit',exact:true}).click();
+
+await page.getByLabel('Text',{exact:true}).fill('Updated executive title');
+await page.getByLabel('Font size',{exact:true}).fill('32');
+await page.getByLabel('Bold',{exact:true}).check();
+if(!(await page.locator('.bobdeck-slide-svg').textContent()).includes('Updated executive title'))throw Error('Preview not updated');
+await page.getByLabel('Slide element').selectOption('2');
+await page.getByLabel('Value',{exact:true}).first().fill('45');
+await page.getByLabel('Slide element').selectOption('3');
+await page.getByLabel('Row 2, column 2').fill('99');
+await page.getByRole('button',{name:'Save',exact:true}).click();
+await page.getByRole('button',{name:'Save',exact:true}).waitFor({state:'hidden'});
+if(saved.slides[0].elements[0].text!=='Updated executive title'||saved.slides[0].elements[2].data[0].value!==45||saved.slides[0].elements[3].rows[1][1]!=='99')throw Error('Saved data incorrect');
+await page.reload();
+await page.getByRole('button',{name:'✏️ Edit',exact:true}).click();
+if(await page.getByLabel('Text',{exact:true}).inputValue()!=='Updated executive title')throw Error('Saved edits not restored');
+await page.getByLabel('Slide element').selectOption('3');
+await page.getByTitle('Next Slide',{exact:true}).click();
+await page.getByLabel('Text',{exact:true}).fill('Updated second slide');
+await page.getByTitle('Previous Slide',{exact:true}).click();
+failSave=true;
+await page.getByLabel('Text',{exact:true}).fill('Unsaved export title');
+await page.getByRole('button',{name:'Save',exact:true}).click();
+await page.getByRole('alert').waitFor();
+if(!await page.getByRole('button',{name:'Save',exact:true}).isVisible())throw Error('Failed save lost dirty state');
+const downloadPromise=page.waitForEvent('download',{timeout:20000});
+await page.getByRole('button',{name:/Download PPTX/}).click();
+await (await downloadPromise).saveAs('/tmp/bob-edited-qa.pptx');
+const jsonPromise=page.waitForEvent('download',{timeout:20000});
+await page.getByTitle('Download raw .bobdeck JSON file',{exact:true}).click();
+await (await jsonPromise).saveAs('/tmp/bob-edited-qa.bobdeck');
+await page.getByRole('button',{name:'Done Editing'}).click();
+await page.getByRole('button',{name:'Revert',exact:true}).click();
+await page.getByRole('button',{name:/^(OK|Confirm|Yes)$/}).click();
+if(!(await page.locator('.bobdeck-slide-svg').textContent()).includes('Updated executive title'))throw Error('Revert did not restore saved content');
+await page.setViewportSize({width:390,height:844});
+await page.getByRole('button',{name:'✏️ Edit',exact:true}).click();
+await page.screenshot({path:'/tmp/bob-deck-editor-mobile.png'});
+if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth))throw Error('Mobile overflow');
+if(!await page.getByTitle('Maximize Presentation').isVisible())throw Error('Mobile toolbar clipped');
+if(errors.length)throw Error(errors.join('\n'));
+console.log(JSON.stringify({savedPath,checks:'text, formatting, chart, table, save, reload, slide selection, failed save, downloads, revert, mobile'}));
+}finally{fs.rmSync(fixturePath,{force:true});await browser.close();}
+})().catch(e=>{console.error(e);process.exit(1)});

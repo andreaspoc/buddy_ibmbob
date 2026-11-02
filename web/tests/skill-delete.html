@@ -1,0 +1,21 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Skill deletion preview — disposable sample</title></head><body><div id="root"></div><script type="module">
+import React,{useState} from 'react';
+import {createRoot} from 'react-dom/client';
+import {SkillEditModal} from '/src/components/SkillEditModal.tsx';
+import {ChatView} from '/src/components/ChatView.tsx';
+import '/src/styles.css';
+const sample={name:'sample-skill',description:'Disposable sample for deletion preview',instructions:'Sample instructions only.'};
+const fetchOriginal=window.fetch.bind(window);
+window.fetch=(url,options)=>String(url)==='/skills/sample-skill'
+ ? Promise.resolve(new Response(JSON.stringify(sample),{status:200,headers:{'Content-Type':'application/json'}}))
+ : fetchOriginal(url,options);
+const noop=()=>{};
+function Preview(){
+ const [skills,setSkills]=useState([sample]);const [editing,setEditing]=useState(false);
+ return React.createElement('main',{className:'main',style:{height:'100vh'}},
+ React.createElement('nav',{className:'feature-toolbar'},React.createElement('strong',null,'Skill deletion preview · disposable sample only'),skills.length?React.createElement('button',{onClick:()=>setEditing(true)},'Delete sample-skill'):React.createElement('span',{role:'status'},'Sample deleted from library and skill menus')),
+ React.createElement(ChatView,{messages:[],isStreaming:false,activeMode:'agent',slideCount:5,onSlideCountChange:noop,activeAgent:'',modes:[],skills,agents:[],templates:[],selectedTemplateId:'',onSendMessage:noop,onUploadFile:noop,onStop:noop,onOpenTemplateModal:noop}),
+ editing&&React.createElement(SkillEditModal,{name:sample.name,startDelete:true,onClose:()=>setEditing(false),onSaved:async()=>{},onDeleted:async()=>setSkills([])}));
+}
+createRoot(document.getElementById('root')).render(React.createElement(Preview));
+</script></body></html>

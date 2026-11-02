@@ -1,0 +1,65 @@
+:root[data-design-system='carbon']:root body .shell .msg-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+}
+:root[data-design-system='carbon']:root body .shell :is(.msg-actions .answer-icon-action,.answer-details-compact > summary) {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+  color: #525252;
+  box-shadow: none;
+  cursor: pointer;
+  list-style: none;
+}
+:root[data-design-system='carbon']:root body .shell :is(.msg-actions .answer-icon-action,.answer-details-compact > summary):hover:not(:disabled) { background: #e8e8e8; color: #161616; }
+:root[data-design-system='carbon']:root body .shell .msg-actions .answer-icon-action-danger:hover:not(:disabled) { background: #fff1f1; color: #da1e28; }
+:root[data-design-system='carbon']:root body .shell :is(.msg-actions .answer-icon-action,.answer-details-compact > summary):focus-visible { outline: 2px solid var(--brand-accent); outline-offset: -2px; }
+:root[data-design-system='carbon']:root body .shell .msg-actions .answer-icon-action:disabled { opacity: .45; cursor: not-allowed; }
+.answer-action-tooltip {
+  position: absolute;
+  z-index: 20;
+  bottom: calc(100% + 6px);
+  left: 0;
+  width: max-content;
+  max-width: min(240px, 75vw);
+  padding: 8px 12px;
+  border-radius: 2px;
+  background: #393939;
+  color: #fff;
+  font: 12px/16px var(--cds-font-family, sans-serif);
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+:is(.answer-icon-action, .answer-details-compact > summary):is(:hover,:focus) > .answer-action-tooltip { visibility: visible; opacity: 1; pointer-events: auto; }
+.answer-action-tooltip[data-dismissed='true'] { visibility: hidden !important; opacity: 0 !important; }
+:root[data-design-system='carbon']:root body .shell .answer-details-compact {
+  width: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+:root[data-design-system='carbon']:root body .shell .answer-details-compact[open] { flex-basis: 100%; }
+.answer-details-compact > summary::-webkit-details-marker { display: none; }
+.answer-details-compact > summary::after { display: none; }
+:root[data-design-system='carbon']:root body .shell .answer-details-compact > summary:has(.ai-task-badge) { width: auto; gap: 8px; padding-inline: 8px; }
+.answer-details-compact .answer-context-body { margin-block: 8px; }
+@media (any-pointer: coarse) {
+  :root[data-design-system='carbon']:root body .shell :is(.msg-actions .answer-icon-action,.answer-details-compact > summary) { width: 44px; height: 44px; min-height: 44px; }
+}

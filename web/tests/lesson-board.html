@@ -1,0 +1,12 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Lesson board test fixture</title></head><body><div id="root"></div><script type="module">
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import {LessonBoard} from '/src/components/LessonBoard.tsx';
+import '/src/components/LearningLessons.css';
+const root=createRoot(document.getElementById('root'));
+window.renderBoard=layout=>root.render(React.createElement('div',{className:'learning-lessons'},React.createElement(LessonBoard,{key:layout,board:{layout,cards:[
+{id:'start',title:'Explore the concept',body:'## Core concept\n**Important idea**\n\n<details><summary>More context</summary><p>Human-written detail</p></details>\n<script>window.lessonScriptRan=true</'+'script><img src=x onerror="window.lessonScriptRan=true"><a href="javascript:alert(1)">Unsafe link</a>',color:'violet',next_ids:layout==='path'?['outcome']:[]},
+{id:'outcome',title:'Consider the outcome',body:'| Choice | Result |\n| --- | --- |\n| A | Explanation |',color:'green',next_ids:[]}
+]}})));
+window.renderBoard('cards');
+</script></body></html>
